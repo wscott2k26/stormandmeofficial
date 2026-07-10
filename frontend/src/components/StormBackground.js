@@ -20,16 +20,16 @@ export default function StormBackground() {
     const resize = () => {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
-      const count = isMobile ? 90 : 220;
+      const count = isMobile ? 110 : 260;
       dropsRef.current = Array.from({ length: count }, () => makeDrop(w, h));
     };
     const makeDrop = (w, h) => ({
       x: Math.random() * w,
       y: Math.random() * h,
-      len: 8 + Math.random() * 18,
-      speed: 4 + Math.random() * 8,
-      opacity: 0.15 + Math.random() * 0.4,
-      wind: 0.6 + Math.random() * 0.8,
+      len: 8 + Math.random() * 20,
+      speed: 5 + Math.random() * 9,
+      opacity: 0.22 + Math.random() * 0.45,
+      wind: 0.6 + Math.random() * 0.9,
     });
 
     resize();
@@ -40,8 +40,8 @@ export default function StormBackground() {
       ctx.lineCap = "round";
       for (const d of dropsRef.current) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(180, 205, 235, ${d.opacity})`;
-        ctx.lineWidth = d.len > 18 ? 1.4 : 0.9;
+        ctx.strokeStyle = `rgba(190, 214, 240, ${d.opacity})`;
+        ctx.lineWidth = d.len > 20 ? 1.5 : 1;
         ctx.moveTo(d.x, d.y);
         ctx.lineTo(d.x + d.wind, d.y + d.len);
         ctx.stroke();
@@ -73,7 +73,7 @@ export default function StormBackground() {
       el.classList.add(strong ? "flash-strong" : "flash-soft");
       timer = setTimeout(flash, 12000 + Math.random() * 13000);
     };
-    timer = setTimeout(flash, 6000 + Math.random() * 6000);
+    timer = setTimeout(flash, 3500 + Math.random() * 4000);
     return () => clearTimeout(timer);
   }, [motion]);
 

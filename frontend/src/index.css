@@ -74,10 +74,10 @@
 .storm-lightning.flash-strong { animation: flashStrong 1.4s ease-out; }
 
 @keyframes flashSoft {
-  0% { opacity: 0; } 8% { opacity: 0.12; } 16% { opacity: 0.03; } 24% { opacity: 0.16; } 100% { opacity: 0; }
+  0% { opacity: 0; } 8% { opacity: 0.18; } 16% { opacity: 0.05; } 24% { opacity: 0.24; } 100% { opacity: 0; }
 }
 @keyframes flashStrong {
-  0% { opacity: 0; } 5% { opacity: 0.35; } 12% { opacity: 0.06; } 20% { opacity: 0.45; } 30% { opacity: 0.1; } 100% { opacity: 0; }
+  0% { opacity: 0; } 5% { opacity: 0.4; } 12% { opacity: 0.08; } 20% { opacity: 0.55; } 30% { opacity: 0.12; } 100% { opacity: 0; }
 }
 
 /* App content stays above storm */
