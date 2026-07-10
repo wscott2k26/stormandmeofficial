@@ -12,7 +12,11 @@ import { BookCard, ProductCard } from "../components/cards";
 // so the fixed rain canvas (z-index 1) paints ABOVE it, while hero text/buttons
 // (inside .app-shell, z-index 2) stay above the rain.
 function HeroBackdrop() {
-  const [container] = useState(() => document.querySelector(".grain") || document.body);
+  const [container, setContainer] = useState(null);
+  useEffect(() => {
+    setContainer(document.querySelector(".grain") || document.body);
+  }, []);
+  if (!container) return null;
   return createPortal(
     <div className="pointer-events-none absolute top-0 left-0 w-full h-screen" style={{ zIndex: 0 }} aria-hidden="true" data-testid="hero-backdrop">
       <img src={ASSETS.hero} alt="" className="w-full h-full object-cover" />
