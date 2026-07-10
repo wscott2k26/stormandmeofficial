@@ -1,0 +1,30 @@
+{
+  "summary": "Verified the hero-rain stacking-context bug fix on StormAndMeOfficial. PRIMARY: on '/', canvas.storm-rain[data-testid='storm-rain-canvas'] draws diagonal streaks OVER the wet-street hero image (visual confirmed via screenshot) while hero text and buttons remain readable and clickable. Stacking measured: hero-backdrop z-index=0, canvas.storm-rain z-index=1, .app-shell z-index=2. Rain canvas is animating over the hero region (nonzero_alpha=2544 -> 3166, sum 164576 -> 216487 within 500ms). Clicking [data-testid='hero-explore-books'] successfully navigated to /books (pointer-events:none on rain canvas confirmed). hero-backdrop count = 0 on /books, /shop, /music (portal correctly unmounts on route change). Regression: canvas.storm-rain exists on /music, /about, /contact — pixel samples on /about (nz=319) and /contact (nz=495) confirm rain drawing above content but below text; screenshot on /contact shows rain streaks. Toggle regression: nav-motion-toggle turned storm off (canvas removed, static div.storm-rain gradient present, lightning removed) and back on (canvas + lightning restored). Reduced-motion override still works: with page.emulate_media(reduced_motion='reduce') + localStorage storm-motion='on' pre-navigation, canvas renders and animates (sum 50098 -> 66679). Cart sanity: on /shop, add-product button incremented cart-count to 1; on /books buy-book incremented cart-count 1->2, proving new z-index/portal did not block clicks.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stormandme_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "[MINOR / non-blocking] In /app/frontend/src/pages/Home.js, HeroBackdrop uses useState(() => document.querySelector('.grain')) whose initializer runs during Home's first render — BEFORE React commits the .grain wrapper to the DOM. As a result the query returns null and the portal falls back to document.body every time (verified: hero-backdrop.parentElement.tagName === 'BODY', document.querySelector('.grain').contains(hb) === false). It still works visually because .grain is a plain div with no positioning of its own (only .grain::before is positioned), so the backdrop's absolute+zIndex:0 lands in the initial containing block and the stacking canvas(z:1) > backdrop(z:0), app-shell(z:2) > canvas(z:1) still holds. Recommend switching to a layout effect that resolves the container after mount (e.g. useState(null) + useLayoutEffect(() => setContainer(document.querySelector('.grain') || document.body), []) and render null until container is set) so the backdrop is portaled into the intended .grain node.",
+    "[MINOR / style] Home.js line 26: 'export default function Home() {  const [books, setBooks]' has the first statement crammed on the function-signature line (double space, no newline). Cosmetic only."
+  ],
+  "critical_code_review_comments": [
+    "HeroBackdrop portal target is document.body (fallback), not the intended .grain, because useState initializer runs before parent DOM commit. Currently harmless but fragile — any future CSS that positions .grain (e.g. transform, filter, z-index) would break the intended stacking contract. See action item #1.",
+    "StormBackground getImageData path emits Canvas2D willReadFrequently warning; only relevant to test-side sampling, no fix required in prod code.",
+    "index.css @media (prefers-reduced-motion: reduce) correctly only affects .storm-lightning animation — the previous fix has NOT regressed."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "not tested (frontend-only request)", "frontend": "100% of hero-rain / z-index / toggle / cart / reduced-motion checks (7/7)" },
+  "test_credentials": "N/A — no auth. Coupons STORM10 / STILLHERE noted but not exercised (cart-add sufficient for sanity).",
+  "seed_data_creation": "None — used existing seeded catalog.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Hero-rain z-index bug fix VERIFIED. Key stacking contract: hero-backdrop z=0 (portaled), canvas.storm-rain z=1 (fixed), .app-shell z=2 (relative). If you re-test, note the HeroBackdrop portal currently ends up in document.body (not .grain) due to a render-time useState initializer race. That deviation is currently benign but noted as an action item for the main agent. Reduced-motion override path (iteration_2 fix) is still intact. Cart flow works fine with rain overlay active.",
+  "rca_of_the_issue": "Original bug: hero background image covered the animated rain because the CSS selector '#root > .app-shell' never matched the real DOM (#root > .grain > .app-shell), so .app-shell had no stacking context and the hero backdrop painted above the rain. Fix applied and verified: (1) index.css selector corrected to '.app-shell { position: relative; z-index: 2; }'; (2) .storm-rain z-index bumped from 0 to 1; (3) hero backdrop portaled OUT of the sealed .app-shell layer at z-index 0 so rain (z:1) paints between backdrop (z:0) and hero text (in .app-shell, z:2). Live verification: screenshot on '/' shows diagonal streaks visibly over the wet-street image, and canvas pixel-sampling over the hero region returns non-zero alpha changing between frames. Only nit is the portal container resolves to document.body due to a first-render timing issue (see action items) — currently non-blocking."
+}

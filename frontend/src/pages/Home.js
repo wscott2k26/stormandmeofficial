@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube, Users } from "lucide-react";
@@ -7,8 +8,22 @@ import { ASSETS, BRAND } from "../lib/assets";
 import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, Reveal } from "../components/shared";
 import { BookCard, ProductCard } from "../components/cards";
 
-export default function Home() {
-  const [books, setBooks] = useState([]);
+// Hero backdrop is portaled OUT of the sealed .app-shell layer into .grain,
+// so the fixed rain canvas (z-index 1) paints ABOVE it, while hero text/buttons
+// (inside .app-shell, z-index 2) stay above the rain.
+function HeroBackdrop() {
+  const [container] = useState(() => document.querySelector(".grain") || document.body);
+  return createPortal(
+    <div className="pointer-events-none absolute top-0 left-0 w-full h-screen" style={{ zIndex: 0 }} aria-hidden="true" data-testid="hero-backdrop">
+      <img src={ASSETS.hero} alt="" className="w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-storm-base via-storm-base/80 to-storm-base/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-storm-base via-transparent to-storm-base/40" />
+    </div>,
+    container
+  );
+}
+
+export default function Home() {  const [books, setBooks] = useState([]);
   const [music, setMusic] = useState([]);
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState([]);
@@ -27,11 +42,7 @@ export default function Home() {
     <div>
       {/* HERO */}
       <section className="relative min-h-screen flex items-center overflow-hidden" data-testid="hero-section">
-        <div className="absolute inset-0">
-          <img src={ASSETS.hero} alt="A lone figure walking a wet street toward light breaking through storm clouds" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-storm-base via-storm-base/85 to-storm-base/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-storm-base via-transparent to-storm-base/40" />
-        </div>
+        <HeroBackdrop />
 
         <div className="relative max-w-7xl mx-auto px-6 w-full pt-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="max-w-3xl">
