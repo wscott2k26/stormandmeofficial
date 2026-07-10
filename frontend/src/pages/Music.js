@@ -53,8 +53,8 @@ export default function Music() {
 
   return (
     <div>
-      <PageHero overline="Music Born in the Storm" title="Some feelings become a song."
-        subtitle="Explore music from Willy Will—stories about love, faith, regret, survival, laughter, heartbreak, mistakes, healing, and getting back up." />
+      <PageHero overline="Music for the Journey" title="Songs for the Way Through"
+        subtitle="Music to help you feel understood, encouraged, and less alone—for the heartbreak, the healing, the laughter, and the mornings you choose to keep going." />
 
       <section className="max-w-7xl mx-auto px-6 pb-8 grid lg:grid-cols-2 gap-6">
         {[featuredAlbum, featuredSingle].filter(Boolean).map((m) => (

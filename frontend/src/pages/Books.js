@@ -22,8 +22,8 @@ export default function Books() {
 
   return (
     <div>
-      <PageHero overline="The Bookstore" title="Stories Born in the Storm"
-        subtitle="Explore stories created to comfort, challenge, inspire, and remind readers that healing is still possible." />
+      <PageHero overline="The Bookstore" title="Books That Walk With You"
+        subtitle="Books for the hurting, the healing, the rebuilding, and the still-standing—created to comfort, encourage, and remind you that healing is still possible." />
       <section className="max-w-7xl mx-auto px-6 pb-24">
         <div className="flex flex-wrap gap-2.5 mb-10" data-testid="book-category-filters">
           {CATEGORIES.map((c) => (
