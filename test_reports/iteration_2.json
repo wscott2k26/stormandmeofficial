@@ -1,0 +1,27 @@
+{
+  "summary": "Re-tested the storm rain bug fix. Verified with Playwright that with page.emulate_media(reduced_motion='reduce') AND localStorage 'storm-motion'='on' set via add_init_script before navigation, canvas.storm-rain[data-testid='storm-rain-canvas'] is present, computed display=block (not none), visibility=visible, opacity=1, pointer-events=none, z-index=0, size=1440x900. Pixel-sampled the canvas at two moments ~600ms apart and confirmed the alpha-pixel hash differs -> rain IS animating. Confirmed rain drawing on ALL 6 routes (/, /books, /music, /shop, /about, /contact) with non-zero alpha samples on each. Toggle behavior verified in both directions: default (no localStorage, no reduced-motion) -> canvas + lightning present; 1 click on nav-motion-toggle -> canvas removed, div.storm-rain static gradient present, lightning removed; 2nd click -> animated canvas + lightning return and animation continues (verified by hash diff). Pointer-events: canvas has pointer-events:none and clicking [data-testid='nav-link-shop'] navigated to /shop, and [data-testid='book-buy-now'] added item to cart (cart-count=1, success toast) while rain was active. Lightning element [data-testid='storm-lightning'] present whenever motion is on. Screenshot on /contact clearly shows diagonal rain streaks.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_stormandme_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "StormBackground.js: getImageData is only used by tests, but Canvas2D console warning noted 'willReadFrequently' — not a bug, just a perf hint. No action needed for production; only relevant for test-side sampling.",
+    "StormContext: prefersReduced is computed once at initial render and not subscribed to changes of the media query. Acceptable for MVP, but if the user changes OS-level reduced-motion mid-session, the default won't update — the manual toggle still overrides so this is minor.",
+    "The static (motion=off) branch renders <div class='storm-rain'> which shares CSS with the canvas branch — fine because index.css reduced-motion rule only kills lightning animation, not the layer."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "not tested (frontend-only request)", "frontend": "100% of storm/motion flows (6/6 checks)" },
+  "test_credentials": "N/A — no auth.",
+  "seed_data_creation": "None (used existing seeded catalog).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Storm rain regression key facts: canvas.storm-rain[data-testid='storm-rain-canvas'] draws diagonal streaks via 2D context; motion state persisted at localStorage['storm-motion'] ('on'/'off'); toggle at [data-testid='nav-motion-toggle'] in navbar. CSS at /app/frontend/src/index.css: @media (prefers-reduced-motion: reduce) now ONLY sets .storm-lightning { animation:none } — do NOT reintroduce display:none on .storm-rain or the user's override is broken. When testing reduced-motion path, always set localStorage BEFORE navigation using add_init_script.",
+  "rca_of_the_issue": "Original bug: after user clicked cloud toggle to enable storm on a machine with prefers-reduced-motion: reduce, no rain rendered (only unrelated scroll dot moved). RCA: index.css had @media (prefers-reduced-motion: reduce) { .storm-rain, .storm-lightning { display:none !important } } which overrode the React-mounted canvas even when the user had explicitly toggled motion ON via localStorage. Fix (verified): removed the display:none rule; media query now only disables the lightning CSS keyframe animation. Rain canvas is always mounted when motion=true, respecting user override. Re-verified live with reduced_motion emulation + storm-motion='on': canvas draws (nonzero_alpha=68 samples first tick, 7 next tick showing frame-to-frame change) and animation hash flips between samples."
+}

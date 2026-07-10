@@ -136,8 +136,7 @@
 @keyframes scrollDot { 0% { opacity: 0; transform: translate(-50%,0);} 40% { opacity:1;} 80%{opacity:0; transform: translate(-50%,12px);} 100%{opacity:0;} }
 
 @media (prefers-reduced-motion: reduce) {
-  .storm-rain, .storm-lightning { display: none !important; }
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .storm-lightning { animation: none !important; }
 }
 
 @layer base {
