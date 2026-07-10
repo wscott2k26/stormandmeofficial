@@ -1,55 +1,71 @@
-import { useEffect } from "react";
-import "@/App.css";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { Toaster } from "sonner";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { StormProvider } from "./context/StormContext";
+import { CartProvider } from "./context/CartContext";
+import StormBackground from "./components/StormBackground";
+import Layout from "./components/Layout";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+import Home from "./pages/Home";
+import Books from "./pages/Books";
+import BookDetail from "./pages/BookDetail";
+import Music from "./pages/Music";
+import MusicDetail from "./pages/MusicDetail";
+import Videos from "./pages/Videos";
+import Store from "./pages/Store";
+import ProductDetail from "./pages/ProductDetail";
+import About from "./pages/About";
+import Story from "./pages/Story";
+import News from "./pages/News";
+import PostDetail from "./pages/PostDetail";
+import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import Account from "./pages/Account";
+import LegalPage from "./pages/LegalPage";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <StormProvider>
+      <CartProvider>
+        <div className="grain">
+          <StormBackground />
+          <Toaster position="top-center" theme="dark" richColors />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/books" element={<Books />} />
+                <Route path="/books/:id" element={<BookDetail />} />
+                <Route path="/music" element={<Music />} />
+                <Route path="/music/:id" element={<MusicDetail />} />
+                <Route path="/videos" element={<Videos />} />
+                <Route path="/shop" element={<Store />} />
+                <Route path="/shop/:id" element={<ProductDetail />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/story" element={<Story />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/news/:id" element={<PostDetail />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-confirmation" element={<OrderConfirmation />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/privacy" element={<LegalPage slug="privacy" />} />
+                <Route path="/terms" element={<LegalPage slug="terms" />} />
+                <Route path="/shipping" element={<LegalPage slug="shipping" />} />
+                <Route path="/returns" element={<LegalPage slug="returns" />} />
+                <Route path="/accessibility" element={<LegalPage slug="accessibility" />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </CartProvider>
+    </StormProvider>
   );
 }
 
