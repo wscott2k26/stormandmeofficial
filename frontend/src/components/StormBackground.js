@@ -5,6 +5,7 @@ export default function StormBackground() {
   const { motion } = useStorm();
   const canvasRef = useRef(null);
   const lightningRef = useRef(null);
+  const boltRef = useRef(null);
   const rafRef = useRef(null);
   const dropsRef = useRef([]);
 
@@ -74,21 +75,87 @@ export default function StormBackground() {
     };
   }, [motion]);
 
-  // Lightning — random gentle flashes with occasional stronger ones
+  // Lightning — random gentle sky glow + occasional subtle bolt strikes
   useEffect(() => {
     if (!motion) return;
     const el = lightningRef.current;
-    if (!el) return;
+    const boltCanvas = boltRef.current;
+    if (!el || !boltCanvas) return;
+    const ctx = boltCanvas.getContext("2d");
+    let w = (boltCanvas.width = window.innerWidth);
+    let h = (boltCanvas.height = window.innerHeight);
+    const onResize = () => { w = boltCanvas.width = window.innerWidth; h = boltCanvas.height = window.innerHeight; };
+    window.addEventListener("resize", onResize);
+
     let timer;
+    let fadeRaf;
+
+    const buildBolt = () => {
+      const startX = w * (0.15 + Math.random() * 0.7);
+      const endY = h * (0.4 + Math.random() * 0.35);
+      let x = startX, y = 0;
+      const main = [[x, y]];
+      const step = endY / (9 + Math.random() * 6);
+      while (y < endY) {
+        y += step;
+        x += (Math.random() - 0.5) * 55;
+        main.push([x, y]);
+      }
+      const branches = [];
+      if (Math.random() < 0.55) {
+        const bi = Math.floor(main.length * (0.35 + Math.random() * 0.35));
+        let bx = main[bi][0], by = main[bi][1];
+        const bpts = [[bx, by]];
+        const bEnd = by + h * (0.12 + Math.random() * 0.18);
+        while (by < bEnd) { by += 26 + Math.random() * 22; bx += (Math.random() - 0.5) * 46; bpts.push([bx, by]); }
+        branches.push(bpts);
+      }
+      return { main, branches };
+    };
+
+    const drawBolt = (strong) => {
+      const { main, branches } = buildBolt();
+      let alpha = strong ? 0.85 : 0.5;
+      const trace = (arr) => {
+        ctx.beginPath();
+        ctx.moveTo(arr[0][0], arr[0][1]);
+        for (let i = 1; i < arr.length; i++) ctx.lineTo(arr[i][0], arr[i][1]);
+        ctx.stroke();
+      };
+      const frame = () => {
+        ctx.clearRect(0, 0, w, h);
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        ctx.shadowColor = "rgba(147,197,253,0.9)";
+        ctx.shadowBlur = strong ? 22 : 12;
+        ctx.strokeStyle = `rgba(205,228,255,${alpha})`;
+        ctx.lineWidth = strong ? 2.2 : 1.3;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        trace(main);
+        branches.forEach(trace);
+        ctx.restore();
+        alpha -= strong ? 0.05 : 0.07;
+        if (alpha > 0) fadeRaf = requestAnimationFrame(frame);
+        else ctx.clearRect(0, 0, w, h);
+      };
+      frame();
+    };
+
     const flash = () => {
       const strong = Math.random() < 0.3;
       el.classList.remove("flash-soft", "flash-strong");
       void el.offsetWidth; // restart animation
       el.classList.add(strong ? "flash-strong" : "flash-soft");
+      if (Math.random() < 0.8) drawBolt(strong); // most flashes include a subtle strike
       timer = setTimeout(flash, 12000 + Math.random() * 13000);
     };
     timer = setTimeout(flash, 3500 + Math.random() * 4000);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(fadeRaf);
+      window.removeEventListener("resize", onResize);
+    };
   }, [motion]);
 
   if (!motion) {
@@ -108,6 +175,7 @@ export default function StormBackground() {
     <>
       <canvas ref={canvasRef} className="storm-rain" aria-hidden="true" data-testid="storm-rain-canvas" />
       <div ref={lightningRef} className="storm-lightning" aria-hidden="true" data-testid="storm-lightning" />
+      <canvas ref={boltRef} className="storm-bolt" aria-hidden="true" data-testid="storm-bolt" />
     </>
   );
 }

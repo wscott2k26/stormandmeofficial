@@ -55,7 +55,7 @@
 }
 
 /* Storm layers */
-.storm-rain, .storm-lightning {
+.storm-rain, .storm-lightning, .storm-bolt {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -64,6 +64,7 @@
   z-index: 0;
 }
 .storm-rain { z-index: 1; }
+.storm-bolt { z-index: 1; }
 .storm-lightning {
   z-index: 1;
   background: radial-gradient(120% 90% at 50% 0%, rgba(147,197,253,0.9), rgba(59,130,246,0.35) 40%, transparent 70%);
