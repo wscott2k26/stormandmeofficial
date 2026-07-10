@@ -1,0 +1,127 @@
+{
+  "theme": "dark",
+  "typography": {
+    "fonts": [
+      {
+        "role": "headings",
+        "family": "Playfair Display",
+        "weight": "font-bold to font-black",
+        "usage": "Hero headlines, section titles, book titles. Elegant, emotional, cinematic.",
+        "fallback": "serif"
+      },
+      {
+        "role": "body",
+        "family": "Manrope",
+        "weight": "font-light to font-normal",
+        "usage": "Body text, paragraphs, labels, small text, metadata. Highly readable.",
+        "fallback": "sans-serif"
+      }
+    ],
+    "guidelines": "Use tracking-tight for large headings (text-4xl to text-6xl). Never use text-7xl or above for headings. Maintain high contrast. Use tracking-[0.2em] uppercase for overlines and category labels."
+  },
+  "colors": {
+    "palette": {
+      "base_bg": "#050B14",
+      "surface_bg": "#0A0C10",
+      "primary": "#3B82F6",
+      "secondary": "#C0C0C0",
+      "accent": "#D4AF37",
+      "text_primary": "#F8FAFC",
+      "text_secondary": "#94A3B8"
+    },
+    "tailwind_classes": {
+      "backgrounds": "bg-[#050B14]",
+      "surfaces": "bg-black/40 backdrop-blur-xl border border-white/10",
+      "primary_text": "text-[#F8FAFC]",
+      "secondary_text": "text-[#94A3B8]",
+      "primary_button": "bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.8)] transition-all duration-300",
+      "secondary_button": "bg-transparent border border-[#C0C0C0] text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(192,192,192,0.3)] transition-all duration-300"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "Use on sticky header, product cards, floating audio players, and dropdowns. backdrop-blur-xl bg-black/50 border border-white/10.",
+    "glow_effects": "Electric blue shadows on primary buttons. Silver subtle glow on secondary buttons. Glowing buttons are a key brand element.",
+    "textures": "Cinematic dark feel. Avoid flat, lifeless grays. Always tint grays with a hint of blue to match the storm aesthetic. Add a subtle noise/grain overlay site-wide if possible."
+  },
+  "components": {
+    "buttons": "Pill-shaped (rounded-full) or rounded-md. Must have explicit hover states with increased glow. Primary buttons glow electric blue, secondary buttons glow silver.",
+    "cards": "Glassmorphism cards for books and merchandise. Hovering lifts the card (-translate-y-1) and increases border opacity (border-white/30) and adds a subtle shadow.",
+    "header": "Sticky nav with backdrop-blur-xl, bg-black/60 (NOT fully transparent). Must contain brand logo text 'STORM & ME OFFICIAL', nav links, cart, search, social icons, and 'Shop Now' button.",
+    "hero": "Full-screen (min-h-screen). Absolute positioning for the rain/lightning background. Content centered with Playfair Display heading 'Some people run from the storm. I learned how to create inside it.'. Primary and secondary action buttons.",
+    "audio_player": "Sticky or inline glassmorphism component for music preview with play/pause and progress bar.",
+    "dropdowns": "Must have a dark semi-solid background (e.g. bg-slate-900 border border-slate-700). Never completely transparent."
+  },
+  "layouts": {
+    "spacing": "Generous spacing. Use py-24 to py-32 for major sections. Grid gaps gap-8 to gap-12.",
+    "grid": "Bento-style or asymmetrical grids for featured books and merchandise. Avoid boring symmetrical 3-column grids everywhere. Mix col-span-2 and col-span-1 for visual interest."
+  },
+  "motion": {
+    "site_wide": "Use react-tsparticles for full-screen realistic rain effect (fixed, z-[-1], pointer-events-none). Must not block clicks.",
+    "lightning": "CSS keyframe animation on a fixed absolute div that flashes opacity briefly (0 -> 0.15 -> 0) every 12-25 seconds randomly to light up the background.",
+    "transitions": "Use Framer Motion for page transitions (fade and slight slide up) and scroll-triggered reveals (staggered list item entrances).",
+    "hover": "Smooth scale and glow adjustments on cards and buttons."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text over glass or images has sufficient contrast. Use text shadows if necessary.",
+    "reduced_motion": "Rain and lightning MUST be disabled or severely reduced if prefers-reduced-motion is enabled in CSS/JS.",
+    "testing": "All interactive elements (buttons, links, forms) MUST have data-testid attributes (e.g. data-testid='hero-shop-button')."
+  },
+  "media": {
+    "image_urls": [
+      {
+        "url": "https://images.pexels.com/photos/29433729/pexels-photo-29433729.png",
+        "category": "portrait",
+        "description": "Artistic moody portrait of Willy Will with dramatic shadow"
+      },
+      {
+        "url": "https://images.pexels.com/photos/13000444/pexels-photo-13000444.jpeg",
+        "category": "portrait_alt",
+        "description": "Close-up serious portrait for about/story section"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1529521818954-c76995518833",
+        "category": "book",
+        "description": "Featured dark emotional book cover (The First New Universe)"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1662152331050-48cb83a01ab6",
+        "category": "book",
+        "description": "Black book with a red rose (Romance / Emotional Healing)"
+      },
+      {
+        "url": "https://images.pexels.com/photos/28003184/pexels-photo-28003184.jpeg",
+        "category": "music",
+        "description": "Moody portrait of musician wearing headphones in dimly lit studio"
+      },
+      {
+        "url": "https://images.pexels.com/photos/15494289/pexels-photo-15494289.jpeg",
+        "category": "music_alt",
+        "description": "Close-up of Marshall headphones, moody vibe"
+      },
+      {
+        "url": "https://images.pexels.com/photos/28701952/pexels-photo-28701952.jpeg",
+        "category": "merchandise",
+        "description": "Minimalist black hoodie for store"
+      }
+    ],
+    "instructions": "Use these exact URLs. DO NOT use placeholders. Apply max-h-[80vh] md:max-h-none to mobile images."
+  },
+  "3d_libraries": {
+    "particles": "react-tsparticles (and tsparticles-slim) for rain effect. Optimize for performance.",
+    "instructions_to_main_agent": "Create a RainBackground component with tsparticles config representing rain (lines falling downwards, speed 30-50, slight angle). Add a Lightning component that uses CSS animation to flash a white overlay div randomly. Ensure these components are fixed, pointer-events-none, and z-[-1]."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "NEVER use generic centered layouts or simplistic gradients.",
+    "NEVER apply universal transition (transition: all). Target specific properties like opacity, transform, background-color.",
+    "NEVER center align the app container in CSS.",
+    "DO NOT use a completely transparent header over content without a blur/scrim.",
+    "Prioritize layered design elements with z-index hierarchy.",
+    "Ensure glass-morphism effects use high backdrop blur (12-24px) and semi-transparent borders.",
+    "Include subtle noise overlays for a cinematic texture.",
+    "Use data-testid on all interactive elements.",
+    "Provide components in .js, not .tsx.",
+    "Use lucide-react for icons.",
+    "Ensure routing includes Home, Books, Music, Videos, Store, Cart, Account, About, Blog, Contact, FAQ.",
+    "Use sonner for toast notifications."
+  ]
+}
