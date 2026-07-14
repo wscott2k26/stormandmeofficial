@@ -1,41 +1,31 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Request
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
-import logging
-from pathlib import Path
-from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Dict
-import uuid
 from datetime import datetime, timezone
+from typing import List, Optional
+import uuid
 
-from emergentintegrations.payments.stripe.checkout import (
-    StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest,
-)
+from fastapi import APIRouter, FastAPI, HTTPException
+from pydantic import BaseModel, EmailStr
+from starlette.middleware.cors import CORSMiddleware
+
 import seed_data
-
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
 
 app = FastAPI(title="StormAndMeOfficial API")
 api_router = APIRouter(prefix="/api")
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+# Lightweight temporary storage for form submissions. This keeps the first
+# Vercel deployment independent of an external database. We can connect
+# Constant Contact or another persistent service after the public site is live.
+contact_messages = []
+newsletter_signups = {}
 
 
-def now_iso():
+def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-# ---------- Models ----------
+def find_by_id(items, item_id: str):
+    return next((item for item in items if item.get("id") == item_id), None)
+
+
 class ContactCreate(BaseModel):
     name: str
     email: EmailStr
@@ -52,7 +42,7 @@ class NewsletterCreate(BaseModel):
 
 class CartItem(BaseModel):
     id: str
-    type: str  # 'book' or 'product'
+    type: str
     quantity: int = 1
     size: Optional[str] = None
     color: Optional[str] = None
@@ -67,24 +57,22 @@ class CheckoutCreate(BaseModel):
     shipping: Optional[str] = "standard"
 
 
-COUPONS = {"STORM10": 0.10, "STILLHERE": 0.15}
-SHIPPING_RATES = {"standard": 5.99, "express": 14.99, "digital": 0.0}
-TAX_RATE = 0.08
-
-
-# ---------- Content endpoints ----------
 @api_router.get("/")
 async def root():
-    return {"message": "StormAndMeOfficial API"}
+    return {"message": "StormAndMeOfficial API", "status": "ready"}
+
+
+@api_router.get("/health")
+async def health():
+    return {"ok": True}
 
 
 @api_router.get("/books")
 async def get_books(category: Optional[str] = None):
-    query = {}
-    docs = await db.books.find({}, {"_id": 0}).to_list(1000)
+    books = [dict(item) for item in seed_data.BOOKS]
     if category and category != "All":
-        docs = [b for b in docs if category in b.get("categories", [])]
-    return docs
+        books = [book for book in books if category in book.get("categories", [])]
+    return books
 
 
 @api_router.get("/books/categories")
@@ -94,36 +82,36 @@ async def get_book_categories():
 
 @api_router.get("/books/{book_id}")
 async def get_book(book_id: str):
-    doc = await db.books.find_one({"id": book_id}, {"_id": 0})
-    if not doc:
+    book = find_by_id(seed_data.BOOKS, book_id)
+    if not book:
         raise HTTPException(404, "Book not found")
-    return doc
+    return book
 
 
 @api_router.get("/music")
 async def get_music():
-    return await db.music.find({}, {"_id": 0}).to_list(1000)
+    return seed_data.MUSIC
 
 
 @api_router.get("/music/{music_id}")
 async def get_music_item(music_id: str):
-    doc = await db.music.find_one({"id": music_id}, {"_id": 0})
-    if not doc:
-        raise HTTPException(404, "Not found")
-    return doc
+    music = find_by_id(seed_data.MUSIC, music_id)
+    if not music:
+        raise HTTPException(404, "Music not found")
+    return music
 
 
 @api_router.get("/videos")
 async def get_videos():
-    return await db.videos.find({}, {"_id": 0}).to_list(1000)
+    return seed_data.VIDEOS
 
 
 @api_router.get("/products")
 async def get_products(category: Optional[str] = None):
-    docs = await db.products.find({}, {"_id": 0}).to_list(1000)
+    products = [dict(item) for item in seed_data.PRODUCTS]
     if category and category != "All":
-        docs = [p for p in docs if category in p.get("categories", [])]
-    return docs
+        products = [product for product in products if category in product.get("categories", [])]
+    return products
 
 
 @api_router.get("/products/categories")
@@ -133,23 +121,23 @@ async def get_product_categories():
 
 @api_router.get("/products/{product_id}")
 async def get_product(product_id: str):
-    doc = await db.products.find_one({"id": product_id}, {"_id": 0})
-    if not doc:
+    product = find_by_id(seed_data.PRODUCTS, product_id)
+    if not product:
         raise HTTPException(404, "Product not found")
-    return doc
+    return product
 
 
 @api_router.get("/posts")
 async def get_posts():
-    return await db.posts.find({}, {"_id": 0}).to_list(1000)
+    return seed_data.POSTS
 
 
 @api_router.get("/posts/{post_id}")
 async def get_post(post_id: str):
-    doc = await db.posts.find_one({"id": post_id}, {"_id": 0})
-    if not doc:
+    post = find_by_id(seed_data.POSTS, post_id)
+    if not post:
         raise HTTPException(404, "Post not found")
-    return doc
+    return post
 
 
 @api_router.get("/faqs")
@@ -157,193 +145,48 @@ async def get_faqs():
     return seed_data.FAQS
 
 
-# ---------- Forms ----------
 @api_router.post("/contact")
 async def submit_contact(payload: ContactCreate):
     doc = payload.model_dump()
-    doc["id"] = str(uuid.uuid4())
-    doc["created_at"] = now_iso()
-    await db.contact_messages.insert_one(doc)
-    return {"success": True, "message": "Thank you for reaching out. Your message is on its way\u2014I read every one."}
+    doc.update({"id": str(uuid.uuid4()), "created_at": now_iso()})
+    contact_messages.append(doc)
+    return {
+        "success": True,
+        "message": "Thank you for reaching out. Your message is on its way—I read every one.",
+    }
 
 
 @api_router.post("/newsletter")
 async def subscribe_newsletter(payload: NewsletterCreate):
-    existing = await db.newsletter.find_one({"email": payload.email})
-    if existing:
+    email_key = str(payload.email).lower()
+    if email_key in newsletter_signups:
         return {"success": True, "message": "You're already part of the family."}
-    doc = payload.model_dump()
-    doc["id"] = str(uuid.uuid4())
-    doc["created_at"] = now_iso()
-    await db.newsletter.insert_one(doc)
+    newsletter_signups[email_key] = {
+        **payload.model_dump(),
+        "id": str(uuid.uuid4()),
+        "created_at": now_iso(),
+    }
     return {"success": True, "message": "Welcome to the family. Watch your inbox."}
 
 
-# ---------- Checkout / Stripe ----------
-async def _price_for(item: CartItem):
-    if item.type == "book":
-        doc = await db.books.find_one({"id": item.id}, {"_id": 0})
-    else:
-        doc = await db.products.find_one({"id": item.id}, {"_id": 0})
-    if not doc:
-        raise HTTPException(400, f"Item not found: {item.id}")
-    if item.type == "product" and doc.get("sale_price"):
-        price = float(doc["sale_price"])
-    else:
-        price = float(doc["price"])
-    name = doc.get("title") or doc.get("name")
-    return price, name
-
-
 @api_router.post("/checkout/session")
-async def create_checkout(payload: CheckoutCreate, request: Request):
-    if not payload.items:
-        raise HTTPException(400, "Cart is empty")
-
-    subtotal = 0.0
-    line_names = []
-    for item in payload.items:
-        price, name = await _price_for(item)
-        subtotal += price * max(1, item.quantity)
-        line_names.append(f"{name} x{item.quantity}")
-
-    discount = 0.0
-    coupon = (payload.coupon or "").upper().strip()
-    if coupon in COUPONS:
-        discount = round(subtotal * COUPONS[coupon], 2)
-
-    shipping = SHIPPING_RATES.get(payload.shipping, 5.99)
-    taxed_base = max(0.0, subtotal - discount)
-    tax = round(taxed_base * TAX_RATE, 2)
-    total = round(taxed_base + tax + shipping, 2)
-
-    host_url = str(request.base_url)
-    webhook_url = f"{host_url}api/webhook/stripe"
-    stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
-
-    success_url = f"{payload.origin_url}/order-confirmation?session_id={{CHECKOUT_SESSION_ID}}"
-    cancel_url = f"{payload.origin_url}/cart"
-
-    metadata = {"source": "storm_shop", "items": " | ".join(line_names)[:480]}
-    req = CheckoutSessionRequest(
-        amount=float(total), currency="usd",
-        success_url=success_url, cancel_url=cancel_url, metadata=metadata,
+async def create_checkout(_: CheckoutCreate):
+    raise HTTPException(
+        503,
+        "Direct checkout is being connected. Please use the official shop link for now.",
     )
-    session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(req)
-
-    order_doc = {
-        "id": str(uuid.uuid4()),
-        "session_id": session.session_id,
-        "email": payload.email,
-        "items": [i.model_dump() for i in payload.items],
-        "subtotal": round(subtotal, 2),
-        "discount": discount,
-        "coupon": coupon if discount else None,
-        "shipping": shipping,
-        "tax": tax,
-        "amount": total,
-        "currency": "usd",
-        "payment_status": "initiated",
-        "status": "initiated",
-        "created_at": now_iso(),
-    }
-    await db.payment_transactions.insert_one(dict(order_doc))
-    await db.orders.insert_one(order_doc)
-
-    return {"url": session.url, "session_id": session.session_id}
 
 
 @api_router.get("/checkout/status/{session_id}")
 async def checkout_status(session_id: str):
-    stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url="")
-    status: CheckoutStatusResponse = await stripe_checkout.get_checkout_status(session_id)
-
-    existing = await db.payment_transactions.find_one({"session_id": session_id})
-    if existing and existing.get("payment_status") != "paid":
-        await db.payment_transactions.update_one(
-            {"session_id": session_id},
-            {"$set": {"payment_status": status.payment_status, "status": status.status, "updated_at": now_iso()}},
-        )
-        await db.orders.update_one(
-            {"session_id": session_id},
-            {"$set": {"payment_status": status.payment_status, "status": status.status, "updated_at": now_iso()}},
-        )
-
-    order = await db.orders.find_one({"session_id": session_id}, {"_id": 0})
-    return {
-        "status": status.status,
-        "payment_status": status.payment_status,
-        "amount_total": status.amount_total,
-        "currency": status.currency,
-        "order": order,
-    }
-
-
-@api_router.get("/orders/{session_id}")
-async def get_order(session_id: str):
-    order = await db.orders.find_one({"session_id": session_id}, {"_id": 0})
-    if not order:
-        raise HTTPException(404, "Order not found")
-    return order
-
-
-@api_router.post("/webhook/stripe")
-async def stripe_webhook(request: Request):
-    body = await request.body()
-    sig = request.headers.get("Stripe-Signature")
-    stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url="")
-    try:
-        result = await stripe_checkout.handle_webhook(body, sig)
-    except Exception as e:
-        logger.error(f"Webhook error: {e}")
-        raise HTTPException(400, "Webhook error")
-    if result.session_id:
-        await db.payment_transactions.update_one(
-            {"session_id": result.session_id},
-            {"$set": {"payment_status": result.payment_status, "updated_at": now_iso()}},
-        )
-        await db.orders.update_one(
-            {"session_id": result.session_id},
-            {"$set": {"payment_status": result.payment_status, "updated_at": now_iso()}},
-        )
-    return {"received": True}
-
-
-# ---------- Seeding ----------
-async def seed():
-    if await db.books.count_documents({}) == 0:
-        await db.books.insert_many([dict(b) for b in seed_data.BOOKS])
-        logger.info("Seeded books")
-    if await db.music.count_documents({}) == 0:
-        await db.music.insert_many([dict(m) for m in seed_data.MUSIC])
-        logger.info("Seeded music")
-    if await db.videos.count_documents({}) == 0:
-        await db.videos.insert_many([dict(v) for v in seed_data.VIDEOS])
-        logger.info("Seeded videos")
-    if await db.products.count_documents({}) == 0:
-        await db.products.insert_many([dict(p) for p in seed_data.PRODUCTS])
-        logger.info("Seeded products")
-    if await db.posts.count_documents({}) == 0:
-        await db.posts.insert_many([dict(p) for p in seed_data.POSTS])
-        logger.info("Seeded posts")
-
-
-@app.on_event("startup")
-async def on_startup():
-    await seed()
+    raise HTTPException(404, f"No checkout session found: {session_id}")
 
 
 app.include_router(api_router)
-
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
