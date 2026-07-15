@@ -176,7 +176,6 @@ export default function StormBackground() {
     <div className={`weather-world ${motion ? "is-storm" : "is-calm"}`} aria-hidden="true">
       <div className="sun-wash" />
       <div className="sun-rays" />
-      <div className="rainbow-arc" />
       <div className="calm-haze" />
       {motion && (
         <>
