@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 import { StormProvider } from "./context/StormContext";
 import { CartProvider } from "./context/CartContext";
 import StormBackground from "./components/StormBackground";
-import AmbientAudio from "./components/AmbientAudio";
+import AmbientAudio from "./components/AmbientAudio.js";
 import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
