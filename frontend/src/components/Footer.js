@@ -45,6 +45,17 @@ export default function Footer() {
           <p className="text-xs text-storm-silver/50">© 2026 {BRAND.domain}. All rights reserved. Created by {BRAND.creator}.</p>
           <p className="font-display italic text-sm text-storm-gold/80">"{BRAND.line}"</p>
         </div>
+        <p className="mt-5 text-center text-[10px] leading-relaxed text-storm-silver/35">
+          Ambient piano: “Gymnopédie No. 1” by Kevin MacLeod, based on the composition by Erik Satie. Used under the{" "}
+          <a
+            href="https://incompetech.com/music/royalty-free/licenses/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-storm-silver/60"
+          >
+            Creative Commons attribution license
+          </a>.
+        </p>
       </div>
     </footer>
   );
