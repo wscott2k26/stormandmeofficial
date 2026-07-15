@@ -14,12 +14,14 @@ export const BRAND = {
   authorName: "Will Scott",
   message: "The storm may have changed me, but it did not finish me.",
   line: "The storm does not get the final word.",
-  youtube: "",
+  youtube: "https://www.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ",
+  youtubeMusic: "https://music.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ",
 };
 
 // Add only verified public profiles. Empty links are intentionally hidden by SocialIcons.
 export const SOCIALS = [
-  { name: "YouTube", key: "youtube", url: "" },
+  { name: "YouTube", key: "youtube", url: "https://www.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ" },
+  { name: "YouTube Music", key: "youtube_music", url: "https://music.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ" },
   { name: "TikTok", key: "tiktok", url: "" },
   { name: "Facebook", key: "facebook", url: "" },
   { name: "Instagram", key: "instagram", url: "" },
