@@ -16,27 +16,56 @@ export default function AmbientAudio() {
   const rainFadeRef = useRef(null);
   const pianoFadeRef = useRef(null);
 
-  const fadeTrack = (audioRef, fadeRef, target, duration = 1400, pauseWhenDone = false) => {
-    const audio = audioRef.current;
+  const fadeRain = (target, duration = 1400, pauseWhenDone = false) => {
+    const audio = rainAudioRef.current;
     if (!audio) return;
 
-    window.cancelAnimationFrame(fadeRef.current);
+    window.cancelAnimationFrame(rainFadeRef.current);
     const startVolume = audio.volume;
-    const startedAt = performance.now();
+    const startedAt = window.performance.now();
 
     const frame = (now) => {
       const progress = Math.min(1, (now - startedAt) / duration);
       const eased = 1 - Math.pow(1 - progress, 3);
-      audio.volume = Math.max(0, Math.min(1, startVolume + (target - startVolume) * eased));
+      audio.volume = Math.max(
+        0,
+        Math.min(1, startVolume + (target - startVolume) * eased)
+      );
 
       if (progress < 1) {
-        fadeRef.current = window.requestAnimationFrame(frame);
+        rainFadeRef.current = window.requestAnimationFrame(frame);
       } else if (pauseWhenDone) {
         audio.pause();
       }
     };
 
-    fadeRef.current = window.requestAnimationFrame(frame);
+    rainFadeRef.current = window.requestAnimationFrame(frame);
+  };
+
+  const fadePiano = (target, duration = 1600, pauseWhenDone = false) => {
+    const audio = pianoAudioRef.current;
+    if (!audio) return;
+
+    window.cancelAnimationFrame(pianoFadeRef.current);
+    const startVolume = audio.volume;
+    const startedAt = window.performance.now();
+
+    const frame = (now) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      audio.volume = Math.max(
+        0,
+        Math.min(1, startVolume + (target - startVolume) * eased)
+      );
+
+      if (progress < 1) {
+        pianoFadeRef.current = window.requestAnimationFrame(frame);
+      } else if (pauseWhenDone) {
+        audio.pause();
+      }
+    };
+
+    pianoFadeRef.current = window.requestAnimationFrame(frame);
   };
 
   const toggleRain = async () => {
@@ -47,14 +76,14 @@ export default function AmbientAudio() {
     try {
       if (rainOn) {
         setRainOn(false);
-        fadeTrack(rainAudioRef, rainFadeRef, 0, 900, true);
+        fadeRain(0, 900, true);
         return;
       }
 
       audio.volume = 0;
       await audio.play();
       setRainOn(true);
-      fadeTrack(rainAudioRef, rainFadeRef, 0.34, 1600);
+      fadeRain(0.34, 1600);
     } catch (error) {
       console.warn("Recorded rain could not start:", error);
       setRainOn(false);
@@ -71,14 +100,14 @@ export default function AmbientAudio() {
     try {
       if (pianoOn) {
         setPianoOn(false);
-        fadeTrack(pianoAudioRef, pianoFadeRef, 0, 1000, true);
+        fadePiano(0, 1000, true);
         return;
       }
 
       audio.volume = 0;
       await audio.play();
       setPianoOn(true);
-      fadeTrack(pianoAudioRef, pianoFadeRef, 0.2, 1900);
+      fadePiano(0.2, 1900);
     } catch (error) {
       console.warn("Recorded piano could not start:", error);
       setPianoOn(false);
@@ -88,14 +117,14 @@ export default function AmbientAudio() {
   };
 
   useEffect(() => {
-    const rain = new Audio(RECORDED_RAIN_URL);
+    const rain = new window.Audio(RECORDED_RAIN_URL);
     rain.loop = true;
     rain.preload = "metadata";
     rain.volume = 0;
     rain.setAttribute("playsinline", "");
     rainAudioRef.current = rain;
 
-    const piano = new Audio(RECORDED_PIANO_URL);
+    const piano = new window.Audio(RECORDED_PIANO_URL);
     piano.loop = true;
     piano.preload = "metadata";
     piano.volume = 0;
