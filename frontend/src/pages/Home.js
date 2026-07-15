@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
-import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube, Users } from "lucide-react";
+import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube } from "lucide-react";
 import { getBooks, getMusic, getVideos, getProducts } from "../lib/api";
 import { ASSETS, BRAND } from "../lib/assets";
 import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, Reveal } from "../components/shared";
 import { BookCard, ProductCard } from "../components/cards";
+import CinematicClouds from "../components/CinematicClouds";
 
 const HERO_MESSAGES = [
   { lead: "The Storm Doesn't Get the", accent: "Final Word." },
@@ -63,8 +64,9 @@ export default function Home() {
       {/* HERO */}
       <section className="relative min-h-screen flex items-center overflow-hidden" data-testid="hero-section">
         <HeroBackdrop />
+        <CinematicClouds />
 
-        <div className="relative max-w-7xl mx-auto px-6 w-full pt-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="max-w-3xl">
             <Overline className="mb-6">Welcome to {BRAND.domain}</Overline>
             <motion.h1
@@ -92,7 +94,7 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator" aria-hidden="true"><span /></div>
+        <div className="absolute z-10 bottom-8 left-1/2 -translate-x-1/2 scroll-indicator" aria-hidden="true"><span /></div>
       </section>
 
       {/* WELCOME */}
@@ -220,23 +222,45 @@ export default function Home() {
       </section>
 
       {/* CREATOR */}
-      <section className="relative py-20 sm:py-24" data-testid="home-about-section">
-        <div className="max-w-4xl mx-auto px-6">
-          <Reveal>
-            <div className="wet-glass rounded-3xl border border-white/10 p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-8 text-center sm:text-left">
-              <img src={ASSETS.portrait} alt="Willy Will" className="w-28 h-28 rounded-2xl object-cover border border-white/10 shrink-0" />
-              <div>
-                <Overline className="mb-3">Behind the Mission</Overline>
-                <p className="text-storm-silver/80 leading-relaxed font-light">
-                  Created by author, songwriter, and storyteller Willy Will—turning real-life storms into books, music, and messages built to help others feel seen, understood, and encouraged to keep going.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3 justify-center sm:justify-start">
-                  <GlowButton to="/about" data-testid="home-meet-willy"><Users className="w-4 h-4" /> Meet Willy Will</GlowButton>
-                  <GlowButton to="/story" variant="secondary" data-testid="home-read-story">The Story Behind the Storm</GlowButton>
+      <section className="relative py-24 sm:py-32" data-testid="home-about-section">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-[0.88fr_1.12fr] gap-10 lg:gap-14 items-center">
+            <Reveal>
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="absolute -inset-6 rounded-[2rem] bg-storm-blue/12 blur-[70px]" />
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/25 p-2 shadow-2xl">
+                  <img
+                    src={ASSETS.portrait}
+                    alt="Will Scott, author and creator of Storm & Me Official"
+                    className="aspect-square w-full rounded-[1.65rem] object-cover object-[center_42%]"
+                    data-testid="home-author-portrait"
+                  />
+                </div>
+                <div className="absolute -bottom-5 left-5 right-5 rounded-2xl border border-white/10 bg-black/75 px-5 py-4 text-center backdrop-blur-md">
+                  <p className="font-display text-xl font-semibold text-white">Will Scott</p>
+                  <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-storm-blue/80">Author · Songwriter · Storyteller</p>
                 </div>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <div className="pt-8 lg:pt-0 text-center lg:text-left">
+                <Overline className="mb-4">The Man Behind Storm &amp; Me</Overline>
+                <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-[1.06]">Meet Will Scott</h2>
+                <p className="mt-6 text-storm-silver/80 leading-relaxed font-light">
+                  Will Scott is an author and storyteller whose work explores healing, resilience, hope, and the courage to keep moving forward. His books range from gentle stories that help children and families navigate difficult emotions to imaginative fiction filled with suspense, survival, and unforgettable characters.
+                </p>
+                <p className="mt-5 text-storm-silver/75 leading-relaxed font-light">
+                  As recording artist <span className="font-semibold text-white">Willy Will</span>, he turns many of those same real-life storms into music—sometimes deep, sometimes funny, always honest. Whether the message arrives through a book, a song, or a story, the mission stays the same: help people feel seen, understood, and a little less alone.
+                </p>
+                <p className="mt-6 font-display italic text-xl text-storm-gold/85">“The storm did not end me. It introduced me.”</p>
+                <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
+                  <GlowButton to="/books" data-testid="home-author-books"><BookOpen className="w-4 h-4" /> Explore the Books</GlowButton>
+                  <GlowButton to="/music" variant="secondary" data-testid="home-author-music"><Music className="w-4 h-4" /> Listen to the Music</GlowButton>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
