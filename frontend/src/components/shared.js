@@ -41,6 +41,7 @@ export function GlowButton({ children, to, href, onClick, variant = "primary", c
 
 const SOCIAL_ICONS = {
   youtube: Youtube,
+  youtube_music: Music4,
   instagram: Instagram,
   facebook: Facebook,
   tiktok: Music4,
