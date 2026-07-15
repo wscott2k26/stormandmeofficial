@@ -21,11 +21,11 @@ const META = {
   },
   "/videos": {
     title: "Videos | Storm & Me Official",
-    description: "Watch music videos, lyric videos, book trailers, creator stories, and behind-the-scenes releases from Storm & Me Official.",
+    description: "Watch verified music videos, lyric videos, book trailers, creator stories, and behind-the-scenes releases from Storm & Me Official.",
   },
   "/shop": {
-    title: "The Storm Collection | Storm & Me Official",
-    description: "Wearable reminders and creative goods built around strength, healing, faith, perseverance, and survival.",
+    title: "The Storm Collection Preview | Storm & Me Official",
+    description: "Preview a future collection of creative goods built around strength, healing, faith, perseverance, and survival.",
   },
   "/about": {
     title: "Meet Willy Will | Author, Songwriter & Creator",
@@ -37,12 +37,44 @@ const META = {
   },
   "/news": {
     title: "News & Updates | Storm & Me Official",
-    description: "Book announcements, music releases, videos, creative updates, and stories from the Storm & Me journey.",
+    description: "Confirmed book announcements, music releases, videos, creative updates, and stories from the Storm & Me journey.",
   },
   "/contact": {
     title: "Contact | Storm & Me Official",
     description: "Contact Storm & Me Official for reader messages, media, creative collaborations, and business inquiries.",
   },
+};
+
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Storm & Me Official",
+      description: "Books, music, stories, and encouragement for people walking through real-life storms.",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Storm & Me Official",
+      url: SITE_URL,
+      logo: "https://static.prod-images.emergentagent.com/jobs/7463b3a3-ce4d-4fcb-8b80-776d01ad6286/images/a3d5a538ff81f998f6794bf45162190a817187cbc7de2e5721dad88e66e09e8f.png",
+      founder: { "@id": `${SITE_URL}/#creator` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#creator`,
+      name: "Will Scott",
+      alternateName: "Willy Will",
+      url: `${SITE_URL}/about`,
+      image: "https://static.prod-images.emergentagent.com/jobs/7463b3a3-ce4d-4fcb-8b80-776d01ad6286/images/2df0c455129892f105f317e3f6900db0643310294f8eaa82eb3eb6e1433030f0.png",
+      jobTitle: ["Author", "Songwriter", "Content Creator", "Systems Administrator"],
+      worksFor: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
 };
 
 function setMeta(name, content, property = false) {
@@ -58,6 +90,17 @@ function setMeta(name, content, property = false) {
 
 export default function Layout() {
   const location = useLocation();
+
+  useEffect(() => {
+    let script = document.head.querySelector('script[data-schema="storm-and-me"]');
+    if (!script) {
+      script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.dataset.schema = "storm-and-me";
+      script.text = JSON.stringify(STRUCTURED_DATA);
+      document.head.appendChild(script);
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
