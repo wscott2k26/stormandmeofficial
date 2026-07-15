@@ -8,12 +8,14 @@ from starlette.middleware.cors import CORSMiddleware
 
 import seed_data
 import books_data
+import extra_books
 
 app = FastAPI(title="StormAndMeOfficial API")
 api_router = APIRouter(prefix="/api")
 
 contact_messages = []
 newsletter_signups = {}
+ALL_BOOKS = [*books_data.BOOKS, *extra_books.BOOKS]
 
 
 def now_iso() -> str:
@@ -67,7 +69,7 @@ async def health():
 
 @api_router.get("/books")
 async def get_books(category: Optional[str] = None):
-    books = [dict(item) for item in books_data.BOOKS]
+    books = [dict(item) for item in ALL_BOOKS]
     if category and category != "All":
         books = [book for book in books if category in book.get("categories", [])]
     return books
@@ -80,7 +82,7 @@ async def get_book_categories():
 
 @api_router.get("/books/{book_id}")
 async def get_book(book_id: str):
-    book = find_by_id(books_data.BOOKS, book_id)
+    book = find_by_id(ALL_BOOKS, book_id)
     if not book:
         raise HTTPException(404, "Book not found")
     return book
