@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 
 import { StormProvider } from "./context/StormContext";
 import { CartProvider } from "./context/CartContext";
+import CinematicClouds from "./components/CinematicClouds";
 import StormBackground from "./components/StormBackground";
 import AmbientAudio from "./components/AmbientAudio.js";
 import Layout from "./components/Layout";
@@ -33,6 +34,7 @@ function App() {
     <StormProvider>
       <CartProvider>
         <div className="grain">
+          <CinematicClouds />
           <StormBackground />
           <AmbientAudio />
           <Toaster position="top-center" theme="dark" richColors />
