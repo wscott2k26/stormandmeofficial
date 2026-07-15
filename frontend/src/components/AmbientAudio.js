@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CloudRain, Music2 } from "lucide-react";
 
+const RECORDED_PIANO_URL =
+  "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3";
+
 export default function AmbientAudio() {
   const [rainOn, setRainOn] = useState(false);
   const [pianoOn, setPianoOn] = useState(false);
@@ -8,12 +11,13 @@ export default function AmbientAudio() {
 
   const ctxRef = useRef(null);
   const rainGainRef = useRef(null);
-  const pianoGainRef = useRef(null);
-  const persistentNodesRef = useRef([]);
-  const pianoTimerRef = useRef(null);
+  const rainNodesRef = useRef([]);
+  const pianoAudioRef = useRef(null);
+  const pianoFadeRef = useRef(null);
 
-  const fadeGain = (gainNode, target, seconds = 1.6) => {
+  const fadeRain = (target, seconds = 1.25) => {
     const ctx = ctxRef.current;
+    const gainNode = rainGainRef.current;
     if (!ctx || !gainNode) return;
 
     const now = ctx.currentTime;
@@ -22,7 +26,30 @@ export default function AmbientAudio() {
     gainNode.gain.linearRampToValueAtTime(target, now + seconds);
   };
 
-  const ensureAudio = async () => {
+  const fadeRecordedPiano = (target, duration = 1600, pauseWhenDone = false) => {
+    const audio = pianoAudioRef.current;
+    if (!audio) return;
+
+    window.cancelAnimationFrame(pianoFadeRef.current);
+    const startVolume = audio.volume;
+    const startedAt = performance.now();
+
+    const frame = (now) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      audio.volume = Math.max(0, Math.min(1, startVolume + (target - startVolume) * eased));
+
+      if (progress < 1) {
+        pianoFadeRef.current = window.requestAnimationFrame(frame);
+      } else if (pauseWhenDone) {
+        audio.pause();
+      }
+    };
+
+    pianoFadeRef.current = window.requestAnimationFrame(frame);
+  };
+
+  const ensureRainAudio = async () => {
     if (ctxRef.current) {
       if (ctxRef.current.state === "suspended") await ctxRef.current.resume();
       return true;
@@ -36,16 +63,17 @@ export default function AmbientAudio() {
     ctxRef.current = ctx;
 
     const master = ctx.createGain();
-    master.gain.value = 0.54;
+    master.gain.value = 0.88;
     master.connect(ctx.destination);
 
-    // Soft rain bed: heavily filtered noise with a warm, distant character.
     const rainGain = ctx.createGain();
     rainGain.gain.value = 0;
     rainGain.connect(master);
     rainGainRef.current = rainGain;
 
-    const rainBuffer = ctx.createBuffer(2, ctx.sampleRate * 8, ctx.sampleRate);
+    const duration = 12;
+    const rainBuffer = ctx.createBuffer(2, ctx.sampleRate * duration, ctx.sampleRate);
+
     for (let channel = 0; channel < 2; channel += 1) {
       const data = rainBuffer.getChannelData(channel);
       let slow = 0;
@@ -53,9 +81,24 @@ export default function AmbientAudio() {
 
       for (let i = 0; i < data.length; i += 1) {
         const white = Math.random() * 2 - 1;
-        slow = slow * 0.992 + white * 0.008;
-        slower = slower * 0.9992 + white * 0.0008;
-        data[i] = slow * 0.11 + slower * 0.07;
+        slow = slow * 0.988 + white * 0.012;
+        slower = slower * 0.999 + white * 0.001;
+        data[i] = slow * 0.2 + slower * 0.11;
+      }
+
+      // Scattered close droplets keep the rain from sounding like television static.
+      for (let drop = 0; drop < 520; drop += 1) {
+        const start = Math.floor(Math.random() * (data.length - 1800));
+        const length = 180 + Math.floor(Math.random() * 900);
+        const strength = 0.012 + Math.random() * 0.038;
+        const pitch = 240 + Math.random() * 820;
+        const decay = 13 + Math.random() * 18;
+
+        for (let j = 0; j < length && start + j < data.length; j += 1) {
+          const t = j / ctx.sampleRate;
+          const envelope = Math.exp(-t * decay);
+          data[start + j] += Math.sin(2 * Math.PI * pitch * t) * envelope * strength;
+        }
       }
     }
 
@@ -63,159 +106,79 @@ export default function AmbientAudio() {
     rainSource.buffer = rainBuffer;
     rainSource.loop = true;
 
-    const rainHighpass = ctx.createBiquadFilter();
-    rainHighpass.type = "highpass";
-    rainHighpass.frequency.value = 90;
+    const highpass = ctx.createBiquadFilter();
+    highpass.type = "highpass";
+    highpass.frequency.value = 75;
 
-    const rainLowpass = ctx.createBiquadFilter();
-    rainLowpass.type = "lowpass";
-    rainLowpass.frequency.value = 1500;
-    rainLowpass.Q.value = 0.25;
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = "lowpass";
+    lowpass.frequency.value = 2800;
+    lowpass.Q.value = 0.18;
 
-    const rainWarmth = ctx.createBiquadFilter();
-    rainWarmth.type = "lowshelf";
-    rainWarmth.frequency.value = 330;
-    rainWarmth.gain.value = 4;
+    const warmth = ctx.createBiquadFilter();
+    warmth.type = "lowshelf";
+    warmth.frequency.value = 340;
+    warmth.gain.value = 4.5;
 
-    rainSource
-      .connect(rainHighpass)
-      .connect(rainLowpass)
-      .connect(rainWarmth)
-      .connect(rainGain);
+    rainSource.connect(highpass).connect(lowpass).connect(warmth).connect(rainGain);
     rainSource.start();
 
-    // Piano bus with a small synthetic room so the arrangement feels spacious.
-    const pianoGain = ctx.createGain();
-    pianoGain.gain.value = 0;
-    pianoGain.connect(master);
-    pianoGainRef.current = pianoGain;
-
-    const convolver = ctx.createConvolver();
-    const impulseLength = Math.floor(ctx.sampleRate * 2.7);
-    const impulse = ctx.createBuffer(2, impulseLength, ctx.sampleRate);
-    for (let channel = 0; channel < 2; channel += 1) {
-      const data = impulse.getChannelData(channel);
-      for (let i = 0; i < impulseLength; i += 1) {
-        const decay = Math.pow(1 - i / impulseLength, 2.5);
-        data[i] = (Math.random() * 2 - 1) * decay * 0.22;
-      }
-    }
-    convolver.buffer = impulse;
-
-    const roomGain = ctx.createGain();
-    roomGain.gain.value = 0.24;
-    pianoGain.connect(convolver).connect(roomGain).connect(master);
-
-    const playPianoVoice = (frequency, start, level = 0.032, duration = 7.2) => {
-      const fundamental = ctx.createOscillator();
-      const warmth = ctx.createOscillator();
-      const shimmer = ctx.createOscillator();
-      const noteGain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
-
-      fundamental.type = "triangle";
-      warmth.type = "sine";
-      shimmer.type = "sine";
-      fundamental.frequency.value = frequency;
-      warmth.frequency.value = frequency / 2;
-      shimmer.frequency.value = frequency * 2;
-
-      filter.type = "lowpass";
-      filter.frequency.value = 1250;
-      filter.Q.value = 0.4;
-
-      noteGain.gain.setValueAtTime(0.0001, start);
-      noteGain.gain.exponentialRampToValueAtTime(level, start + 0.035);
-      noteGain.gain.exponentialRampToValueAtTime(level * 0.38, start + 1.2);
-      noteGain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-
-      fundamental.connect(noteGain);
-      warmth.connect(noteGain);
-      shimmer.connect(noteGain);
-      noteGain.connect(filter).connect(pianoGain);
-
-      fundamental.start(start);
-      warmth.start(start);
-      shimmer.start(start);
-      fundamental.stop(start + duration + 0.1);
-      warmth.stop(start + duration + 0.1);
-      shimmer.stop(start + duration + 0.1);
-    };
-
-    const progression = [
-      { chord: [130.81, 164.81, 196.0, 246.94], melody: [329.63, 392.0] },
-      { chord: [110.0, 130.81, 164.81, 196.0], melody: [261.63, 329.63] },
-      { chord: [87.31, 130.81, 174.61, 220.0], melody: [261.63, 293.66] },
-      { chord: [98.0, 146.83, 196.0, 220.0], melody: [246.94, 293.66] },
-    ];
-    let phraseIndex = 0;
-
-    const playPhrase = () => {
-      const activeCtx = ctxRef.current;
-      if (!activeCtx || activeCtx.state === "closed") return;
-
-      const phrase = progression[phraseIndex % progression.length];
-      const now = activeCtx.currentTime + 0.05;
-
-      phrase.chord.forEach((frequency, index) => {
-        playPianoVoice(frequency, now + index * 0.12, 0.025, 7.6);
-      });
-      playPianoVoice(phrase.melody[0], now + 1.45, 0.021, 4.8);
-      playPianoVoice(phrase.melody[1], now + 3.85, 0.019, 4.4);
-
-      phraseIndex += 1;
-    };
-
-    playPhrase();
-    pianoTimerRef.current = window.setInterval(playPhrase, 7200);
-
-    persistentNodesRef.current = [
-      rainSource,
-      rainHighpass,
-      rainLowpass,
-      rainWarmth,
-      rainGain,
-      pianoGain,
-      convolver,
-      roomGain,
-      master,
-    ];
-
+    rainNodesRef.current = [rainSource, highpass, lowpass, warmth, rainGain, master];
     return true;
   };
 
   const toggleRain = async () => {
     setStarting(true);
     try {
-      const ready = await ensureAudio();
+      const ready = await ensureRainAudio();
       if (!ready) return;
 
       const next = !rainOn;
       setRainOn(next);
-      fadeGain(rainGainRef.current, next ? 0.34 : 0);
+      fadeRain(next ? 0.72 : 0, next ? 1.2 : 0.8);
     } finally {
       setStarting(false);
     }
   };
 
   const togglePiano = async () => {
+    const audio = pianoAudioRef.current;
+    if (!audio) return;
+
     setStarting(true);
     try {
-      const ready = await ensureAudio();
-      if (!ready) return;
+      if (pianoOn) {
+        setPianoOn(false);
+        fadeRecordedPiano(0, 1000, true);
+        return;
+      }
 
-      const next = !pianoOn;
-      setPianoOn(next);
-      fadeGain(pianoGainRef.current, next ? 0.8 : 0, 2.2);
+      audio.volume = 0;
+      await audio.play();
+      setPianoOn(true);
+      fadeRecordedPiano(0.2, 1900);
+    } catch (error) {
+      console.warn("Recorded piano could not start:", error);
+      setPianoOn(false);
     } finally {
       setStarting(false);
     }
   };
 
   useEffect(() => {
+    const audio = new Audio(RECORDED_PIANO_URL);
+    audio.loop = true;
+    audio.preload = "metadata";
+    audio.volume = 0;
+    audio.setAttribute("playsinline", "");
+    pianoAudioRef.current = audio;
+
     return () => {
-      window.clearInterval(pianoTimerRef.current);
-      persistentNodesRef.current.forEach((node) => {
+      window.cancelAnimationFrame(pianoFadeRef.current);
+      audio.pause();
+      audio.src = "";
+
+      rainNodesRef.current.forEach((node) => {
         try {
           node.stop?.();
         } catch (_) {}
@@ -223,6 +186,7 @@ export default function AmbientAudio() {
           node.disconnect?.();
         } catch (_) {}
       });
+
       try {
         ctxRef.current?.close();
       } catch (_) {}
@@ -243,8 +207,8 @@ export default function AmbientAudio() {
         disabled={starting}
         className={`${buttonClass} ${pianoOn ? "border-storm-gold ring-1 ring-storm-gold/40" : ""}`}
         aria-pressed={pianoOn}
-        aria-label={pianoOn ? "Turn piano music off" : "Turn piano music on"}
-        title="Turn slow piano music on or off"
+        aria-label={pianoOn ? "Turn recorded piano music off" : "Turn recorded piano music on"}
+        title="Turn slow recorded piano on or off"
       >
         <Music2 className="h-4 w-4" />
         <span>{pianoOn ? "Piano On" : "Piano Off"}</span>
