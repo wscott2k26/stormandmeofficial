@@ -34,11 +34,11 @@ function App() {
     <StormProvider>
       <CartProvider>
         <div className="grain">
-          <CinematicClouds />
           <StormBackground />
           <AmbientAudio />
           <Toaster position="top-center" theme="dark" richColors />
           <BrowserRouter>
+            <CinematicClouds />
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
