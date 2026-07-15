@@ -20,14 +20,11 @@ export default function CinematicClouds() {
   const { motion } = useStorm();
 
   return (
-    <div
-      className={`cinematic-clouds ${motion ? "clouds-storm" : "clouds-calm"}`}
-      aria-hidden="true"
-    >
-      <div className="cloud-sky-tint" />
-      <div className="cloud-band cloud-band-far" />
-      <div className="cloud-band cloud-band-mid" />
-      <div className="cloud-band cloud-band-near" />
+    <div className={`cinematic-clouds ${motion ? "clouds-storm" : "clouds-calm"}`} aria-hidden="true">
+      <div className="cloud-mass cloud-one" />
+      <div className="cloud-mass cloud-two" />
+      <div className="cloud-mass cloud-three" />
+      <div className="cloud-mass cloud-four" />
 
       <div className="city-light-field">
         {CITY_LIGHTS.map((light) => (
@@ -56,94 +53,69 @@ export default function CinematicClouds() {
           z-index: 1;
         }
 
-        .cloud-sky-tint,
-        .cloud-band,
+        .cloud-mass {
+          position: absolute;
+          left: 0;
+          width: 48vw;
+          min-width: 520px;
+          height: 20vh;
+          min-height: 150px;
+          border-radius: 50%;
+          background:
+            radial-gradient(ellipse at 16% 62%, rgba(139, 153, 174, 0.76) 0%, rgba(82, 97, 121, 0.62) 23%, transparent 51%),
+            radial-gradient(ellipse at 40% 42%, rgba(158, 171, 190, 0.78) 0%, rgba(92, 107, 130, 0.64) 25%, transparent 54%),
+            radial-gradient(ellipse at 66% 58%, rgba(132, 147, 169, 0.75) 0%, rgba(73, 89, 113, 0.60) 24%, transparent 52%),
+            radial-gradient(ellipse at 86% 43%, rgba(150, 165, 185, 0.72) 0%, rgba(85, 101, 125, 0.58) 25%, transparent 53%);
+          filter: blur(13px) contrast(1.15);
+          will-change: transform, opacity;
+          opacity: 0.42;
+          transition: opacity 3.4s ease, filter 3.4s ease;
+        }
+
+        .cloud-one {
+          top: 7%;
+          animation: driftRight 42s linear infinite;
+          animation-delay: -19s;
+        }
+
+        .cloud-two {
+          top: 23%;
+          width: 56vw;
+          opacity: 0.34;
+          transform: scale(1.12);
+          animation: driftLeft 56s linear infinite;
+          animation-delay: -31s;
+        }
+
+        .cloud-three {
+          top: -5%;
+          width: 64vw;
+          opacity: 0.30;
+          filter: blur(18px) contrast(1.08);
+          animation: driftRightWide 72s linear infinite;
+          animation-delay: -47s;
+        }
+
+        .cloud-four {
+          top: 35%;
+          width: 42vw;
+          opacity: 0.24;
+          filter: blur(20px);
+          animation: driftLeftShort 49s ease-in-out infinite alternate;
+          animation-delay: -21s;
+        }
+
+        .clouds-calm .cloud-mass {
+          opacity: 0.08;
+          filter: blur(22px) brightness(1.25) saturate(0.55);
+        }
+
         .city-light-field {
           position: absolute;
-          pointer-events: none;
-        }
-
-        .cloud-sky-tint {
-          inset: 0;
-          z-index: 0;
-          background: linear-gradient(180deg, rgba(18, 31, 51, 0.10) 0%, transparent 70%);
-          transition: opacity 3.6s ease, filter 3.6s ease;
-        }
-
-        .cloud-band {
-          left: -45%;
-          width: 205%;
-          transform: translate3d(0, 0, 0);
-          transform-origin: center top;
-          will-change: transform, opacity;
-          transition: opacity 3.8s ease, filter 3.8s ease;
-          -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 67%, transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 0%, #000 67%, transparent 100%);
-          mix-blend-mode: screen;
-        }
-
-        .cloud-band-far {
-          z-index: 1;
-          top: -16%;
-          height: 70%;
-          background:
-            radial-gradient(ellipse 18% 30% at 7% 45%, rgba(170, 184, 204, 0.82) 0%, rgba(92, 110, 138, 0.56) 42%, rgba(35, 50, 74, 0.18) 62%, transparent 76%),
-            radial-gradient(ellipse 24% 35% at 27% 38%, rgba(154, 171, 195, 0.84) 0%, rgba(84, 103, 132, 0.56) 44%, rgba(32, 48, 72, 0.18) 63%, transparent 77%),
-            radial-gradient(ellipse 21% 31% at 50% 48%, rgba(166, 181, 201, 0.80) 0%, rgba(91, 109, 136, 0.52) 43%, rgba(34, 49, 72, 0.17) 62%, transparent 76%),
-            radial-gradient(ellipse 25% 36% at 72% 36%, rgba(149, 166, 190, 0.82) 0%, rgba(80, 99, 128, 0.55) 45%, rgba(30, 46, 70, 0.18) 64%, transparent 78%),
-            radial-gradient(ellipse 20% 31% at 92% 47%, rgba(161, 177, 199, 0.80) 0%, rgba(89, 107, 135, 0.52) 44%, rgba(32, 48, 72, 0.17) 62%, transparent 76%);
-          filter: blur(18px) contrast(1.14);
-          animation: cloudDriftFar 78s linear infinite;
-        }
-
-        .cloud-band-mid {
-          z-index: 2;
-          top: -8%;
-          height: 62%;
-          background:
-            radial-gradient(ellipse 17% 27% at 5% 39%, rgba(142, 159, 184, 0.86) 0%, rgba(72, 91, 121, 0.59) 45%, rgba(25, 41, 63, 0.19) 63%, transparent 76%),
-            radial-gradient(ellipse 23% 32% at 25% 49%, rgba(154, 171, 194, 0.84) 0%, rgba(81, 99, 127, 0.58) 45%, rgba(28, 43, 66, 0.19) 64%, transparent 77%),
-            radial-gradient(ellipse 19% 29% at 48% 35%, rgba(138, 155, 181, 0.88) 0%, rgba(68, 87, 117, 0.60) 46%, rgba(24, 39, 62, 0.19) 64%, transparent 77%),
-            radial-gradient(ellipse 25% 34% at 70% 48%, rgba(151, 168, 192, 0.83) 0%, rgba(79, 97, 126, 0.57) 45%, rgba(28, 43, 66, 0.18) 64%, transparent 77%),
-            radial-gradient(ellipse 19% 28% at 91% 36%, rgba(141, 158, 184, 0.86) 0%, rgba(71, 90, 120, 0.58) 46%, rgba(25, 40, 63, 0.19) 64%, transparent 76%);
-          filter: blur(14px) contrast(1.18);
-          animation: cloudDriftMid 61s linear infinite;
-        }
-
-        .cloud-band-near {
-          z-index: 3;
-          top: 2%;
-          height: 54%;
-          background:
-            radial-gradient(ellipse 19% 27% at 9% 33%, rgba(188, 200, 216, 0.64) 0%, rgba(108, 124, 148, 0.40) 46%, transparent 73%),
-            radial-gradient(ellipse 26% 32% at 35% 43%, rgba(174, 187, 205, 0.67) 0%, rgba(99, 116, 141, 0.41) 47%, transparent 74%),
-            radial-gradient(ellipse 20% 28% at 61% 31%, rgba(191, 203, 218, 0.61) 0%, rgba(111, 126, 150, 0.38) 46%, transparent 73%),
-            radial-gradient(ellipse 25% 31% at 85% 42%, rgba(176, 190, 208, 0.65) 0%, rgba(101, 118, 143, 0.40) 47%, transparent 74%);
-          filter: blur(25px);
-          animation: cloudDriftNear 49s ease-in-out infinite alternate;
-        }
-
-        .clouds-storm .cloud-band-far { opacity: 0.64; }
-        .clouds-storm .cloud-band-mid { opacity: 0.57; }
-        .clouds-storm .cloud-band-near { opacity: 0.31; }
-
-        .clouds-calm .cloud-sky-tint {
-          opacity: 0.05;
-          filter: brightness(1.4) saturate(0.65);
-        }
-
-        .clouds-calm .cloud-band {
-          filter: blur(27px) brightness(1.45) saturate(0.45);
-        }
-
-        .clouds-calm .cloud-band-far { opacity: 0.13; }
-        .clouds-calm .cloud-band-mid { opacity: 0.085; }
-        .clouds-calm .cloud-band-near { opacity: 0.045; }
-
-        .city-light-field {
           inset: 0;
           z-index: 5;
-          opacity: 0.78;
+          pointer-events: none;
+          opacity: 0.82;
           transition: opacity 3s ease;
         }
 
@@ -156,80 +128,68 @@ export default function CinematicClouds() {
           width: var(--light-size);
           height: var(--light-size);
           border-radius: 999px;
-          background: rgba(255, 222, 144, 0.94);
+          background: rgba(255, 224, 151, 0.96);
           box-shadow:
-            0 0 4px rgba(255, 214, 120, 0.82),
-            0 0 11px rgba(255, 190, 76, 0.34);
+            0 0 5px rgba(255, 217, 128, 0.88),
+            0 0 13px rgba(255, 188, 72, 0.42);
           animation: cityLightFlicker var(--light-duration) ease-in-out var(--light-delay) infinite;
-          opacity: 0.48;
+          opacity: 0.52;
         }
 
         .street-light {
-          background: rgba(255, 206, 113, 0.98);
+          background: rgba(255, 207, 116, 1);
           box-shadow:
-            0 0 5px rgba(255, 216, 131, 0.86),
-            0 0 16px rgba(255, 172, 65, 0.40),
-            0 8px 18px rgba(255, 172, 65, 0.14);
+            0 0 6px rgba(255, 220, 139, 0.92),
+            0 0 19px rgba(255, 174, 65, 0.46),
+            0 8px 22px rgba(255, 174, 65, 0.16);
         }
 
-        @keyframes cloudDriftFar {
-          from { transform: translate3d(-6%, 0, 0) scale(1.02); }
-          to { transform: translate3d(32%, 1.5%, 0) scale(1.06); }
+        @keyframes driftRight {
+          from { transform: translate3d(-38vw, 0, 0) scale(1.02); }
+          to { transform: translate3d(112vw, 2vh, 0) scale(1.07); }
         }
 
-        @keyframes cloudDriftMid {
-          from { transform: translate3d(30%, 0, 0) scale(1.01); }
-          to { transform: translate3d(-8%, 2%, 0) scale(1.05); }
+        @keyframes driftLeft {
+          from { transform: translate3d(108vw, 0, 0) scale(1.12); }
+          to { transform: translate3d(-48vw, 1vh, 0) scale(1.05); }
         }
 
-        @keyframes cloudDriftNear {
-          from { transform: translate3d(-3%, -1%, 0) scale(1.03); }
-          to { transform: translate3d(18%, 3%, 0) scale(1.08); }
+        @keyframes driftRightWide {
+          from { transform: translate3d(-55vw, -1vh, 0) scale(1.08); }
+          to { transform: translate3d(105vw, 3vh, 0) scale(1.14); }
+        }
+
+        @keyframes driftLeftShort {
+          from { transform: translate3d(58vw, -1vh, 0) scale(1.0); }
+          to { transform: translate3d(6vw, 3vh, 0) scale(1.10); }
         }
 
         @keyframes cityLightFlicker {
-          0%, 7%, 13%, 37%, 44%, 72%, 100% { opacity: 0.48; filter: brightness(1); }
-          9% { opacity: 0.72; filter: brightness(1.22); }
-          40% { opacity: 0.36; filter: brightness(0.86); }
-          75% { opacity: 0.63; filter: brightness(1.15); }
+          0%, 7%, 13%, 37%, 44%, 72%, 100% { opacity: 0.52; filter: brightness(1); }
+          9% { opacity: 0.78; filter: brightness(1.24); }
+          40% { opacity: 0.38; filter: brightness(0.84); }
+          75% { opacity: 0.68; filter: brightness(1.16); }
         }
 
         @media (max-width: 768px) {
-          .cloud-band {
-            left: -70%;
-            width: 242%;
+          .cloud-mass {
+            min-width: 410px;
+            width: 78vw;
+            height: 18vh;
+            min-height: 125px;
           }
-
-          .cloud-band-far {
-            top: -11%;
-            height: 58%;
-          }
-
-          .cloud-band-mid {
-            top: -4%;
-            height: 52%;
-          }
-
-          .cloud-band-near { display: none; }
-          .clouds-storm .cloud-band-far { opacity: 0.50; }
-          .clouds-storm .cloud-band-mid { opacity: 0.44; }
+          .cloud-three { display: none; }
+          .cloud-four { opacity: 0.17; }
           .city-light:nth-child(n + 9) { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .cloud-band,
-          .city-light {
-            animation: none !important;
-          }
-
-          .cloud-band {
-            transform: translate3d(0, 0, 0) scale(1.04);
-          }
-
-          .city-light { opacity: 0.48; }
-          .cloud-sky-tint,
-          .cloud-band,
-          .city-light-field { transition-duration: 0.01ms; }
+          .cloud-mass,
+          .city-light { animation: none !important; }
+          .cloud-one { transform: translate3d(6vw, 0, 0); }
+          .cloud-two { transform: translate3d(42vw, 0, 0); }
+          .cloud-three { transform: translate3d(18vw, 0, 0); }
+          .cloud-four { transform: translate3d(55vw, 0, 0); }
         }
       `}</style>
     </div>
