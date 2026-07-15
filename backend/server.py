@@ -7,13 +7,11 @@ from pydantic import BaseModel, EmailStr
 from starlette.middleware.cors import CORSMiddleware
 
 import seed_data
+import books_data
 
 app = FastAPI(title="StormAndMeOfficial API")
 api_router = APIRouter(prefix="/api")
 
-# Lightweight temporary storage for form submissions. This keeps the first
-# Vercel deployment independent of an external database. We can connect
-# Constant Contact or another persistent service after the public site is live.
 contact_messages = []
 newsletter_signups = {}
 
@@ -69,7 +67,7 @@ async def health():
 
 @api_router.get("/books")
 async def get_books(category: Optional[str] = None):
-    books = [dict(item) for item in seed_data.BOOKS]
+    books = [dict(item) for item in books_data.BOOKS]
     if category and category != "All":
         books = [book for book in books if category in book.get("categories", [])]
     return books
@@ -77,12 +75,12 @@ async def get_books(category: Optional[str] = None):
 
 @api_router.get("/books/categories")
 async def get_book_categories():
-    return seed_data.BOOK_CATEGORIES
+    return books_data.BOOK_CATEGORIES
 
 
 @api_router.get("/books/{book_id}")
 async def get_book(book_id: str):
-    book = find_by_id(seed_data.BOOKS, book_id)
+    book = find_by_id(books_data.BOOKS, book_id)
     if not book:
         raise HTTPException(404, "Book not found")
     return book
@@ -150,10 +148,7 @@ async def submit_contact(payload: ContactCreate):
     doc = payload.model_dump()
     doc.update({"id": str(uuid.uuid4()), "created_at": now_iso()})
     contact_messages.append(doc)
-    return {
-        "success": True,
-        "message": "Thank you for reaching out. Your message is on its way—I read every one.",
-    }
+    return {"success": True, "message": "Thank you for reaching out. Your message is on its way—I read every one."}
 
 
 @api_router.post("/newsletter")
@@ -161,25 +156,18 @@ async def subscribe_newsletter(payload: NewsletterCreate):
     email_key = str(payload.email).lower()
     if email_key in newsletter_signups:
         return {"success": True, "message": "You're already part of the family."}
-    newsletter_signups[email_key] = {
-        **payload.model_dump(),
-        "id": str(uuid.uuid4()),
-        "created_at": now_iso(),
-    }
+    newsletter_signups[email_key] = {**payload.model_dump(), "id": str(uuid.uuid4()), "created_at": now_iso()}
     return {"success": True, "message": "Welcome to the family. Watch your inbox."}
 
 
 @api_router.post("/checkout/session")
 async def create_checkout(_: CheckoutCreate):
-    raise HTTPException(
-        503,
-        "Direct checkout is being connected. Please use the official shop link for now.",
-    )
+    raise HTTPException(503, "Direct checkout is being connected. Please use the official shop link for now.")
 
 
 @api_router.get("/checkout/status/{session_id}")
 async def checkout_status(session_id: str):
-    raise HTTPException(404, f"No checkout session found: {session_id}")
+    return {"status": "unavailable", "session_id": session_id}
 
 
 app.include_router(api_router)
