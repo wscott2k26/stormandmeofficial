@@ -4,7 +4,6 @@ import { Toaster } from "sonner";
 
 import { StormProvider } from "./context/StormContext";
 import { CartProvider } from "./context/CartContext";
-import CinematicClouds from "./components/CinematicClouds";
 import StormBackground from "./components/StormBackground";
 import AmbientAudio from "./components/AmbientAudio.js";
 import Layout from "./components/Layout";
@@ -38,7 +37,6 @@ function App() {
           <AmbientAudio />
           <Toaster position="top-center" theme="dark" richColors />
           <BrowserRouter>
-            <CinematicClouds />
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
