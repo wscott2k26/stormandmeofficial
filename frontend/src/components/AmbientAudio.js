@@ -46,7 +46,7 @@ export default function AmbientAudio() {
     ctxRef.current = ctx;
 
     const master = ctx.createGain();
-    master.gain.value = 0.48;
+    master.gain.value = 0.46;
     master.connect(ctx.destination);
     masterRef.current = master;
 
@@ -81,12 +81,14 @@ export default function AmbientAudio() {
     nodesRef.current.push(rain, highpass, lowpass);
 
     const pianoGain = ctx.createGain();
-    pianoGain.gain.value = motion ? 0 : 0.72;
+    pianoGain.gain.value = motion ? 0 : 0.38;
     pianoGain.connect(master);
     pianoGainRef.current = pianoGain;
 
-    const notes = [261.63, 329.63, 392.0, 493.88, 440.0, 349.23, 293.66, 392.0];
+    // Slow, spacious C-major / A-minor pattern in a lower register.
+    const notes = [130.81, 164.81, 196.0, 220.0, 196.0, 174.61, 146.83, 164.81];
     let index = 0;
+
     const playNote = () => {
       const activeCtx = ctxRef.current;
       const activePianoGain = pianoGainRef.current;
@@ -97,27 +99,33 @@ export default function AmbientAudio() {
       const overtone = activeCtx.createOscillator();
       const gain = activeCtx.createGain();
       const filter = activeCtx.createBiquadFilter();
+      const frequency = notes[index % notes.length];
+
       osc.type = "sine";
-      overtone.type = "sine";
-      osc.frequency.value = notes[index % notes.length];
-      overtone.frequency.value = notes[index % notes.length] * 2;
+      overtone.type = "triangle";
+      osc.frequency.value = frequency;
+      overtone.frequency.value = frequency * 2;
       filter.type = "lowpass";
-      filter.frequency.value = 1450;
+      filter.frequency.value = 1050;
+      filter.Q.value = 0.7;
+
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.14, now + 0.12);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 5.8);
+      gain.gain.exponentialRampToValueAtTime(0.055, now + 0.75);
+      gain.gain.exponentialRampToValueAtTime(0.018, now + 3.2);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 8.6);
+
       osc.connect(gain);
       overtone.connect(gain);
       gain.connect(filter).connect(activePianoGain);
       osc.start(now);
       overtone.start(now);
-      osc.stop(now + 6);
-      overtone.stop(now + 6);
+      osc.stop(now + 8.8);
+      overtone.stop(now + 8.8);
       index += 1;
     };
 
     playNote();
-    pianoTimerRef.current = setInterval(playNote, 5000);
+    pianoTimerRef.current = setInterval(playNote, 7600);
     return true;
   };
 
@@ -145,12 +153,14 @@ export default function AmbientAudio() {
     const ctx = ctxRef.current;
     if (!ctx || !rainGainRef.current || !pianoGainRef.current) return;
     const now = ctx.currentTime;
+
     rainGainRef.current.gain.cancelScheduledValues(now);
-    pianoGainRef.current.gain.setValueAtTime(rainGainRef.current.gain.value, now);
+    rainGainRef.current.gain.setValueAtTime(rainGainRef.current.gain.value, now);
     pianoGainRef.current.gain.cancelScheduledValues(now);
     pianoGainRef.current.gain.setValueAtTime(pianoGainRef.current.gain.value, now);
-    rainGainRef.current.gain.linearRampToValueAtTime(motion ? 0.9 : 0, now + 3);
-    pianoGainRef.current.gain.linearRampToValueAtTime(motion ? 0 : 0.72, now + 3);
+
+    rainGainRef.current.gain.linearRampToValueAtTime(motion ? 0.9 : 0, now + 3.5);
+    pianoGainRef.current.gain.linearRampToValueAtTime(motion ? 0 : 0.38, now + 4.5);
   }, [motion]);
 
   useEffect(() => stopAll, []);
@@ -166,7 +176,7 @@ export default function AmbientAudio() {
     >
       {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
       <span className="hidden sm:inline">
-        {starting ? "Starting sound..." : enabled ? (motion ? "Rain ambience" : "Peaceful piano") : "Tap for sound"}
+        {starting ? "Starting sound..." : enabled ? (motion ? "Rain ambience" : "Soft piano") : "Tap for sound"}
       </span>
     </button>
   );
