@@ -8,6 +8,7 @@ export default function StormBackground() {
   const boltRef = useRef(null);
   const rafRef = useRef(null);
   const dropsRef = useRef([]);
+  const splashesRef = useRef([]);
 
   const playThunder = (strong) => {
     try {
@@ -45,7 +46,7 @@ export default function StormBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    const isMobile = window.innerWidth < 768;
+    let isMobile = window.innerWidth < 768;
     let w = 0;
     let h = 0;
 
@@ -63,17 +64,89 @@ export default function StormBackground() {
       };
     };
 
+    const makeSplash = () => {
+      const depth = Math.pow(Math.random(), 0.72);
+      const y = h * (0.72 + depth * 0.255);
+      const perspective = 0.55 + ((y - h * 0.72) / (h * 0.255)) * 1.15;
+      return {
+        x: Math.random() * w,
+        y,
+        age: 0,
+        life: 14 + Math.random() * 16,
+        radius: (2.4 + Math.random() * 4.2) * perspective,
+        opacity: 0.2 + Math.random() * 0.34,
+        perspective,
+        lean: (Math.random() - 0.5) * 1.8,
+      };
+    };
+
     const resize = () => {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
+      isMobile = window.innerWidth < 768;
       dropsRef.current = Array.from({ length: isMobile ? 120 : 260 }, makeDrop);
+      splashesRef.current = [];
     };
 
     resize();
     window.addEventListener("resize", resize);
 
+    const drawStreetSheen = () => {
+      const sheen = ctx.createLinearGradient(0, h * 0.68, 0, h);
+      sheen.addColorStop(0, "rgba(100,145,190,0)");
+      sheen.addColorStop(0.48, "rgba(105,150,195,0.018)");
+      sheen.addColorStop(1, "rgba(120,170,220,0.085)");
+      ctx.fillStyle = sheen;
+      ctx.fillRect(0, h * 0.68, w, h * 0.32);
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      for (let i = 0; i < (isMobile ? 5 : 10); i += 1) {
+        const x = (w / (isMobile ? 5 : 10)) * i + Math.sin(performance.now() * 0.00035 + i) * 18;
+        const top = h * (0.74 + (i % 3) * 0.035);
+        const gradient = ctx.createLinearGradient(x, top, x, h);
+        gradient.addColorStop(0, "rgba(140,185,225,0)");
+        gradient.addColorStop(1, `rgba(135,185,235,${0.018 + (i % 4) * 0.006})`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, top, 1.2 + (i % 2), h - top);
+      }
+      ctx.restore();
+    };
+
+    const drawSplash = (splash) => {
+      const progress = splash.age / splash.life;
+      const alpha = splash.opacity * (1 - progress);
+      const radius = splash.radius * (0.45 + progress * 1.75);
+
+      ctx.save();
+      ctx.translate(splash.x, splash.y);
+      ctx.scale(1, 0.27);
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(190,220,245,${alpha})`;
+      ctx.lineWidth = Math.max(0.6, 1.15 * splash.perspective * (1 - progress * 0.55));
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      if (progress < 0.55) {
+        const sprayAlpha = alpha * (1 - progress / 0.55);
+        const lift = (1 - progress) * 7 * splash.perspective;
+        ctx.strokeStyle = `rgba(205,230,250,${sprayAlpha})`;
+        ctx.lineWidth = 0.7 * splash.perspective;
+
+        ctx.beginPath();
+        ctx.moveTo(splash.x - 1.5, splash.y);
+        ctx.lineTo(splash.x - 3.5 + splash.lean, splash.y - lift);
+        ctx.moveTo(splash.x + 1.5, splash.y);
+        ctx.lineTo(splash.x + 3.5 + splash.lean, splash.y - lift * 0.82);
+        ctx.stroke();
+      }
+    };
+
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
+      drawStreetSheen();
+
       ctx.lineCap = "round";
       for (const d of dropsRef.current) {
         ctx.beginPath();
@@ -89,6 +162,17 @@ export default function StormBackground() {
           Object.assign(d, nd, { y: -20 - Math.random() * 120 });
         }
       }
+
+      if (splashesRef.current.length < (isMobile ? 24 : 52) && Math.random() < (isMobile ? 0.16 : 0.28)) {
+        splashesRef.current.push(makeSplash());
+      }
+
+      splashesRef.current.forEach((splash) => {
+        drawSplash(splash);
+        splash.age += 1;
+      });
+      splashesRef.current = splashesRef.current.filter((splash) => splash.age < splash.life);
+
       rafRef.current = requestAnimationFrame(draw);
     };
 
