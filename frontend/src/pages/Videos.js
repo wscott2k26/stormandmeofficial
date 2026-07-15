@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Play, Youtube, Video, Clapperboard } from "lucide-react";
+import { Play, Youtube, Clapperboard } from "lucide-react";
 import { getVideos } from "../lib/api";
 import PageHero from "../components/PageHero";
 import { GlowButton, Overline, NewsletterSection, Reveal } from "../components/shared";
