@@ -65,20 +65,20 @@ export default function CinematicClouds() {
       <motion.div
         className="dark-cloud dark-cloud-back"
         initial={{ x: "-62vw", y: 0 }}
-        animate={{ x: "112vw", y: [0, 10, 2] }}
+        animate={{ x: "112vw", y: [0, 7, 2] }}
         transition={{
-          x: { duration: 40, delay: -19, repeat: Infinity, ease: "linear" },
-          y: { duration: 12, repeat: Infinity, ease: "easeInOut" },
+          x: { duration: 110, delay: -52, repeat: Infinity, ease: "linear" },
+          y: { duration: 28, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
       <motion.div
         className="dark-cloud dark-cloud-front"
         initial={{ x: "110vw", y: 0 }}
-        animate={{ x: "-64vw", y: [0, 7, 1] }}
+        animate={{ x: "-64vw", y: [0, 5, 1] }}
         transition={{
-          x: { duration: 31, delay: -12, repeat: Infinity, ease: "linear" },
-          y: { duration: 9, repeat: Infinity, ease: "easeInOut" },
+          x: { duration: 88, delay: -34, repeat: Infinity, ease: "linear" },
+          y: { duration: 24, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
