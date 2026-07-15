@@ -1,0 +1,49 @@
+[data-testid="home-about-section"] {
+  padding-top: 4.5rem !important;
+  padding-bottom: 4.5rem !important;
+}
+
+[data-testid="home-about-section"] > div {
+  max-width: 64rem !important;
+}
+
+[data-testid="home-about-section"] > div > .grid {
+  gap: 2.5rem !important;
+}
+
+[data-testid="home-about-section"] .max-w-md {
+  max-width: 17rem !important;
+}
+
+[data-testid="home-about-section"] h2 {
+  font-size: clamp(2rem, 3vw, 3rem) !important;
+}
+
+[data-testid="home-about-section"] p {
+  line-height: 1.62;
+}
+
+[data-testid="home-author-portrait"] {
+  max-height: 17rem;
+}
+
+@media (min-width: 1024px) {
+  [data-testid="home-about-section"] > div > .grid {
+    grid-template-columns: 17rem minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  [data-testid="home-about-section"] {
+    padding-top: 3.75rem !important;
+    padding-bottom: 3.75rem !important;
+  }
+
+  [data-testid="home-about-section"] .max-w-md {
+    max-width: 15rem !important;
+  }
+
+  [data-testid="home-author-portrait"] {
+    max-height: 15rem;
+  }
+}
