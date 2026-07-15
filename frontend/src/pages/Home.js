@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube, Users } from "lucide-react";
 import { getBooks, getMusic, getVideos, getProducts } from "../lib/api";
@@ -8,9 +7,16 @@ import { ASSETS, BRAND } from "../lib/assets";
 import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, Reveal } from "../components/shared";
 import { BookCard, ProductCard } from "../components/cards";
 
+const HERO_MESSAGES = [
+  { lead: "The Storm Doesn't Get the", accent: "Final Word." },
+  { lead: "Broken Is Not Your", accent: "Final Chapter." },
+  { lead: "Keep Walking. The Sun Is", accent: "Still Coming." },
+  { lead: "Pain Can Become", accent: "Purpose." },
+  { lead: "You Are Still Here. That Means", accent: "Something." },
+];
+
 // Hero backdrop is portaled OUT of the sealed .app-shell layer into .grain,
-// so the fixed rain canvas (z-index 1) paints ABOVE it, while hero text/buttons
-// (inside .app-shell, z-index 2) stay above the rain.
+// so the fixed rain canvas paints above it while the hero content stays readable.
 function HeroBackdrop() {
   const [container, setContainer] = useState(null);
   useEffect(() => {
@@ -32,6 +38,7 @@ export default function Home() {
   const [music, setMusic] = useState([]);
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState([]);
+  const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
     getBooks().then(setBooks).catch(() => {});
@@ -40,8 +47,16 @@ export default function Home() {
     getProducts().then(setProducts).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeroIndex((current) => (current + 1) % HERO_MESSAGES.length);
+    }, 7000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   const featuredAlbum = music.find((m) => m.type === "album") || music[0];
   const featuredVideo = videos.find((v) => v.featured) || videos[0];
+  const heroMessage = HERO_MESSAGES[heroIndex];
 
   return (
     <div>
@@ -52,10 +67,17 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-6 w-full pt-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="max-w-3xl">
             <Overline className="mb-6">Welcome to {BRAND.domain}</Overline>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.02] tracking-tight">
-              The Storm Doesn't Get the{" "}
-              <span className="text-glow-blue text-storm-blue italic">Final Word.</span>
-            </h1>
+            <motion.h1
+              key={heroIndex}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.02] tracking-tight min-h-[2.05em]"
+              aria-live="polite"
+            >
+              {heroMessage.lead}{" "}
+              <span className="text-glow-blue text-storm-blue italic">{heroMessage.accent}</span>
+            </motion.h1>
             <p className="mt-7 text-storm-silver/80 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
               StormAndMeOfficial is a home for books, music, stories, and meaningful creations made for people walking through real-life storms—and still searching for hope, healing, laughter, faith, and a way forward.
             </p>
@@ -94,10 +116,9 @@ export default function Home() {
                 "You are more than what happened to you.",
                 "Some storms change the road. They do not have to end the journey.",
                 "Created for the hurting, the healing, the rebuilding, and the still-standing.",
-              ].map((m, i) => (
-                <div key={i} data-testid={`welcome-message-${i}`}
-                  className="relative wet-glass rounded-2xl border border-white/10 p-6 sm:p-7">
-                  <p className="font-display text-xl sm:text-2xl text-white leading-snug">{m}</p>
+              ].map((message, index) => (
+                <div key={message} data-testid={`welcome-message-${index}`} className="relative wet-glass rounded-2xl border border-white/10 p-6 sm:p-7">
+                  <p className="font-display text-xl sm:text-2xl text-white leading-snug">{message}</p>
                 </div>
               ))}
             </div>
@@ -109,7 +130,7 @@ export default function Home() {
       <section className="relative py-6" data-testid="home-encouragement-band">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <p className="font-display italic text-2xl sm:text-3xl text-storm-gold/90 leading-snug">
-            "Books, music, and messages for people finding their way through the rain."
+            “Books, music, and messages for people finding their way through the rain.”
           </p>
         </div>
       </section>
@@ -120,8 +141,8 @@ export default function Home() {
           <Reveal><SectionHeading overline="The Bookstore" title="Books That Walk With You"
             subtitle="Every title is created to comfort, encourage, and remind you that healing is still possible—books for the hurting, the healing, the rebuilding, and the still-standing. Find the one that meets you where you are." /></Reveal>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-12">
-            {books.slice(0, 8).map((b, i) => (
-              <Reveal key={b.id} delay={(i % 4) * 0.05}><BookCard book={b} /></Reveal>
+            {books.slice(0, 8).map((book, index) => (
+              <Reveal key={book.id} delay={(index % 4) * 0.05}><BookCard book={book} /></Reveal>
             ))}
           </div>
           <div className="text-center mt-12"><GlowButton to="/books" data-testid="home-shop-all-books">Shop All Books <ArrowRight className="w-4 h-4" /></GlowButton></div>
@@ -163,13 +184,21 @@ export default function Home() {
               <p className="mt-5 text-storm-silver/75 font-light leading-relaxed">
                 Subscribe for new songs, music videos, lyric videos, behind-the-scenes stories, studio moments, and creative releases.
               </p>
-              <div className="mt-8"><GlowButton href="https://youtube.com" variant="gold" data-testid="home-visit-channel"><Youtube className="w-4 h-4" /> Visit the Official Music Channel</GlowButton></div>
+              <div className="mt-8">
+                {BRAND.youtube ? (
+                  <GlowButton href={BRAND.youtube} variant="gold" data-testid="home-visit-channel"><Youtube className="w-4 h-4" /> Visit the Official Music Channel</GlowButton>
+                ) : (
+                  <p className="text-sm text-storm-gold/80">Official channel link coming next—no fake destination, no dead button.</p>
+                )}
+              </div>
             </div>
             <div className="relative min-h-[280px] bg-black/40">
-              {featuredVideo && (
+              {featuredVideo ? (
                 <iframe title={featuredVideo.title} className="absolute inset-0 w-full h-full"
                   src={`https://www.youtube.com/embed/${featuredVideo.youtube_id}`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-storm-silver/50 text-sm px-8 text-center">Official videos will appear here as they are connected.</div>
               )}
             </div>
           </div>
@@ -182,15 +211,15 @@ export default function Home() {
           <Reveal><SectionHeading overline="The Storm Collection" title="Wearable Reminders"
             subtitle="Wearable reminders of strength, healing, faith, perseverance, and survival. Every piece is a quiet encouragement—for you, and for the next person who needs to see that the storm does not get the final word." /></Reveal>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-12">
-            {products.slice(0, 4).map((p, i) => (
-              <Reveal key={p.id} delay={(i % 4) * 0.05}><ProductCard product={p} /></Reveal>
+            {products.slice(0, 4).map((product, index) => (
+              <Reveal key={product.id} delay={(index % 4) * 0.05}><ProductCard product={product} /></Reveal>
             ))}
           </div>
           <div className="text-center mt-12"><GlowButton to="/shop" data-testid="home-shop-storm">Shop the Storm Collection <ArrowRight className="w-4 h-4" /></GlowButton></div>
         </div>
       </section>
 
-      {/* CREATOR (kept small, third-person) */}
+      {/* CREATOR */}
       <section className="relative py-20 sm:py-24" data-testid="home-about-section">
         <div className="max-w-4xl mx-auto px-6">
           <Reveal>
@@ -218,7 +247,7 @@ export default function Home() {
         <Overline className="mb-5">Follow the Journey</Overline>
         <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-8">Walk With Us</h2>
         <div className="flex justify-center"><SocialIcons /></div>
-        <p className="mt-10 font-display italic text-lg text-storm-gold/80 max-w-xl mx-auto px-6">"Whatever storm brought you here, you do not have to walk through it alone."</p>
+        <p className="mt-10 font-display italic text-lg text-storm-gold/80 max-w-xl mx-auto px-6">“Whatever storm brought you here, you do not have to walk through it alone.”</p>
       </section>
     </div>
   );
