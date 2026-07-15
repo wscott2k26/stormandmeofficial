@@ -6,6 +6,7 @@ const RECORDED_PIANO_URL =
 const RECORDED_RAIN_URL =
   "https://assets.mixkit.co/active_storage/sfx/1253/1253.wav";
 
+// Both ambient controls use recorded audio so visitors hear music and rain, not generated noise.
 export default function AmbientAudio() {
   const [rainOn, setRainOn] = useState(false);
   const [pianoOn, setPianoOn] = useState(false);
