@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/index.css";
+import "@/author-compact.css";
 import App from "@/App";
 
 // One-time recovery from stale Create React App service-worker/app-shell caches.
