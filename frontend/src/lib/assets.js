@@ -24,5 +24,5 @@ export const SOCIALS = [
   { name: "Facebook", key: "facebook", url: "" },
   { name: "Instagram", key: "instagram", url: "" },
   { name: "Spotify", key: "spotify", url: "https://open.spotify.com/artist/3Hops9WO5h29fi1IhsPMQJq" },
-  { name: "Apple Music", key: "apple", url: "" },
+  { name: "Apple Music", key: "apple", url: "https://music.apple.com/artist/1816195997" },
 ];
