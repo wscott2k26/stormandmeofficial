@@ -23,6 +23,6 @@ export const SOCIALS = [
   { name: "TikTok", key: "tiktok", url: "" },
   { name: "Facebook", key: "facebook", url: "" },
   { name: "Instagram", key: "instagram", url: "" },
-  { name: "Spotify", key: "spotify", url: "" },
+  { name: "Spotify", key: "spotify", url: "https://open.spotify.com/artist/3Hops9WO5h29fi1IhsPMQJq" },
   { name: "Apple Music", key: "apple", url: "" },
 ];
