@@ -8,13 +8,71 @@ import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, R
 import { BookCard, ProductCard } from "../components/cards";
 import CinematicClouds from "../components/CinematicClouds";
 
-const HERO_MESSAGES = [
+const HERO_MESSAGE_LIBRARY = [
   { lead: "The Storm Doesn't Get the", accent: "Final Word." },
   { lead: "Broken Is Not Your", accent: "Final Chapter." },
   { lead: "Keep Walking. The Sun Is", accent: "Still Coming." },
   { lead: "Pain Can Become", accent: "Purpose." },
   { lead: "You Are Still Here. That Means", accent: "Something." },
+  { lead: "A Hard Season Is Not a", accent: "Hopeless Life." },
+  { lead: "The Rain May Be Heavy, but You Are", accent: "Still Standing." },
+  { lead: "What Hurt You Does Not Get to", accent: "Name You." },
+  { lead: "Healing Is Slow, but It Is Still", accent: "Happening." },
+  { lead: "Your Comeback Can Start", accent: "Quietly." },
+  { lead: "You Have Survived Every Day You Thought You", accent: "Couldn't." },
+  { lead: "Even Here, Hope Is Still", accent: "Breathing." },
+  { lead: "Some Endings Are Really", accent: "New Roads." },
+  { lead: "You Do Not Have to Be Fearless to", accent: "Move Forward." },
+  { lead: "The Night Is Long, but Morning Still", accent: "Knows Your Name." },
+  { lead: "Rest Is Not Quitting. It Is Part of", accent: "Rebuilding." },
+  { lead: "Your Scars Are Proof the Storm Did Not", accent: "Win." },
+  { lead: "It Is Okay to Begin Again, Even From", accent: "Here." },
+  { lead: "The Weight You Carry Is Not All You", accent: "Are." },
+  { lead: "One Small Step Can Still Change the", accent: "Whole Road." },
+  { lead: "You Are Allowed to Outgrow What Once", accent: "Broke You." },
+  { lead: "The Chapter Is Heavy, but the Story Is", accent: "Not Over." },
+  { lead: "Courage Sometimes Looks Like Getting Up", accent: "Again." },
+  { lead: "Your Life Can Bloom After the", accent: "Rain." },
+  { lead: "You Don't Need All the Answers to Take the", accent: "Next Step." },
+  { lead: "The Storm Changed You, but It Did Not", accent: "Finish You." },
+  { lead: "There Is Strength in Choosing to Stay", accent: "Soft." },
+  { lead: "A Setback Is Not the Same as the", accent: "End." },
+  { lead: "You Can Miss What Was and Still Build What", accent: "Comes Next." },
+  { lead: "Grace Meets You Right Where You", accent: "Are." },
+  { lead: "The Door Closed, but Your Purpose Did", accent: "Not." },
+  { lead: "You Are Not Behind. You Are Still", accent: "Becoming." },
+  { lead: "Peace Can Find You Before Everything Is", accent: "Fixed." },
+  { lead: "The Strongest Thing You May Do Today Is", accent: "Keep Going." },
+  { lead: "The Clouds Cannot Cancel the", accent: "Sunrise." },
+  { lead: "Your Future Is Bigger Than This", accent: "Moment." },
+  { lead: "Some Days, Surviving Is More Than", accent: "Enough." },
+  { lead: "You Can Be Tired and Still Be", accent: "Hopeful." },
+  { lead: "The Road Bent. Your Story Did", accent: "Not Break." },
+  { lead: "There Is Still Something Beautiful Waiting", accent: "Ahead." },
 ];
+
+function getLocalDayNumber(date = new Date()) {
+  return Math.floor(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000,
+  );
+}
+
+function getDailyHeroMessages(date = new Date()) {
+  const shuffled = [...HERO_MESSAGE_LIBRARY];
+  let state = (getLocalDayNumber(date) ^ 0x9e3779b9) >>> 0;
+
+  const nextRandom = () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return state / 4_294_967_296;
+  };
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(nextRandom() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  return shuffled.slice(0, 5);
+}
 
 // Hero backdrop is portaled OUT of the sealed .app-shell layer into .grain,
 // so the fixed rain canvas paints above it while the hero content stays readable.
@@ -39,6 +97,7 @@ export default function Home() {
   const [music, setMusic] = useState([]);
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState([]);
+  const [heroMessages, setHeroMessages] = useState(() => getDailyHeroMessages());
   const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
@@ -50,14 +109,33 @@ export default function Home() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setHeroIndex((current) => (current + 1) % HERO_MESSAGES.length);
+      setHeroIndex((current) => (current + 1) % heroMessages.length);
     }, 7000);
     return () => window.clearInterval(timer);
+  }, [heroMessages.length]);
+
+  useEffect(() => {
+    let midnightTimer;
+
+    const scheduleDailyRefresh = () => {
+      const now = new Date();
+      const nextMidnight = new Date(now);
+      nextMidnight.setHours(24, 0, 0, 0);
+
+      midnightTimer = window.setTimeout(() => {
+        setHeroMessages(getDailyHeroMessages(new Date()));
+        setHeroIndex(0);
+        scheduleDailyRefresh();
+      }, nextMidnight.getTime() - now.getTime() + 1000);
+    };
+
+    scheduleDailyRefresh();
+    return () => window.clearTimeout(midnightTimer);
   }, []);
 
   const featuredAlbum = music.find((m) => m.type === "album") || music[0];
   const featuredVideo = videos.find((v) => v.featured) || videos[0];
-  const heroMessage = HERO_MESSAGES[heroIndex];
+  const heroMessage = heroMessages[heroIndex];
 
   return (
     <div>
@@ -70,7 +148,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="max-w-3xl">
             <Overline className="mb-6">Welcome to {BRAND.domain}</Overline>
             <motion.h1
-              key={heroIndex}
+              key={`${getLocalDayNumber()}-${heroIndex}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
