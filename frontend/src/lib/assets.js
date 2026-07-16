@@ -10,6 +10,7 @@ export const BRAND = {
   name: "StormAndMeOfficial",
   logoText: "STORM & ME OFFICIAL",
   domain: "StormAndMeOfficial.com",
+  shop: "https://shop.stormandmeofficial.com",
   creator: "Willy Will",
   authorName: "Will Scott",
   message: "The storm may have changed me, but it did not finish me.",
