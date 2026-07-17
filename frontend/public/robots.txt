@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /ads.txt
 Disallow: /api/
 Disallow: /order-confirmation
+Disallow: /checkout
+Disallow: /cart
+Disallow: /account
 
 Sitemap: https://stormandmeofficial.com/sitemap.xml
