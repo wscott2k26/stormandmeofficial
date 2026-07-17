@@ -16,7 +16,7 @@ IMG = {
 MUSIC = []
 VIDEOS = []
 
-# The collection remains a concept preview until fulfillment and checkout are real.
+# The official Shopify / Printify collection is linked from the frontend.
 PRODUCTS = []
 PRODUCT_CATEGORIES = []
 
@@ -28,29 +28,29 @@ POSTS = [
         "category": "Personal Updates",
         "image": IMG["hero"],
         "preview": "A creative home for real books, future music, honest stories, and reminders that the storm does not get the final word.",
-        "content": "Storm & Me Official is being built in the open. The published books are connected first. Verified music, videos, social links, newsletter delivery, and the collection will be added carefully as their official destinations are confirmed.",
+        "content": "Storm & Me Official is being built in the open. Published books, official music destinations, videos, social links, and the live merchandise collection are connected carefully as each destination is verified.",
     }
 ]
 
 FAQS = [
     {
         "q": "Who is Willy Will?",
-        "a": "Willy Will is the creative name of Will Scott—an author, songwriter, storyteller, content creator, and technology professional.",
+        "a": "Willy Will is the recording and creative name of Will Scott—an author, songwriter, storyteller, content creator, and technology professional.",
     },
     {
         "q": "Where can I buy the published books?",
         "a": "Each published book page links to its official Amazon listing, where current formats, prices, availability, and delivery options are shown.",
     },
     {
-        "q": "Can I buy merchandise here now?",
-        "a": "Not yet. The Storm Collection is a preview until real products, fulfillment, policies, and secure checkout are connected.",
+        "q": "Can I buy Storm & Me merchandise online?",
+        "a": "Yes. The official collection is available through shop.stormandmeofficial.com with secure Shopify checkout and Printify-connected production and fulfillment.",
     },
     {
-        "q": "Are the music and video links live?",
-        "a": "Only verified official links will be published. The music and video sections are being connected now.",
+        "q": "Where can I listen to Willy Will?",
+        "a": "Verified links to Willy Will on Spotify, Apple Music, YouTube, and YouTube Music are available through the Music section and official social links.",
     },
     {
         "q": "How do I follow new releases?",
-        "a": "The permanent newsletter and verified social channels are being connected. Until then, check the News page for confirmed updates.",
+        "a": "Visit the News page and the verified streaming and social destinations for confirmed book, music, video, and merchandise updates.",
     },
 ]
