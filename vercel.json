@@ -14,6 +14,33 @@
       "entrypoint": "server:app"
     }
   },
+  "redirects": [
+    {
+      "source": "/products/:path*",
+      "destination": "https://shop.stormandmeofficial.com/products/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/collections/:path*",
+      "destination": "https://shop.stormandmeofficial.com/collections/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cart",
+      "destination": "https://shop.stormandmeofficial.com/cart",
+      "permanent": false
+    },
+    {
+      "source": "/account",
+      "destination": "https://shop.stormandmeofficial.com/account",
+      "permanent": false
+    },
+    {
+      "source": "/checkout",
+      "destination": "https://shop.stormandmeofficial.com/cart",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/",
