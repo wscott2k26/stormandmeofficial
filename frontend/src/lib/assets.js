@@ -11,6 +11,7 @@ export const BRAND = {
   logoText: "STORM & ME OFFICIAL",
   domain: "StormAndMeOfficial.com",
   shop: "https://shop.stormandmeofficial.com",
+  shopCatalog: "https://shop.stormandmeofficial.com/collections/all",
   creator: "Willy Will",
   authorName: "Will Scott",
   message: "The storm may have changed me, but it did not finish me.",
