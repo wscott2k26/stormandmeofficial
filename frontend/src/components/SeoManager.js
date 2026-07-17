@@ -96,21 +96,36 @@ const STATIC_PAGES = {
     title: "Frequently Asked Questions | Storm & Me Official",
     description: "Answers about Will Scott, Willy Will, books, music, merchandise, shipping, official links, and upcoming releases.",
   },
+  "/privacy": {
+    title: "Privacy Policy | Storm & Me Official",
+    description: "Read how Storm & Me Official handles contact information, analytics, cookies, advertising, and links to third-party services.",
+  },
+  "/terms": {
+    title: "Terms & Conditions | Storm & Me Official",
+    description: "Review the terms for using StormAndMeOfficial.com and its official links to retailers, streaming services, and other platforms.",
+  },
+  "/shipping": {
+    title: "Shipping Policy | Storm & Me Official",
+    description: "Learn how shipping works for official Storm & Me merchandise, print-on-demand fulfillment, books, and third-party retailers.",
+  },
+  "/returns": {
+    title: "Returns & Refunds | Storm & Me Official",
+    description: "Review return and refund guidance for Storm & Me merchandise, books, digital content, and third-party purchases.",
+  },
+  "/accessibility": {
+    title: "Accessibility Statement | Storm & Me Official",
+    description: "Read the Storm & Me Official commitment to accessible navigation, readable content, reduced motion, and visitor feedback.",
+  },
 };
 
 const NO_INDEX_PATHS = new Set([
-  "/privacy",
-  "/terms",
-  "/shipping",
-  "/returns",
-  "/accessibility",
   "/cart",
   "/checkout",
   "/account",
   "/order-confirmation",
 ]);
 
-function setMeta(selector, attributes) {
+function upsertMeta(selector, attributes) {
   let element = document.head.querySelector(selector);
   if (!element) {
     element = document.createElement("meta");
@@ -123,10 +138,10 @@ function setCanonical(url) {
   let link = document.head.querySelector('link[rel="canonical"]');
   if (!link) {
     link = document.createElement("link");
-    link.setAttribute("rel", "canonical");
+    link.rel = "canonical";
     document.head.appendChild(link);
   }
-  link.setAttribute("href", url);
+  link.href = url;
 }
 
 function pageForPath(pathname) {
@@ -165,23 +180,23 @@ export default function SeoManager() {
     document.title = page.title;
     setCanonical(canonical);
 
-    setMeta('meta[name="description"]', { name: "description", content: page.description });
-    setMeta('meta[name="robots"]', {
+    upsertMeta('meta[name="description"]', { name: "description", content: page.description });
+    upsertMeta('meta[name="robots"]', {
       name: "robots",
       content: noIndex
         ? "noindex,follow"
         : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
     });
-    setMeta('meta[property="og:title"]', { property: "og:title", content: page.title });
-    setMeta('meta[property="og:description"]', { property: "og:description", content: page.description });
-    setMeta('meta[property="og:url"]', { property: "og:url", content: canonical });
-    setMeta('meta[property="og:type"]', { property: "og:type", content: cleanPath.startsWith("/books/") ? "book" : "website" });
-    setMeta('meta[property="og:site_name"]', { property: "og:site_name", content: "Storm & Me Official" });
-    setMeta('meta[property="og:image"]', { property: "og:image", content: DEFAULT_IMAGE });
-    setMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
-    setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: page.title });
-    setMeta('meta[name="twitter:description"]', { name: "twitter:description", content: page.description });
-    setMeta('meta[name="twitter:image"]', { name: "twitter:image", content: DEFAULT_IMAGE });
+    upsertMeta('meta[property="og:title"]', { property: "og:title", content: page.title });
+    upsertMeta('meta[property="og:description"]', { property: "og:description", content: page.description });
+    upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonical });
+    upsertMeta('meta[property="og:type"]', { property: "og:type", content: cleanPath.startsWith("/books/") ? "book" : "website" });
+    upsertMeta('meta[property="og:site_name"]', { property: "og:site_name", content: "Storm & Me Official" });
+    upsertMeta('meta[property="og:image"]', { property: "og:image", content: DEFAULT_IMAGE });
+    upsertMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
+    upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: page.title });
+    upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: page.description });
+    upsertMeta('meta[name="twitter:image"]', { name: "twitter:image", content: DEFAULT_IMAGE });
 
     const oldSchema = document.getElementById("storm-and-me-schema");
     if (oldSchema) oldSchema.remove();
@@ -208,11 +223,6 @@ export default function SeoManager() {
         alternateName: "Willy Will",
         url: `${SITE_URL}/about`,
         jobTitle: "Author, Songwriter and Storyteller",
-        sameAs: [
-          "https://www.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ",
-          "https://open.spotify.com/artist/3Hops9WO5h29fi1IhsPMQJq",
-          "https://music.apple.com/artist/1816195997",
-        ],
       },
       {
         "@type": "WebSite",
