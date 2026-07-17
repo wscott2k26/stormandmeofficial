@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartContext";
 import StormBackground from "./components/StormBackground";
 import AmbientAudio from "./components/AmbientAudio.js";
 import FeaturedMerchPortal from "./components/FeaturedMerchPortal";
+import SeoManager from "./components/SeoManager";
 import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
@@ -38,6 +39,7 @@ function App() {
           <AmbientAudio />
           <Toaster position="top-center" theme="dark" richColors />
           <BrowserRouter>
+            <SeoManager />
             <FeaturedMerchPortal />
             <Routes>
               <Route element={<Layout />}>
