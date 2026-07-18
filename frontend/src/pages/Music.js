@@ -4,7 +4,7 @@ import { Play, Pause, Youtube, Music2, Music4, Apple, ArrowRight, Headphones } f
 import { getMusic } from "../lib/api";
 import PageHero from "../components/PageHero";
 import { GlowButton, Overline, NewsletterSection, Reveal } from "../components/shared";
-import { BRAND, SOCIALS } from "../lib/assets";
+import { ASSETS, BRAND, SOCIALS } from "../lib/assets";
 
 function AudioButton({ src, id }) {
   const ref = useRef(null);
@@ -51,13 +51,22 @@ export default function Music() {
       <Reveal>
         <div className="wet-glass relative overflow-hidden rounded-3xl border border-white/10 p-7 sm:p-11">
           <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-storm-blue/20 blur-[90px]" />
-          <div className="relative text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5"><Headphones className="h-8 w-8 text-storm-blue" /></div>
-            <Overline className="mt-7 mb-4">Official Willy Will Music</Overline>
-            <h2 className="font-display text-3xl sm:text-5xl font-bold text-white">Listen Everywhere You Stream.</h2>
-            <p className="mx-auto mt-5 max-w-2xl text-storm-silver/70 leading-relaxed font-light">Choose your favorite official platform below. New releases, videos, and catalog updates will appear here as they are published.</p>
+          <div className="relative grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="flex justify-center">
+              <div className="relative h-64 w-64 sm:h-80 sm:w-80">
+                <div className="absolute inset-2 rounded-full bg-black/70 shadow-[0_30px_90px_rgba(0,0,0,.55)]" />
+                <img src={ASSETS.logo} alt="Storm & Me official cover art" className="relative h-full w-full rounded-full border-4 border-white/10 object-cover animate-[spin_20s_linear_infinite] motion-reduce:animate-none" />
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/30 bg-slate-950 shadow-inner" />
+              </div>
+            </div>
+            <div className="text-center lg:text-left">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5 lg:mx-0"><Headphones className="h-8 w-8 text-storm-blue" /></div>
+              <Overline className="mt-7 mb-4">Official Willy Will Music</Overline>
+              <h2 className="font-display text-3xl sm:text-5xl font-bold text-white">Listen Everywhere You Stream</h2>
+              <p className="mt-5 max-w-2xl text-storm-silver/70 leading-relaxed font-light">Tap your favorite official platform below for Willy Will songs, releases, and music videos.</p>
+            </div>
           </div>
-          <div className="relative mt-9 grid gap-4 sm:grid-cols-2">
+          <div className="relative mt-10 grid gap-4 sm:grid-cols-2">
             {officialLinks.map(({ name, url, Icon, note }) => <a key={name} href={url} target="_blank" rel="noreferrer" className="group rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:-translate-y-1 hover:border-storm-blue/50 hover:bg-white/[0.075]">
               <div className="flex items-center gap-4"><span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-storm-blue/15 text-storm-blue"><Icon className="h-6 w-6" /></span><div className="min-w-0 text-left"><h3 className="font-display text-xl font-semibold text-white">{name}</h3><p className="mt-1 text-sm text-storm-silver/60">{note}</p></div><ArrowRight className="ml-auto h-5 w-5 shrink-0 text-storm-silver/40 transition group-hover:translate-x-1 group-hover:text-storm-gold" /></div>
             </a>)}
