@@ -20,13 +20,15 @@ export const BRAND = {
   youtubeMusic: "https://music.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ",
 };
 
-// Add only verified public profiles. Empty links are intentionally hidden by SocialIcons.
+// Verified release pages route listeners to the currently live Spotify,
+// Apple Music, iTunes, Deezer, and other official destinations without
+// depending on stale artist-profile IDs.
 export const SOCIALS = [
   { name: "YouTube", key: "youtube", url: "https://www.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ" },
   { name: "YouTube Music", key: "youtube_music", url: "https://music.youtube.com/channel/UCZgQD7_5RPeyJ3iHpIoohVQ" },
   { name: "TikTok", key: "tiktok", url: "" },
   { name: "Facebook", key: "facebook", url: "" },
   { name: "Instagram", key: "instagram", url: "" },
-  { name: "Spotify", key: "spotify", url: "https://open.spotify.com/artist/3Hops9WO5h29fi1IhsPMQJq" },
-  { name: "Apple Music", key: "apple", url: "https://music.apple.com/artist/1816195997" },
+  { name: "Spotify", key: "spotify", url: "https://distrokid.com/hyperfollow/willywill2/get-up-and-fight" },
+  { name: "Apple Music", key: "apple", url: "https://distrokid.com/hyperfollow/willywill2/only-one-way-to-live-thats-following-jesus" },
 ];
