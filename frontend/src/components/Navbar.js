@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/music", label: "Music" },
   { to: "/videos", label: "Videos" },
   { to: "/shop", label: "Collection" },
+  { to: "/projects", label: "Projects" },
   { to: "/about", label: "About" },
   { to: "/news", label: "News" },
   { to: "/contact", label: "Contact" },
@@ -53,7 +54,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7">
+          <nav className="hidden xl:flex items-center gap-6">
             {LINKS.map((link) => (
               <NavLink
                 key={link.to}
@@ -91,7 +92,7 @@ export default function Navbar() {
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               data-testid="nav-mobile-menu-btn"
-              className="lg:hidden w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/5"
+              className="xl:hidden w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/5"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -104,14 +105,14 @@ export default function Navbar() {
               autoFocus
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search the collection preview..."
+              placeholder="Search the official collection..."
               className="w-full rounded-full bg-black/50 border border-white/15 px-5 py-3 text-white placeholder:text-storm-silver/40 focus:outline-none focus:border-storm-blue/60"
             />
           </form>
         )}
       </div>
 
-      <div className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+      <div className={`fixed inset-0 z-50 xl:hidden transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
         <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
         <div
           className={`absolute right-0 top-0 h-full w-[82%] max-w-sm glass-strong p-6 flex flex-col transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
@@ -128,7 +129,7 @@ export default function Navbar() {
               <X className="w-6 h-6" />
             </button>
           </div>
-          <nav className="flex flex-col gap-1">
+          <nav className="flex flex-col gap-1 overflow-y-auto">
             {LINKS.map((link) => (
               <NavLink
                 key={link.to}
@@ -143,7 +144,7 @@ export default function Navbar() {
             ))}
           </nav>
           <div className="mt-auto pt-6">
-            <p className="mb-5 text-sm leading-relaxed text-storm-silver/55">Books are available through their official Amazon pages. The merchandise collection is currently a preview.</p>
+            <p className="mb-5 text-sm leading-relaxed text-storm-silver/55">Books connect to their official retailer pages. Merchandise is purchased securely through the live Storm &amp; Me Printify store.</p>
             <SocialIcons />
           </div>
         </div>
