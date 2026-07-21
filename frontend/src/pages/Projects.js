@@ -67,7 +67,7 @@ export default function Projects() {
 
                   <Overline className="mt-7 mb-3">{project.type}</Overline>
                   <h2 className="font-display text-3xl font-bold text-white">{project.name}</h2>
-                  <p className="mt-4 text-storm-silver/72 leading-relaxed font-light">{project.description}</p>
+                  <p className="mt-4 text-storm-silver/75 leading-relaxed font-light">{project.description}</p>
 
                   <div className="mt-8">
                     {isLive ? (
