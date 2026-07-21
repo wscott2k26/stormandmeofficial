@@ -5,9 +5,9 @@ import { SocialIcons } from "./shared";
 
 const COLS = [
   { title: "Explore", links: [["Books", "/books"], ["Music", "/music"], ["Videos", "/videos"], ["Shop", "/shop"]] },
-  { title: "Willy Will", links: [["About", "/about"], ["The Story", "/story"], ["News", "/news"], ["Contact", "/contact"]] },
+  { title: "Discover", links: [["Projects", "/projects"], ["About", "/about"], ["The Story", "/story"], ["News", "/news"]] },
   { title: "Support", links: [["FAQ", "/faq"], ["Shipping Policy", "/shipping"], ["Returns & Refunds", "/returns"], ["Accessibility", "/accessibility"]] },
-  { title: "Legal", links: [["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"], ["Account", "/account"], ["Cart", "/cart"]] },
+  { title: "Legal", links: [["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"], ["Contact", "/contact"], ["Official Store", "/shop"]] },
 ];
 
 export default function Footer() {
@@ -24,7 +24,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-storm-silver/60 text-sm leading-relaxed max-w-xs font-light">
-              Books. Music. Stories. Proof that the storm does not get the final word.
+              Books. Music. Stories. Useful projects. Proof that the storm does not get the final word.
             </p>
             <div className="mt-6"><SocialIcons /></div>
           </div>
@@ -33,7 +33,7 @@ export default function Footer() {
               <h4 className="font-display text-sm font-semibold tracking-widest uppercase text-white/90 mb-4">{c.title}</h4>
               <ul className="space-y-3">
                 {c.links.map(([label, to]) => (
-                  <li key={to}>
+                  <li key={`${label}-${to}`}>
                     <Link to={to} className="text-sm text-storm-silver/60 hover:text-storm-blue transition-colors" data-testid={`footer-link-${label.toLowerCase().replace(/[^a-z]+/g, "-")}`}>{label}</Link>
                   </li>
                 ))}
