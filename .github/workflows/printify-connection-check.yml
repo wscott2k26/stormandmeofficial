@@ -1,0 +1,51 @@
+name: Printify Connection Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-printify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate secret exists
+        shell: bash
+        run: |
+          test -n "$PRINTIFY_API_TOKEN" || {
+            echo "Missing repository secret: PRINTIFY_API_TOKEN"
+            exit 1
+          }
+
+      - name: Verify Printify and inventory products
+        id: printify
+        run: python scripts/printify_setup.py
+
+      - name: Add safe summary
+        shell: bash
+        run: |
+          {
+            echo "## StormAndMe Printify Check"
+            echo ""
+            echo "- Connection: verified"
+            echo "- Shop: ${{ steps.printify.outputs.shop_title }}"
+            echo "- Shop ID: ${{ steps.printify.outputs.shop_id }}"
+            echo "- Products found: ${{ steps.printify.outputs.product_count }}"
+            echo "- Safety mode: read-only; no products created or published"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload inventory report
+        uses: actions/upload-artifact@v4
+        with:
+          name: stormandme-printify-inventory
+          path: automation-output/printify-inventory.json
+          if-no-files-found: error
+          retention-days: 14
