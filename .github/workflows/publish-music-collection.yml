@@ -59,3 +59,5 @@ jobs:
           path: automation-output/
           if-no-files-found: warn
           retention-days: 30
+
+# Publish trigger refreshed 2026-07-22
