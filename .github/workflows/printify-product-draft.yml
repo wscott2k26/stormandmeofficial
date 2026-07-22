@@ -1,0 +1,50 @@
+name: Printify Product Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_create:
+        description: "Type CREATE_DRAFT to create a real unpublished Printify product"
+        required: true
+        default: "DRY_RUN"
+      config_path:
+        description: "Product request JSON path"
+        required: true
+        default: "automation/printify/product-request.json"
+
+permissions:
+  contents: read
+
+jobs:
+  create-draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+      PRODUCT_CONFIG: ${{ inputs.config_path }}
+      CONFIRM_CREATE: ${{ inputs.confirm_create == 'CREATE_DRAFT' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate token
+        run: test -n "$PRINTIFY_API_TOKEN" || (echo "Missing PRINTIFY_API_TOKEN" && exit 1)
+
+      - name: Validate and optionally create draft
+        run: python automation/printify/create_product_draft.py
+
+      - name: Safety summary
+        run: |
+          echo "## StormAndMe Product Factory" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Mode: ${{ inputs.confirm_create }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Product publishing: disabled" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Website files changed: none" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload product factory report
+        uses: actions/upload-artifact@v4
+        with:
+          name: stormandme-product-factory
+          path: automation-output/
+          if-no-files-found: error
+          retention-days: 14
