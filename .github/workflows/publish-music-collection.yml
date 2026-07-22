@@ -1,0 +1,61 @@
+name: Publish StormAndMe Music Collection
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "automation/printify/publish_music_collection.py"
+      - ".github/workflows/publish-music-collection.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-music-products:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Printify token
+        shell: bash
+        run: |
+          test -n "$PRINTIFY_API_TOKEN" || {
+            echo "Missing repository secret: PRINTIFY_API_TOKEN"
+            exit 1
+          }
+
+      - name: Install artwork dependency
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Generate, create, and publish products
+        run: python automation/printify/publish_music_collection.py
+
+      - name: Add run summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## StormAndMe Music Collection"
+            echo ""
+            echo "- Designs: SOMEHOW; THE HOUSE THAT PAIN BUILT"
+            echo "- Products per design: tee, hoodie, mug, canvas"
+            echo "- Website design changed: no"
+            echo "- Duplicate protection: enabled"
+            echo "- Detailed result: workflow artifact"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload result report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stormandme-music-collection-results
+          path: automation-output/
+          if-no-files-found: warn
+          retention-days: 30
