@@ -6,7 +6,6 @@ import { StormProvider } from "./context/StormContext";
 import { CartProvider } from "./context/CartContext";
 import StormBackground from "./components/StormBackground";
 import AmbientAudio from "./components/AmbientAudio.js";
-import FeaturedMerchPortal from "./components/FeaturedMerchPortal";
 import SeoManager from "./components/SeoManager";
 import Layout from "./components/Layout";
 
@@ -41,7 +40,6 @@ function App() {
           <Toaster position="top-center" theme="dark" richColors />
           <BrowserRouter>
             <SeoManager />
-            <FeaturedMerchPortal />
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
