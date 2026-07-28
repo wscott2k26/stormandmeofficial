@@ -1,100 +1,125 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpRight, ShoppingBag, Sparkles, Zap, Flower2 } from "lucide-react";
+import { ArrowUpRight, ShoppingBag } from "lucide-react";
 
-const PRINTIFY_STORE = "https://stormandme.printify.me";
+const SHOP_URL = "https://stormandme.printify.me";
 
-const FEATURED_ITEMS = [
+const PRODUCTS = [
   {
-    id: "built-through-the-storm",
-    name: "Built Through the Storm Tee",
-    price: "$32.99",
-    message: "The pressure did not finish you. It built you.",
-    accent: "blue",
+    id: "survived-the-storm",
+    title: "I Survived the Storm — Found My Way Back",
+    price: "$34.99",
+    kind: "tee",
+    accent: "#b7944c",
+    colors: ["#111111", "#4d353c", "#35463d"],
   },
   {
-    id: "faith-over-fear",
-    name: "Faith Over Fear Tee",
-    price: "$32.99",
-    message: "Move with faith even when fear gets loud.",
-    accent: "gold",
+    id: "house-that-pain-built",
+    title: "The House That Pain Built — Still Standing",
+    price: "$34.99",
+    kind: "tee",
+    accent: "#b7944c",
+    colors: ["#202634", "#343944", "#111111"],
   },
   {
-    id: "rise-through-the-pain",
-    name: "Rise Through the Pain Tee",
-    price: "$32.99",
-    message: "Pain may shape the chapter, but it does not write the ending.",
-    accent: "red",
+    id: "worth-it",
+    title: "Some Things Ain’t Worth It… But You Are",
+    price: "$34.99",
+    kind: "tee",
+    accent: "#91423f",
+    colors: ["#5a2d31", "#405244", "#1a1a1a"],
+  },
+  {
+    id: "urban-pullover",
+    title: "Unisex Urban Pullover Hoodie",
+    price: "$75.00",
+    kind: "hoodie",
+    accent: "#2e3338",
+    colors: ["#f4f4f1", "#cfd2d3", "#151515"],
   },
 ];
 
-function ShirtArt({ item }) {
+function ProductArt({ product }) {
+  const safeId = product.id.replace(/[^a-z0-9-]/gi, "");
+
+  if (product.kind === "hoodie") {
+    return (
+      <svg className="sam-art" viewBox="0 0 420 340" role="img" aria-label="Light gray pullover hoodie">
+        <defs>
+          <linearGradient id={`hoodie-${safeId}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#ffffff" />
+            <stop offset="0.55" stopColor="#e7e8e8" />
+            <stop offset="1" stopColor="#c9cccd" />
+          </linearGradient>
+          <filter id={`shadow-${safeId}`} x="-20%" y="-20%" width="140%" height="160%">
+            <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#111" floodOpacity="0.16" />
+          </filter>
+        </defs>
+        <path d="M158 82c7-31 25-48 52-48s45 17 52 48l-21 33h-62l-21-33Z" fill="#d7d9da" stroke="#c4c7c8" strokeWidth="2" />
+        <path
+          filter={`url(#shadow-${safeId})`}
+          d="M143 82h134l63 38 43 142-53 17-31-92v115H121V187l-31 92-53-17 43-142 63-38Z"
+          fill={`url(#hoodie-${safeId})`}
+          stroke="#c8cbcc"
+          strokeWidth="2"
+        />
+        <path d="M167 80c8 23 22 35 43 35s35-12 43-35" fill="none" stroke="#c3c6c7" strokeWidth="5" />
+        <path d="M154 232h112l-15 51h-82l-15-51Z" fill="#dde0e1" stroke="#c7cacc" strokeWidth="2" />
+        <path d="M177 113l10 63M243 113l-10 63" stroke="#b9bdbe" strokeWidth="3" strokeLinecap="round" />
+        <circle cx="210" cy="164" r="4" fill={product.accent} />
+        <path d="M193 176h34" stroke={product.accent} strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#07090d]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(59,130,246,0.13),transparent_46%)]" />
-      <div className="relative h-[82%] w-[82%]">
-        <div className="absolute left-1/2 top-[7%] h-[13%] w-[24%] -translate-x-1/2 rounded-b-[50%] border-b border-white/10 bg-[#050505]" />
-        <div className="absolute inset-x-[17%] bottom-[2%] top-[6%] rounded-b-2xl bg-gradient-to-b from-[#171717] to-[#090909] shadow-[0_28px_65px_rgba(0,0,0,0.75)] ring-1 ring-white/10" />
-        <div className="absolute left-[4%] top-[12%] h-[34%] w-[27%] -rotate-[19deg] rounded-l-2xl bg-gradient-to-b from-[#161616] to-[#090909] ring-1 ring-white/10" />
-        <div className="absolute right-[4%] top-[12%] h-[34%] w-[27%] rotate-[19deg] rounded-r-2xl bg-gradient-to-b from-[#161616] to-[#090909] ring-1 ring-white/10" />
-
-        <div className="absolute inset-x-[22%] top-[22%] z-10 flex flex-col items-center text-center">
-          {item.id === "built-through-the-storm" && (
-            <>
-              <span className="font-display text-[clamp(1.2rem,3vw,2.4rem)] font-black uppercase leading-[0.9] tracking-tight text-white">Built</span>
-              <span className="mt-1 text-[clamp(.52rem,1.15vw,.9rem)] font-bold uppercase tracking-[0.1em] text-white/85">Through the</span>
-              <Zap className="my-2 h-10 w-10 fill-storm-blue text-storm-blue" />
-              <span className="font-display text-[clamp(1.2rem,3vw,2.4rem)] font-black uppercase leading-[0.9] tracking-tight text-white">Storm</span>
-            </>
-          )}
-
-          {item.id === "faith-over-fear" && (
-            <>
-              <span className="font-display text-[clamp(1.05rem,2.7vw,2.15rem)] font-black uppercase leading-[0.92] text-white">Faith</span>
-              <span className="my-1 -rotate-3 font-display text-[clamp(.9rem,2.3vw,1.8rem)] font-black uppercase italic text-storm-gold">Over</span>
-              <span className="font-display text-[clamp(1.05rem,2.7vw,2.15rem)] font-black uppercase leading-[0.92] text-white">Fear</span>
-              <div className="mt-3 h-px w-16 bg-storm-gold/80" />
-            </>
-          )}
-
-          {item.id === "rise-through-the-pain" && (
-            <>
-              <Flower2 className="mb-1 h-9 w-9 text-red-500" />
-              <span className="font-display text-[clamp(.95rem,2.45vw,1.95rem)] font-black uppercase leading-[0.95] text-white">Rise</span>
-              <span className="my-1 text-[clamp(.48rem,1.1vw,.82rem)] font-bold uppercase tracking-[0.13em] text-white/75">Through the</span>
-              <span className="-rotate-3 font-display text-[clamp(1.05rem,2.8vw,2.2rem)] font-black uppercase italic leading-[0.9] text-red-500">Pain</span>
-            </>
-          )}
-
-          <span className="mt-4 text-[8px] font-bold uppercase tracking-[0.23em] text-white/70">Storm &amp; Me</span>
-        </div>
-      </div>
-    </div>
+    <svg className="sam-art" viewBox="0 0 420 340" role="img" aria-label="Black graphic T-shirt">
+      <defs>
+        <linearGradient id={`tee-${safeId}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#2a2a2a" />
+          <stop offset="0.5" stopColor="#101010" />
+          <stop offset="1" stopColor="#252525" />
+        </linearGradient>
+        <filter id={`shadow-${safeId}`} x="-20%" y="-20%" width="140%" height="160%">
+          <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#111" floodOpacity="0.19" />
+        </filter>
+      </defs>
+      <path
+        filter={`url(#shadow-${safeId})`}
+        d="M145 54c17 17 38 25 65 25s48-8 65-25l77 34 44 75-58 37-31-35v129H113V165l-31 35-58-37 44-75 77-34Z"
+        fill={`url(#tee-${safeId})`}
+        stroke="#383838"
+        strokeWidth="2"
+      />
+      <path d="M167 58c7 19 22 29 43 29s36-10 43-29" fill="none" stroke="#424242" strokeWidth="8" strokeLinecap="round" />
+      <circle cx="210" cy="174" r="4" fill={product.accent} />
+      <path d="M185 189h50" stroke={product.accent} strokeWidth="2" strokeLinecap="round" />
+      <path d="M194 198h32" stroke="#d9d5cd" strokeWidth="2" strokeLinecap="round" opacity="0.75" />
+    </svg>
   );
 }
 
-function FeaturedCard({ item }) {
+function ProductCard({ product }) {
   return (
-    <a
-      href={PRINTIFY_STORE}
-      className="group overflow-hidden rounded-2xl border border-white/10 bg-black/25 transition-all duration-300 hover:-translate-y-1 hover:border-storm-blue/45 hover:shadow-[0_20px_55px_rgba(0,0,0,0.38)]"
-      data-testid="featured-merch-card"
-    >
-      <div className="relative aspect-square overflow-hidden">
-        <div className="absolute left-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-storm-blue/30 bg-black/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-storm-blue backdrop-blur">
-          <Sparkles className="h-3 w-3" /> New Drop
-        </div>
-        <ShirtArt item={item} />
+    <a className="sam-card" href={SHOP_URL} target="_blank" rel="noreferrer" aria-label={`Shop ${product.title}`}>
+      <div className="sam-image">
+        <span className="sam-badge">Official product</span>
+        <ProductArt product={product} />
       </div>
-      <div className="border-t border-white/10 p-4 sm:p-5">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-base font-semibold leading-snug text-white transition-colors group-hover:text-storm-blue sm:text-lg">
-            {item.name}
-          </h3>
-          <ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-storm-silver/45 group-hover:text-storm-blue" />
+      <div className="sam-info">
+        <div className="sam-title-row">
+          <h3>{product.title}</h3>
+          <ArrowUpRight size={18} aria-hidden="true" />
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-storm-silver/60">{item.message}</p>
-        <p className="mt-3 text-sm font-semibold text-storm-gold">{item.price}</p>
+        <div className="sam-meta">
+          <div className="sam-swatches" aria-label="Available color choices">
+            {product.colors.map((color) => (
+              <span key={color} className="sam-swatch" style={{ backgroundColor: color }} />
+            ))}
+            <span className="sam-more">+2</span>
+          </div>
+          <strong>{product.price}</strong>
+        </div>
       </div>
     </a>
   );
@@ -104,77 +129,252 @@ export default function FeaturedMerchPortal() {
   const [target, setTarget] = useState(null);
 
   useEffect(() => {
-    let originalGrid = null;
-    let portalRoot = null;
+    let frameId;
+    let originals = [];
 
-    const reconcile = () => {
-      const section = document.querySelector('[data-testid="home-merch-section"]');
-
-      if (!section) {
-        if (portalRoot && !portalRoot.isConnected) {
-          portalRoot = null;
-          originalGrid = null;
-          setTarget(null);
-        }
+    const locate = () => {
+      const node = document.querySelector('[data-testid="home-merch-section"]');
+      if (!node) {
+        frameId = window.requestAnimationFrame(locate);
         return;
       }
 
-      if (portalRoot?.isConnected) return;
-
-      const container = section.querySelector(".max-w-7xl");
-      const nextGrid = section.querySelector(".grid.grid-cols-2");
-      if (!container || !nextGrid) return;
-
-      originalGrid = nextGrid;
-      portalRoot = document.createElement("div");
-      portalRoot.dataset.featuredMerchPortal = "true";
-      portalRoot.className = "mt-12";
-      container.insertBefore(portalRoot, originalGrid);
-      originalGrid.style.display = "none";
-      setTarget(portalRoot);
+      originals = Array.from(node.children);
+      originals.forEach((child) => {
+        child.dataset.samOriginalDisplay = child.style.display || "";
+        child.style.display = "none";
+      });
+      setTarget(node);
     };
 
-    reconcile();
-    const observer = new MutationObserver(reconcile);
-    observer.observe(document.body, { childList: true, subtree: true });
+    locate();
 
     return () => {
-      observer.disconnect();
-      setTarget(null);
-      if (originalGrid?.isConnected) originalGrid.style.display = "";
-      if (portalRoot?.parentNode) portalRoot.parentNode.removeChild(portalRoot);
+      if (frameId) window.cancelAnimationFrame(frameId);
+      originals.forEach((child) => {
+        child.style.display = child.dataset.samOriginalDisplay || "";
+        delete child.dataset.samOriginalDisplay;
+      });
     };
   }, []);
 
   if (!target) return null;
 
   return createPortal(
-    <>
-      <div className="mb-7 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-storm-blue/25 bg-storm-blue/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-storm-blue">
-          <Sparkles className="h-4 w-4" /> Three New Storm &amp; Me Tees
+    <section className="sam-store" aria-labelledby="sam-store-title">
+      <style>{`
+        .sam-store {
+          width: min(1240px, calc(100% - 32px));
+          margin: 0 auto;
+          padding: 68px 0 78px;
+          color: #f8f4ec;
+        }
+        .sam-store * { box-sizing: border-box; }
+        .sam-head {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 28px;
+          margin-bottom: 28px;
+        }
+        .sam-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin: 0 0 10px;
+          color: #78a9ff;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: .17em;
+          text-transform: uppercase;
+        }
+        .sam-store h2 {
+          margin: 0;
+          max-width: 720px;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(35px, 5vw, 60px);
+          line-height: .98;
+          letter-spacing: -.035em;
+        }
+        .sam-intro {
+          max-width: 650px;
+          margin: 15px 0 0;
+          color: rgba(248, 244, 236, .68);
+          font-size: 16px;
+          line-height: 1.62;
+        }
+        .sam-shop,
+        .sam-shop-bottom {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          min-height: 48px;
+          padding: 0 21px;
+          border: 1px solid rgba(215, 180, 97, .55);
+          border-radius: 999px;
+          background: #d7b461;
+          color: #10141b;
+          font-size: 14px;
+          font-weight: 800;
+          text-decoration: none;
+          transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+        }
+        .sam-shop:hover,
+        .sam-shop-bottom:hover {
+          transform: translateY(-2px);
+          background: #e6ca7c;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, .24);
+        }
+        .sam-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 18px;
+        }
+        .sam-card {
+          overflow: hidden;
+          min-width: 0;
+          border: 1px solid rgba(255, 255, 255, .13);
+          border-radius: 17px;
+          background: rgba(9, 14, 22, .9);
+          color: inherit;
+          text-decoration: none;
+          box-shadow: 0 18px 48px rgba(0, 0, 0, .23);
+          transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        }
+        .sam-card:hover {
+          transform: translateY(-6px);
+          border-color: rgba(120, 169, 255, .52);
+          box-shadow: 0 24px 58px rgba(0, 0, 0, .34);
+        }
+        .sam-image {
+          position: relative;
+          display: grid;
+          place-items: center;
+          aspect-ratio: 1 / 1;
+          overflow: hidden;
+          background: radial-gradient(circle at 50% 25%, #fff 0%, #f3f0eb 42%, #e3ded7 100%);
+        }
+        .sam-image::after {
+          content: "";
+          position: absolute;
+          z-index: 0;
+          left: 10%;
+          right: 10%;
+          bottom: 7%;
+          height: 18px;
+          border-radius: 50%;
+          background: rgba(22, 24, 27, .14);
+          filter: blur(9px);
+        }
+        .sam-badge {
+          position: absolute;
+          z-index: 3;
+          top: 13px;
+          left: 13px;
+          padding: 6px 9px;
+          border: 1px solid rgba(11, 20, 32, .13);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, .78);
+          color: #17202a;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: .13em;
+          text-transform: uppercase;
+          backdrop-filter: blur(8px);
+        }
+        .sam-art {
+          position: relative;
+          z-index: 1;
+          width: 90%;
+          height: 90%;
+          transition: transform 220ms ease;
+        }
+        .sam-card:hover .sam-art { transform: scale(1.035); }
+        .sam-info { padding: 18px 17px 19px; }
+        .sam-title-row {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 12px;
+          align-items: start;
+        }
+        .sam-title-row h3 {
+          margin: 0;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 17px;
+          line-height: 1.3;
+          letter-spacing: -.014em;
+        }
+        .sam-title-row svg {
+          margin-top: 2px;
+          color: rgba(248, 244, 236, .5);
+          transition: color 180ms ease, transform 180ms ease;
+        }
+        .sam-card:hover .sam-title-row svg {
+          color: #78a9ff;
+          transform: translate(2px, -2px);
+        }
+        .sam-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          margin-top: 18px;
+        }
+        .sam-meta strong {
+          color: #d7b461;
+          font-size: 15px;
+          white-space: nowrap;
+        }
+        .sam-swatches { display: flex; align-items: center; gap: 6px; }
+        .sam-swatch {
+          width: 14px;
+          height: 14px;
+          border: 1px solid rgba(255, 255, 255, .31);
+          border-radius: 50%;
+          box-shadow: 0 0 0 1px rgba(0, 0, 0, .23);
+        }
+        .sam-more {
+          color: rgba(248, 244, 236, .58);
+          font-size: 11px;
+          font-weight: 700;
+        }
+        .sam-bottom-wrap { display: none; justify-content: center; margin-top: 28px; }
+        @media (max-width: 1040px) {
+          .sam-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 720px) {
+          .sam-store { width: min(100% - 24px, 560px); padding: 52px 0 64px; }
+          .sam-head { grid-template-columns: 1fr; margin-bottom: 24px; }
+          .sam-head .sam-shop { display: none; }
+          .sam-bottom-wrap { display: flex; }
+        }
+        @media (max-width: 540px) {
+          .sam-grid { grid-template-columns: 1fr; }
+          .sam-image { aspect-ratio: 1.12 / 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sam-card, .sam-art, .sam-shop, .sam-shop-bottom, .sam-title-row svg { transition: none; }
+        }
+      `}</style>
+
+      <div className="sam-head">
+        <div>
+          <p className="sam-eyebrow"><ShoppingBag size={15} aria-hidden="true" /> Official Storm &amp; Me products</p>
+          <h2 id="sam-store-title">Wear what you survived.</h2>
+          <p className="sam-intro">The real storefront lineup—clean product cards, accurate names, accurate prices, and no made-up merchandise.</p>
         </div>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-storm-silver/65 sm:text-base">
-          Bold reminders for the days when surviving is the victory.
-        </p>
+        <a className="sam-shop" href={SHOP_URL} target="_blank" rel="noreferrer">Shop all products <ArrowUpRight size={17} aria-hidden="true" /></a>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6" data-testid="live-featured-merch">
-        {FEATURED_ITEMS.map((item) => (
-          <FeaturedCard key={item.id} item={item} />
-        ))}
+      <div className="sam-grid">
+        {PRODUCTS.map((product) => <ProductCard key={product.id} product={product} />)}
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={PRINTIFY_STORE}
-          className="inline-flex items-center gap-2 rounded-full bg-storm-gold px-6 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5"
-          data-testid="browse-new-storm-shirts"
-        >
-          <ShoppingBag className="h-4 w-4" /> Shop the New Drop
-        </a>
+      <div className="sam-bottom-wrap">
+        <a className="sam-shop-bottom" href={SHOP_URL} target="_blank" rel="noreferrer">Shop all products <ArrowUpRight size={17} aria-hidden="true" /></a>
       </div>
-    </>,
+    </section>,
     target,
   );
 }
