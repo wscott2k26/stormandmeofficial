@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import "@/index.css";
 import "@/author-compact.css";
 import App from "@/App";
@@ -37,6 +38,7 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
+      <Analytics mode="production" />
     </QueryClientProvider>
   </React.StrictMode>,
 );
