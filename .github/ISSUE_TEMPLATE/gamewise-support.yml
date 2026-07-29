@@ -1,0 +1,75 @@
+name: GameWise support request
+description: Report a GameWise gameplay, voice, purchase, or device issue.
+title: "[GameWise Support] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve GameWise. This repository is public. Do not post passwords, API keys, room tokens, full receipts, addresses, phone numbers, or other private information.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Problem area
+      options:
+        - Gameplay or rules
+        - Tutorial or coaching
+        - Character voice
+        - Cloud Game Night
+        - Premium purchase or restore
+        - Accessibility
+        - Crash or performance
+        - Privacy or data deletion
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: GameWise version
+      placeholder: e.g. 0.6.0
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and operating system
+      placeholder: e.g. iPhone 17 Pro, iOS 26.5
+    validations:
+      required: true
+  - type: input
+    id: game
+    attributes:
+      label: Game or screen
+      placeholder: e.g. Miss Ruby Bingo, Spades tutorial, Premium screen
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Tell us what you tapped or played, in order.
+      placeholder: |
+        1. Opened...
+        2. Tapped...
+        3. Expected...
+        4. Actually saw...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed passwords, API keys, room tokens, receipts, and personal information.
+          required: true
