@@ -11,21 +11,21 @@ SHIRTS = [
         "name": "Some Things Ain't Worth It… But You Are — Stay Tee",
         "price": "$34.99",
         "url": "https://stormandme.printify.me/product/30324789",
-        "image": "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102044/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=front-2&revision=1785025198746&s=2048",
+        "image": "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102045/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=back-2&revision=1785025198746&s=2048",
     },
     {
         "id": "still-standing-tee",
         "name": "The House That Pain Built — Still Standing Tee",
         "price": "$34.99",
         "url": "https://stormandme.printify.me/product/30324825",
-        "image": "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102044/the-house-that-pain-built-still-standing-tee.jpg?camera_label=front-2&revision=1785025226555&s=2048",
+        "image": "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102045/the-house-that-pain-built-still-standing-tee.jpg?camera_label=back-2&revision=1785025226555&s=2048",
     },
     {
         "id": "found-my-way-back-tee",
         "name": "I Survived the Storm — Found My Way Back Tee",
         "price": "$34.99",
         "url": "https://stormandme.printify.me/product/30324848",
-        "image": "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102044/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=front-2&revision=1785025247713&s=2048",
+        "image": "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102045/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=back-2&revision=1785025247713&s=2048",
     },
 ]
 
@@ -75,7 +75,7 @@ def test_featured_shirts_use_real_printify_product_photos_without_fake_local_moc
     for shirt in SHIRTS:
         assert f'image: "{shirt["image"]}"' in text
         assert shirt["image"].startswith("https://images-api.printify.com/mockup/")
-        assert "camera_label=front-2" in shirt["image"]
+        assert "camera_label=back-2" in shirt["image"]
 
     assert "Official Product" not in text
     assert not MERCH_DIR.exists() or not any(MERCH_DIR.glob("*.svg"))

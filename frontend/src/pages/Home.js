@@ -14,7 +14,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "Some Things Ain't Worth It… But You Are — Stay Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102044/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=front-2&revision=1785025198746&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102045/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=back-2&revision=1785025198746&s=2048",
     url: "https://stormandme.printify.me/product/30324789",
   }),
   Object.freeze({
@@ -22,7 +22,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "The House That Pain Built — Still Standing Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102044/the-house-that-pain-built-still-standing-tee.jpg?camera_label=front-2&revision=1785025226555&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102045/the-house-that-pain-built-still-standing-tee.jpg?camera_label=back-2&revision=1785025226555&s=2048",
     url: "https://stormandme.printify.me/product/30324825",
   }),
   Object.freeze({
@@ -30,7 +30,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "I Survived the Storm — Found My Way Back Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102044/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=front-2&revision=1785025247713&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102045/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=back-2&revision=1785025247713&s=2048",
     url: "https://stormandme.printify.me/product/30324848",
   }),
 ]);

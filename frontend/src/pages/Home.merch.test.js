@@ -9,7 +9,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324789",
-    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102044/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=front-2&revision=1785025198746&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102045/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=back-2&revision=1785025198746&s=2048",
   },
   {
     id: "still-standing-tee",
@@ -17,7 +17,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324825",
-    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102044/the-house-that-pain-built-still-standing-tee.jpg?camera_label=front-2&revision=1785025226555&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102045/the-house-that-pain-built-still-standing-tee.jpg?camera_label=back-2&revision=1785025226555&s=2048",
   },
   {
     id: "found-my-way-back-tee",
@@ -25,7 +25,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324848",
-    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102044/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=front-2&revision=1785025247713&s=2048",
+    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102045/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=back-2&revision=1785025247713&s=2048",
   },
 ];
 
@@ -49,7 +49,7 @@ describe("homepage featured shirts", () => {
 
   test.each(EXPECTED_SHIRTS)("uses the real Printify product photo for $name", (shirt) => {
     expect(shirt.image).toMatch(/^https:\/\/images-api\.printify\.com\/mockup\//);
-    expect(shirt.image).toContain("camera_label=front-2");
+    expect(shirt.image).toContain("camera_label=back-2");
   });
 
   test("keeps the merch integration limited to the approved catalog", () => {
