@@ -1,6 +1,4 @@
 import React from "react";
-import fs from "fs";
-import path from "path";
 import { renderToStaticMarkup } from "react-dom/server";
 import { FEATURED_SHIRTS, FeaturedShirtCard } from "./Home";
 
@@ -11,7 +9,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324789",
-    image: "/featured-merch/stay-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102044/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=front-2&revision=1785025198746&s=2048",
   },
   {
     id: "still-standing-tee",
@@ -19,7 +17,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324825",
-    image: "/featured-merch/still-standing-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102044/the-house-that-pain-built-still-standing-tee.jpg?camera_label=front-2&revision=1785025226555&s=2048",
   },
   {
     id: "found-my-way-back-tee",
@@ -27,7 +25,7 @@ const EXPECTED_SHIRTS = [
     category: "Featured Tee",
     price: "$34.99",
     url: "https://stormandme.printify.me/product/30324848",
-    image: "/featured-merch/found-my-way-back-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102044/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=front-2&revision=1785025247713&s=2048",
   },
 ];
 
@@ -49,10 +47,9 @@ describe("homepage featured shirts", () => {
     expect(markup).toContain("View Shirt");
   });
 
-  test.each(EXPECTED_SHIRTS)("ships the local image for $name", (shirt) => {
-    const imagePath = path.join(process.cwd(), "public", shirt.image.replace(/^\//, ""));
-    expect(fs.existsSync(imagePath)).toBe(true);
-    expect(fs.readFileSync(imagePath, "utf8")).toContain("<svg");
+  test.each(EXPECTED_SHIRTS)("uses the real Printify product photo for $name", (shirt) => {
+    expect(shirt.image).toMatch(/^https:\/\/images-api\.printify\.com\/mockup\//);
+    expect(shirt.image).toContain("camera_label=front-2");
   });
 
   test("keeps the merch integration limited to the approved catalog", () => {
@@ -63,5 +60,6 @@ describe("homepage featured shirts", () => {
     expect(homeSource).toContain("Secure checkout and fulfillment through Printify.");
     expect(homeSource).not.toContain("products.slice(0, 4)");
     expect(homeSource).not.toContain("FeaturedMerchPortal");
+    expect(homeSource).not.toContain("Official Product");
   });
 });

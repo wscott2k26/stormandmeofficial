@@ -14,7 +14,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "Some Things Ain't Worth It… But You Are — Stay Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "/featured-merch/stay-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b944526af1ea540dbf2b/18230/102044/some-things-aint-worth-it-but-you-are-stay-tee.jpg?camera_label=front-2&revision=1785025198746&s=2048",
     url: "https://stormandme.printify.me/product/30324789",
   }),
   Object.freeze({
@@ -22,7 +22,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "The House That Pain Built — Still Standing Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "/featured-merch/still-standing-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b96a2f348356b404fed3/18230/102044/the-house-that-pain-built-still-standing-tee.jpg?camera_label=front-2&revision=1785025226555&s=2048",
     url: "https://stormandme.printify.me/product/30324825",
   }),
   Object.freeze({
@@ -30,7 +30,7 @@ export const FEATURED_SHIRTS = Object.freeze([
     name: "I Survived the Storm — Found My Way Back Tee",
     category: "Featured Tee",
     price: "$34.99",
-    image: "/featured-merch/found-my-way-back-tee.svg",
+    image: "https://images-api.printify.com/mockup/6a63b98a3741853e8904bd5b/18230/102044/i-survived-the-storm-found-my-way-back-tee.jpg?camera_label=front-2&revision=1785025247713&s=2048",
     url: "https://stormandme.printify.me/product/30324848",
   }),
 ]);
@@ -54,9 +54,6 @@ export function FeaturedShirtCard({ shirt }) {
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <span className="absolute top-3 left-3 rounded-full border border-storm-gold/30 bg-black/75 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-storm-gold">
-          Official Product
-        </span>
       </a>
       <div className="p-5 flex flex-col flex-1">
         <span className="text-[10px] tracking-[0.22em] uppercase text-storm-blue/80">{shirt.category}</span>
