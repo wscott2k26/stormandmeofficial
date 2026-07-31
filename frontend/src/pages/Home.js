@@ -1,12 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
-import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube } from "lucide-react";
-import { getBooks, getMusic, getVideos, getProducts } from "../lib/api";
+import { BookOpen, Music, Play, ShoppingBag, ArrowRight, Youtube, ExternalLink } from "lucide-react";
+import { getBooks, getMusic, getVideos } from "../lib/api";
 import { ASSETS, BRAND } from "../lib/assets";
 import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, Reveal } from "../components/shared";
-import { BookCard, ProductCard } from "../components/cards";
+import { BookCard } from "../components/cards";
 import CinematicClouds from "../components/CinematicClouds";
+
+export const FEATURED_SHIRTS = Object.freeze([
+  Object.freeze({
+    id: "stay-tee",
+    name: "Some Things Ain't Worth It… But You Are — Stay Tee",
+    category: "Featured Tee",
+    price: "$34.99",
+    image: "/featured-merch/stay-tee.svg",
+    url: "https://stormandme.printify.me/product/30324789",
+  }),
+  Object.freeze({
+    id: "still-standing-tee",
+    name: "The House That Pain Built — Still Standing Tee",
+    category: "Featured Tee",
+    price: "$34.99",
+    image: "/featured-merch/still-standing-tee.svg",
+    url: "https://stormandme.printify.me/product/30324825",
+  }),
+  Object.freeze({
+    id: "found-my-way-back-tee",
+    name: "I Survived the Storm — Found My Way Back Tee",
+    category: "Featured Tee",
+    price: "$34.99",
+    image: "/featured-merch/found-my-way-back-tee.svg",
+    url: "https://stormandme.printify.me/product/30324848",
+  }),
+]);
+
+export function FeaturedShirtCard({ shirt }) {
+  return (
+    <div
+      className="group glass rounded-2xl overflow-hidden flex flex-col hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
+      data-testid={`featured-shirt-${shirt.id}`}
+    >
+      <a
+        href={shirt.url}
+        target="_blank"
+        rel="noreferrer"
+        className="relative block aspect-square overflow-hidden bg-black/40"
+        aria-label={`View ${shirt.name}`}
+      >
+        <img
+          src={shirt.image}
+          alt={shirt.name}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <span className="absolute top-3 left-3 rounded-full border border-storm-gold/30 bg-black/75 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-storm-gold">
+          Official Product
+        </span>
+      </a>
+      <div className="p-5 flex flex-col flex-1">
+        <span className="text-[10px] tracking-[0.22em] uppercase text-storm-blue/80">{shirt.category}</span>
+        <h3 className="font-medium text-white mt-1.5 leading-snug flex-1">{shirt.name}</h3>
+        <p className="mt-3 text-white font-semibold">{shirt.price}</p>
+        <a
+          href={shirt.url}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-full border border-storm-silver/40 text-white text-xs font-semibold py-2.5 hover:bg-white/5 transition-colors"
+        >
+          View Shirt <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 const HERO_MESSAGE_LIBRARY = [
   { lead: "The Storm Doesn't Get the", accent: "Final Word." },
@@ -96,7 +163,6 @@ export default function Home() {
   const [books, setBooks] = useState([]);
   const [music, setMusic] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [products, setProducts] = useState([]);
   const [heroMessages, setHeroMessages] = useState(() => getDailyHeroMessages());
   const [heroIndex, setHeroIndex] = useState(0);
 
@@ -104,7 +170,6 @@ export default function Home() {
     getBooks().then(setBooks).catch(() => {});
     getMusic().then(setMusic).catch(() => {});
     getVideos().then(setVideos).catch(() => {});
-    getProducts().then(setProducts).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -290,11 +355,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <Reveal><SectionHeading overline="The Storm Collection" title="Wearable Reminders"
             subtitle="Wearable reminders of strength, healing, faith, perseverance, and survival. Every piece is a quiet encouragement—for you, and for the next person who needs to see that the storm does not get the final word." /></Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-12">
-            {products.slice(0, 4).map((product, index) => (
-              <Reveal key={product.id} delay={(index % 4) * 0.05}><ProductCard product={product} /></Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mt-12">
+            {FEATURED_SHIRTS.map((shirt, index) => (
+              <Reveal key={shirt.id} delay={index * 0.05}>
+                <FeaturedShirtCard shirt={shirt} />
+              </Reveal>
             ))}
           </div>
+          <p className="mt-6 text-center text-sm text-storm-silver/60">
+            Secure checkout and fulfillment through Printify.
+          </p>
           <div className="text-center mt-12"><GlowButton to="/shop" data-testid="home-shop-storm">Shop the Storm Collection <ArrowRight className="w-4 h-4" /></GlowButton></div>
         </div>
       </section>
