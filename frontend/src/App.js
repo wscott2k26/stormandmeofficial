@@ -29,6 +29,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Account from "./pages/Account";
 import LegalPage from "./pages/LegalPage";
+import IamLegalPage from "./pages/IamLegalPage";
 
 function App() {
   return (
@@ -66,6 +67,11 @@ function App() {
                 <Route path="/shipping" element={<LegalPage slug="shipping" />} />
                 <Route path="/returns" element={<LegalPage slug="returns" />} />
                 <Route path="/accessibility" element={<LegalPage slug="accessibility" />} />
+                <Route path="/iam/privacy" element={<IamLegalPage slug="privacy" />} />
+                <Route path="/iam/terms" element={<IamLegalPage slug="terms" />} />
+                <Route path="/iam/safety" element={<IamLegalPage slug="safety" />} />
+                <Route path="/iam/support" element={<IamLegalPage slug="support" />} />
+                <Route path="/iam/delete-account" element={<IamLegalPage slug="delete" />} />
               </Route>
             </Routes>
           </BrowserRouter>
