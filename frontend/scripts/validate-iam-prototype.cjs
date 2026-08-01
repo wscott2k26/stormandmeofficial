@@ -49,14 +49,15 @@ for (const required of requiredAreas) {
   if (!areaIds.includes(required)) fail(`missing required area ${required}`);
 }
 
-const allIds = new Set();
+const uniqueAreaIds = new Set();
+const uniqueScreenIds = new Set();
 const requiredFields = ['id', 'title', 'eyebrow', 'summary', 'primaryAction'];
 let screenCount = 0;
 
 for (const area of registry.areas) {
   if (!area.id || !area.label || !area.description) fail('every area needs id, label, and description');
-  if (allIds.has(area.id)) fail(`duplicate id ${area.id}`);
-  allIds.add(area.id);
+  if (uniqueAreaIds.has(area.id)) fail(`duplicate area id ${area.id}`);
+  uniqueAreaIds.add(area.id);
   if (!Array.isArray(area.screens) || area.screens.length === 0) fail(`area ${area.id} has no screens`);
 
   for (const screen of area.screens) {
@@ -66,8 +67,8 @@ for (const area of registry.areas) {
         fail(`screen ${screen.id || '(unknown)'} is missing ${field}`);
       }
     }
-    if (allIds.has(screen.id)) fail(`duplicate id ${screen.id}`);
-    allIds.add(screen.id);
+    if (uniqueScreenIds.has(screen.id)) fail(`duplicate screen id ${screen.id}`);
+    uniqueScreenIds.add(screen.id);
   }
 }
 
@@ -105,4 +106,7 @@ if (navSource.includes('/iam/internal-prototype')) {
   fail('internal prototype must not appear in public navigation');
 }
 
-console.log(`I AM prototype validation passed: ${registry.areas.length} areas, ${screenCount} screens, ${allIds.size} unique IDs.`);
+console.log(
+  `I AM prototype validation passed: ${registry.areas.length} areas, ${screenCount} screens, ` +
+  `${uniqueAreaIds.size} unique area IDs, ${uniqueScreenIds.size} unique screen IDs.`
+);
