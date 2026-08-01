@@ -116,6 +116,10 @@ const STATIC_PAGES = {
     title: "Accessibility Statement | Storm & Me Official",
     description: "Read the Storm & Me Official commitment to accessible navigation, readable content, reduced motion, and visitor feedback.",
   },
+  "/iam/internal-prototype": {
+    title: "I AM Internal Prototype | Storm And Me LLC",
+    description: "A protected, synthetic product-review prototype for the I AM working title. Not a public launch or live user environment.",
+  },
 };
 
 const NO_INDEX_PATHS = new Set([
@@ -123,6 +127,7 @@ const NO_INDEX_PATHS = new Set([
   "/checkout",
   "/account",
   "/order-confirmation",
+  "/iam/internal-prototype",
 ]);
 
 function upsertMeta(selector, attributes) {
