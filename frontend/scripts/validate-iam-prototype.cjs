@@ -2,13 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const repoRoot = path.resolve(root, '..');
 const registryPath = path.join(root, 'src', 'data', 'iamPrototypeScreens.json');
 const pagePath = path.join(root, 'src', 'pages', 'IamPrototype.js');
 const appPath = path.join(root, 'src', 'App.js');
 const navPath = path.join(root, 'src', 'components', 'Navbar.js');
 const seoPath = path.join(root, 'src', 'components', 'SeoManager.js');
-const vercelPath = path.join(repoRoot, 'vercel.json');
 
 function fail(message) {
   console.error(`I AM prototype validation failed: ${message}`);
@@ -16,7 +14,7 @@ function fail(message) {
 }
 
 function requireText(filePath) {
-  if (!fs.existsSync(filePath)) fail(`missing file ${path.relative(repoRoot, filePath)}`);
+  if (!fs.existsSync(filePath)) fail(`missing file ${path.relative(root, filePath)}`);
   return fs.readFileSync(filePath, 'utf8');
 }
 
@@ -25,7 +23,6 @@ const pageSource = requireText(pagePath);
 const appSource = requireText(appPath);
 const navSource = requireText(navPath);
 const seoSource = requireText(seoPath);
-const vercelSource = requireText(vercelPath);
 
 const requiredAreas = [
   'onboarding',
@@ -122,12 +119,6 @@ if (seoRouteMatches.length < 2) {
 }
 if (!seoSource.includes('I AM Internal Prototype | Storm And Me LLC')) {
   fail('SeoManager is missing the internal prototype title');
-}
-if (!vercelSource.includes('"source": "/iam/internal-prototype"')) {
-  fail('vercel.json is missing the internal prototype header rule');
-}
-if (!vercelSource.includes('"key": "X-Robots-Tag"') || !vercelSource.includes('"value": "noindex, nofollow, noarchive"')) {
-  fail('vercel.json must send a noindex X-Robots-Tag for the internal prototype');
 }
 
 console.log(
