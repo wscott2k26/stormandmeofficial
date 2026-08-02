@@ -1,4 +1,4 @@
-import { conversationHref } from "./IamConversationsPage";
+import { conversationHref } from "./conversationNavigation";
 
 describe("I AM conversation navigation", () => {
   test("builds the exact encoded resume route", () => {
