@@ -207,6 +207,10 @@ export default function IamTalkPage() {
           <div className="iam-private-caution"><LockKeyhole aria-hidden="true" /><span>Private mode is not intentionally saved to I AM conversation history. It cannot erase browser, device, network, provider or security logs.</span></div>
         )}
 
+        {state.privacyMode === "standard" && state.messages.length > 0 && (
+          <div className="iam-private-caution"><AlertTriangle aria-hidden="true" /><span>Phase 1 transparency: saved messages are visible here, but the current AI backend responds to the newest message without using the full prior thread as model context.</span></div>
+        )}
+
         <div className="iam-message-list" aria-label="Conversation messages">
           {unavailable ? (
             <div className="iam-empty-state">
