@@ -56,6 +56,17 @@ export default function IamTalkPage() {
   }, []);
 
   useEffect(() => {
+    if (!rateLimitedUntil) return undefined;
+    const delay = rateLimitedUntil - Date.now();
+    if (delay <= 0) {
+      setRateLimitedUntil(0);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setRateLimitedUntil(0), delay);
+    return () => window.clearTimeout(timer);
+  }, [rateLimitedUntil]);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [state.messages, state.status]);
 
@@ -126,7 +137,7 @@ export default function IamTalkPage() {
         privacyMode: state.privacyMode,
       });
 
-      const messages = state.privacyMode === "private"
+      const messages = state.privacyMode === "private" || !result.messages
         ? [...priorMessages, localMessage("user", message), localMessage("assistant", result.text)]
         : result.messages;
 
@@ -143,15 +154,23 @@ export default function IamTalkPage() {
     } catch (error) {
       if (error?.status === 429) setRateLimitedUntil(Date.now() + 15000);
 
-      if (state.privacyMode === "standard" && state.conversationId && !error?.status) {
+      const uncertainConversationId = error?.conversationId || state.conversationId;
+      if (state.privacyMode === "standard" && error?.mayHavePersisted && uncertainConversationId) {
         dispatch({ type: "RECONCILE_STARTED" });
         try {
           const result = await reconcileUncertainSend({
-            conversationId: state.conversationId,
+            conversationId: uncertainConversationId,
             message,
             sendStartedAt: startedAt,
           });
-          dispatch({ type: "RECONCILE_SUCCEEDED", ...result });
+          dispatch({
+            type: "RECONCILE_SUCCEEDED",
+            conversationId: uncertainConversationId,
+            ...result,
+          });
+          if (result.persisted && uncertainConversationId !== requestedConversation) {
+            setParams({ conversation: uncertainConversationId }, { replace: true });
+          }
           return;
         } catch (_reconcileError) {
           // Fall through to the safe generic failure.
