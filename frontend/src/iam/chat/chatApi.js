@@ -89,6 +89,14 @@ async function invokeChat(client, body) {
   };
 }
 
+async function removeBlankConversation(conversationId, userId, client) {
+  try {
+    await deleteConversation(conversationId, userId, client);
+  } catch (_error) {
+    // A failed cleanup must never replace the original chat error.
+  }
+}
+
 export async function sendChatMessage({
   userId,
   conversationId,
@@ -113,24 +121,41 @@ export async function sendChatMessage({
   const created = !conversationId;
   const conversation = created ? await createConversation(userId, client) : { id: conversationId };
   const activeId = conversation.id;
-  const response = await invokeChat(client, {
-    conversationId: activeId,
-    message: normalized,
-    privacyMode: "standard",
-  });
+
+  let response;
+  try {
+    response = await invokeChat(client, {
+      conversationId: activeId,
+      message: normalized,
+      privacyMode: "standard",
+    });
+  } catch (error) {
+    if (created && error?.status) {
+      await removeBlankConversation(activeId, userId, client);
+    } else if (created) {
+      error.conversationId = activeId;
+      error.mayHavePersisted = true;
+    }
+    throw error;
+  }
 
   const update = {
     updated_at: new Date().toISOString(),
     ...(created ? { title: deriveConversationTitle(normalized) } : {}),
   };
-  const { error: updateError } = await client
+  await client
     .from("conversations")
     .update(update)
     .eq("id", activeId)
     .eq("user_id", userId);
-  if (updateError) throw chatError(updateError.message || "Conversation could not be updated.", updateError.status);
 
-  const messages = await loadMessages(activeId, client);
+  let messages = null;
+  try {
+    messages = await loadMessages(activeId, client);
+  } catch (_error) {
+    // The AI response is still usable. A later reload can recover persisted history.
+  }
+
   return { ...response, conversationId: activeId, messages };
 }
 
