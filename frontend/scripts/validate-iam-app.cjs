@@ -17,10 +17,19 @@ if (packageJson.dependencies?.["@supabase/supabase-js"] !== "2.106.2") {
   fail("@supabase/supabase-js must be pinned to 2.106.2");
 }
 
+const expectedSupabaseUrl = "https://xdstipqlrnnuutggvhbz.supabase.co";
+if (process.env.REACT_APP_SUPABASE_URL !== expectedSupabaseUrl) {
+  fail("REACT_APP_SUPABASE_URL is missing or does not match the approved I AM project");
+}
+if (!String(process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim()) {
+  fail("REACT_APP_SUPABASE_ANON_KEY is missing from the Vercel build environment");
+}
+
 const requiredFiles = [
   "src/iam/config/iamConfig.js",
   "src/iam/data/supabaseClient.js",
   "src/iam/auth/authState.js",
+  "src/iam/auth/authValidation.js",
   "src/iam/auth/IamAuthProvider.js",
   "src/iam/auth/IamProtectedRoute.js",
   "src/iam/auth/IamEntryPage.js",
@@ -31,6 +40,7 @@ const requiredFiles = [
   "src/iam/layout/IamAppShell.js",
   "src/iam/chat/chatApi.js",
   "src/iam/chat/chatState.js",
+  "src/iam/chat/conversationNavigation.js",
   "src/iam/chat/IamTalkPage.js",
   "src/iam/chat/IamConversationsPage.js",
   "src/iam/styles/iam.css",
@@ -97,4 +107,4 @@ for (const secretMarker of ["SUPABASE_SERVICE_ROLE_KEY", "OPENAI_API_KEY", "sk-"
   if (allIamSource.includes(secretMarker)) fail(`browser I AM source contains forbidden secret marker ${secretMarker}`);
 }
 
-console.log("I AM app validation passed: auth, onboarding, real chat, history, privacy, noindex, safety-action and dead-control checks.");
+console.log("I AM app validation passed: configured auth, onboarding, real chat, history, privacy, noindex, safety-action and dead-control checks.");
