@@ -51,7 +51,7 @@ export default function IamConversationsPage() {
           <div>
             <p className="iam-kicker">Private history · working title</p>
             <h1 id="iam-conversations-title">Conversations</h1>
-            <p>Resume saved threads or start fresh. Private-mode exchanges are not intentionally added here.</p>
+            <p>Open saved history or start fresh. In this Phase 1 preview, the AI still responds to the newest message rather than using the full prior thread as model context.</p>
           </div>
           <Link className="iam-button iam-button-primary" to="/iam/app/talk"><MessageCirclePlus aria-hidden="true" /> Start a conversation</Link>
         </header>
