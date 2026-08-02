@@ -75,11 +75,25 @@ for (const marker of ["/iam/auth", "/iam/onboarding", "/iam/app", "noindex,follo
 }
 
 const talk = read("src/iam/chat/IamTalkPage.js");
-for (const marker of ["8,000", "private", "/iam/safety", 'aria-live="polite"']) {
+for (const marker of [
+  "8,000",
+  "private",
+  "/iam/safety",
+  'aria-live="polite"',
+  "without using the full prior thread as model context",
+]) {
   if (!talk.includes(marker)) fail(`Talk source is missing ${marker}`);
 }
 for (const forbidden of ["convert_plan", "Momentum", "streak", "Coming soon"]) {
   if (talk.includes(forbidden)) fail(`Talk source contains deferred Phase 1 control text: ${forbidden}`);
+}
+
+const conversations = read("src/iam/chat/IamConversationsPage.js");
+if (conversations.includes("Resume saved threads")) {
+  fail("conversation history must not imply full AI thread-context continuity");
+}
+if (!conversations.includes("newest message rather than using the full prior thread as model context")) {
+  fail("conversation history must disclose the current thread-context limit");
 }
 
 const state = read("src/iam/chat/chatState.js");
@@ -107,4 +121,4 @@ for (const secretMarker of ["SUPABASE_SERVICE_ROLE_KEY", "OPENAI_API_KEY", "sk-"
   if (allIamSource.includes(secretMarker)) fail(`browser I AM source contains forbidden secret marker ${secretMarker}`);
 }
 
-console.log("I AM app validation passed: configured auth, onboarding, real chat, history, privacy, noindex, safety-action and dead-control checks.");
+console.log("I AM app validation passed: configured auth, onboarding, real chat, honest history limits, privacy, noindex, safety-action and dead-control checks.");
