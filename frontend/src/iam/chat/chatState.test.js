@@ -22,6 +22,40 @@ describe("I AM chat state", () => {
     expect(state.status).toBe("error");
   });
 
+  test("preserves the recovered conversation id and clears only a persisted draft", () => {
+    const recovered = chatReducer({
+      ...chatInitialState,
+      draft: "Hello",
+      status: "reconciling",
+    }, {
+      type: "RECONCILE_SUCCEEDED",
+      conversationId: "conversation-1",
+      persisted: true,
+      messages: [{ id: "1", role: "user", content: "Hello" }],
+    });
+
+    expect(recovered.conversationId).toBe("conversation-1");
+    expect(recovered.draft).toBe("");
+    expect(recovered.error).toBe("");
+  });
+
+  test("keeps the draft when reconciliation cannot find the message", () => {
+    const recovered = chatReducer({
+      ...chatInitialState,
+      draft: "Try again",
+      status: "reconciling",
+    }, {
+      type: "RECONCILE_SUCCEEDED",
+      conversationId: "conversation-2",
+      persisted: false,
+      messages: [],
+    });
+
+    expect(recovered.conversationId).toBe("conversation-2");
+    expect(recovered.draft).toBe("Try again");
+    expect(recovered.error).toBe("Your message was not found. You can try sending it again.");
+  });
+
   test("maps rate limits to the approved pause copy", () => {
     expect(messageForChatError({ status: 429 })).toBe("Please pause for a moment before sending another message.");
   });
