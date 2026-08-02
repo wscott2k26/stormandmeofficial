@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { validateNewPassword } from "./IamAuthPage";
+import { validateNewPassword } from "./authValidation";
 
 function source(file) {
   return fs.readFileSync(path.join(process.cwd(), "src/iam/auth", file), "utf8");
