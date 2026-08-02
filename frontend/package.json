@@ -67,7 +67,7 @@
     "validate:iam": "node scripts/validate-iam-prototype.cjs",
     "validate:iam:app": "node scripts/validate-iam-app.cjs",
     "test:iam": "craco test --watchAll=false --runInBand --testPathPattern=src/iam",
-    "prebuild": "yarn validate:iam && yarn validate:iam:app && yarn test:iam",
+    "prebuild": "yarn validate:iam && yarn test:iam && yarn validate:iam:app",
     "build": "craco build",
     "test": "craco test"
   },
