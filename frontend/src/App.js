@@ -30,6 +30,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import Account from "./pages/Account";
 import LegalPage from "./pages/LegalPage";
 import IamLegalPage from "./pages/IamLegalPage";
+import IamPrototype from "./pages/IamPrototype";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
                 <Route path="/iam/safety" element={<IamLegalPage slug="safety" />} />
                 <Route path="/iam/support" element={<IamLegalPage slug="support" />} />
                 <Route path="/iam/delete-account" element={<IamLegalPage slug="delete" />} />
+                <Route path="/iam/internal-prototype" element={<IamPrototype />} />
               </Route>
             </Routes>
           </BrowserRouter>

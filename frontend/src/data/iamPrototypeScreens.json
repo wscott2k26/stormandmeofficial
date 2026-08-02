@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "product": "I AM",
+    "status": "working title",
+    "audience": "United States adults age 18 and older",
+    "prototypeLabel": "Internal concept review",
+    "version": "Release 1.0 Foundation"
+  },
+  "lanes": [
+    { "id": "him", "label": "Him", "description": "Grounded, direct, practical support." },
+    { "id": "her", "label": "Her", "description": "Warm, clear, encouraging support." },
+    { "id": "becoming", "label": "Becoming", "description": "User-shaped voice without a gendered lane." }
+  ],
+  "areas": [
+    {
+      "id": "onboarding",
+      "label": "Onboarding",
+      "description": "Adult consent, transparency, personalization, privacy, and first value.",
+      "screens": [
+        { "id": "onboarding-welcome", "title": "Welcome to I AM", "eyebrow": "Begin", "summary": "A calm introduction to a whole-life companion that turns conversation into real-world action.", "primaryAction": "Begin", "secondaryAction": "Read what I AM is", "premium": false },
+        { "id": "onboarding-age", "title": "Adult confirmation", "eyebrow": "Eligibility", "summary": "Confirm that this U.S. release is for adults age 18 or older.", "primaryAction": "I am 18 or older", "secondaryAction": "Leave", "premium": false },
+        { "id": "onboarding-ai-transparency", "title": "Know what you are talking to", "eyebrow": "AI transparency", "summary": "Explain that responses come from AI, may be wrong, and do not replace qualified people or emergency services.", "primaryAction": "I understand", "secondaryAction": "Read the safety statement", "premium": false },
+        { "id": "onboarding-lane", "title": "Choose your support lane", "eyebrow": "Personalization", "summary": "Choose Him, Her, or Becoming without changing the product's safety rules or capabilities.", "primaryAction": "Choose this lane", "secondaryAction": "Compare lanes", "premium": false },
+        { "id": "onboarding-style", "title": "How should I show up?", "eyebrow": "Companion style", "summary": "Set directness, warmth, humor, encouragement, and faith-sensitive language preferences.", "primaryAction": "Save my style", "secondaryAction": "Use balanced defaults", "premium": false },
+        { "id": "onboarding-life-areas", "title": "What matters right now?", "eyebrow": "Life areas", "summary": "Select career, relationships, emotional wellness, confidence, style, rebuilding, or another focus.", "primaryAction": "Continue with my areas", "secondaryAction": "Choose later", "premium": false },
+        { "id": "onboarding-communication", "title": "Set the pace", "eyebrow": "Communication", "summary": "Choose concise or detailed replies, question frequency, action focus, and reminder tone.", "primaryAction": "Save communication choices", "secondaryAction": "Use recommended settings", "premium": false },
+        { "id": "onboarding-memory", "title": "Your memory choices", "eyebrow": "Privacy", "summary": "Choose whether the companion may propose memories. Nothing becomes memory without a visible user decision.", "primaryAction": "Choose my memory setting", "secondaryAction": "Keep memory off", "premium": false },
+        { "id": "onboarding-notifications", "title": "Notifications on your terms", "eyebrow": "Attention", "summary": "Opt into neutral reminders without sensitive text on the lock screen.", "primaryAction": "Choose notification settings", "secondaryAction": "Not now", "premium": false },
+        { "id": "onboarding-safety", "title": "Safety and emergencies", "eyebrow": "Important", "summary": "State that I AM is not monitored in real time and cannot contact emergency help.", "primaryAction": "Review safety options", "secondaryAction": "I understand", "safetyPath": true, "premium": false },
+        { "id": "onboarding-account", "title": "Create your private account", "eyebrow": "Account", "summary": "Use email, Google, or Apple sign-in after accepting terms, privacy, and required consent.", "primaryAction": "Create account", "secondaryAction": "Sign in", "premium": false },
+        { "id": "onboarding-first-checkin", "title": "How are you arriving today?", "eyebrow": "First check-in", "summary": "Capture a private starting point and choose one realistic next move.", "primaryAction": "Save my check-in", "secondaryAction": "Skip this check-in", "premium": false }
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Home",
+      "description": "A personal command center focused on one useful move at a time.",
+      "screens": [
+        { "id": "home-personalized", "title": "Your day, without the noise", "eyebrow": "Home", "summary": "See a lane-aware greeting, current focus, recent progress, and a clear next action.", "primaryAction": "Talk it through", "secondaryAction": "Open my plan", "premium": false },
+        { "id": "home-checkin", "title": "Quick check-in", "eyebrow": "Right now", "summary": "Name the current feeling, energy, pressure, and support needed without turning it into a diagnosis.", "primaryAction": "Save check-in", "secondaryAction": "Keep this private", "premium": false },
+        { "id": "home-todays-move", "title": "Today's move", "eyebrow": "Action", "summary": "Choose one achievable step pulled from the user's active goals and current capacity.", "primaryAction": "Start this move", "secondaryAction": "Choose another", "premium": false },
+        { "id": "home-goal-summary", "title": "What you are building", "eyebrow": "Goals", "summary": "Show active goals, the next step, flexible timing, and progress without guilt or streak pressure.", "primaryAction": "Open goal", "secondaryAction": "Add a goal", "premium": false },
+        { "id": "home-saved-insight", "title": "An insight worth keeping", "eyebrow": "Memory", "summary": "Display a user-approved insight with a plain explanation of why it was saved and controls to edit or delete it.", "primaryAction": "Review memory", "secondaryAction": "Delete it", "premium": false },
+        { "id": "home-resource", "title": "Find trusted support", "eyebrow": "Resources", "summary": "Open verified national or local resources with source, review date, access methods, and availability notes.", "primaryAction": "Open resource finder", "secondaryAction": "View verification details", "premium": false },
+        { "id": "home-safety-shortcut", "title": "Private support options", "eyebrow": "Discreet access", "summary": "Reach the Safety Path quickly without a dramatic label or a false promise that device traces can be erased.", "primaryAction": "Open private support", "secondaryAction": "Quick exit", "safetyPath": true, "premium": false }
+      ]
+    },
+    {
+      "id": "talk",
+      "label": "Talk",
+      "description": "Substantive conversation that can become an insight, plan, task, or resource.",
+      "screens": [
+        { "id": "talk-conversations", "title": "Conversations", "eyebrow": "Talk", "summary": "See saved conversations, private-session entry, dates, and user-controlled deletion.", "primaryAction": "Start a conversation", "secondaryAction": "Open private session", "premium": false },
+        { "id": "talk-new", "title": "What is on your mind?", "eyebrow": "New conversation", "summary": "Begin with text or voice and choose whether the conversation can be saved.", "primaryAction": "Start talking", "secondaryAction": "Use private mode", "premium": false },
+        { "id": "talk-active", "title": "A real conversation", "eyebrow": "Active chat", "summary": "Stream clear responses with visible AI identity, uncertainty, and action-oriented follow-through.", "primaryAction": "Send message", "secondaryAction": "Pause", "premium": false },
+        { "id": "talk-voice", "title": "Speak instead", "eyebrow": "Voice input", "summary": "Capture user-initiated voice input with visible recording state and editable transcription.", "primaryAction": "Use this transcript", "secondaryAction": "Discard recording", "premium": false },
+        { "id": "talk-actions", "title": "What should happen next?", "eyebrow": "Response actions", "summary": "Regenerate, correct, save, share a user-safe excerpt, report, or turn the response into a plan.", "primaryAction": "Choose an action", "secondaryAction": "Keep talking", "premium": false },
+        { "id": "talk-save-insight", "title": "Save the part that matters", "eyebrow": "Insight", "summary": "Edit the proposed insight, select its life area, and decide whether it may be remembered.", "primaryAction": "Save insight", "secondaryAction": "Do not save", "premium": false },
+        { "id": "talk-convert-plan", "title": "Turn words into movement", "eyebrow": "Plan", "summary": "Convert selected conversation content into an editable goal and realistic next steps.", "primaryAction": "Build the plan", "secondaryAction": "Keep as notes", "premium": true },
+        { "id": "talk-private", "title": "Private session", "eyebrow": "Not saved to cloud", "summary": "Use a conversation designed not to persist in cloud history, with an honest warning about device and network traces.", "primaryAction": "Begin private session", "secondaryAction": "Return to regular chat", "premium": false },
+        { "id": "talk-report", "title": "Report this response", "eyebrow": "Safety and quality", "summary": "Report unsafe, offensive, inaccurate, manipulative, or otherwise harmful output to the protected review queue.", "primaryAction": "Submit report", "secondaryAction": "Cancel", "premium": false },
+        { "id": "talk-settings", "title": "Conversation settings", "eyebrow": "Controls", "summary": "Adjust tone, memory proposals, faith-sensitive language, voice, accessibility, and conversation deletion.", "primaryAction": "Save settings", "secondaryAction": "Delete conversation", "premium": false },
+        { "id": "talk-safety-shortcut", "title": "Need a safer path?", "eyebrow": "Discreet support", "summary": "Leave the normal chat flow for immediate-danger guidance, safer-device notes, verified resources, and advocate options.", "primaryAction": "Open private support", "secondaryAction": "Quick exit", "safetyPath": true, "premium": false }
+      ]
+    },
+    {
+      "id": "plan",
+      "label": "Plan",
+      "description": "Editable goals, flexible steps, check-ins, and progress history.",
+      "screens": [
+        { "id": "plan-life-areas", "title": "Choose the part of life to move", "eyebrow": "Life plan", "summary": "Start with career, relationships, wellness, confidence, style, rebuilding, or a custom area.", "primaryAction": "Choose area", "secondaryAction": "Use recent conversation", "premium": false },
+        { "id": "plan-goal-list", "title": "Your active goals", "eyebrow": "Goals", "summary": "See active, paused, completed, and archived goals without ranking the user's worth.", "primaryAction": "Create a goal", "secondaryAction": "Review completed goals", "premium": false },
+        { "id": "plan-goal-detail", "title": "The goal and the why", "eyebrow": "Goal detail", "summary": "Show the user's wording, motivation, timeline, next step, obstacles, and progress history.", "primaryAction": "Work the next step", "secondaryAction": "Edit goal", "premium": false },
+        { "id": "plan-builder", "title": "Build a plan you can live with", "eyebrow": "Plan builder", "summary": "Generate editable steps sized to time, energy, money, support, and real constraints.", "primaryAction": "Create draft plan", "secondaryAction": "Change the goal", "premium": true },
+        { "id": "plan-step", "title": "One step, clearly defined", "eyebrow": "Step detail", "summary": "Set the action, timing, support, obstacles, and definition of done.", "primaryAction": "Mark in progress", "secondaryAction": "Edit step", "premium": false },
+        { "id": "plan-checkin", "title": "How did this step go?", "eyebrow": "Check-in", "summary": "Record progress, friction, confidence, and what should change next without shame.", "primaryAction": "Save check-in", "secondaryAction": "Talk it through", "premium": false },
+        { "id": "plan-reschedule", "title": "Adjust the plan, not your worth", "eyebrow": "Flexible timing", "summary": "Move, split, reduce, or pause a step while preserving the user's reason and history.", "primaryAction": "Update timing", "secondaryAction": "Pause goal", "premium": false },
+        { "id": "plan-history", "title": "Your progress history", "eyebrow": "History", "summary": "See completed steps, changes, check-ins, and lessons without manipulative streak mechanics.", "primaryAction": "Review a milestone", "secondaryAction": "Export my notes", "premium": true },
+        { "id": "plan-celebrate", "title": "That counted", "eyebrow": "Progress", "summary": "Acknowledge real movement with calm celebration that never triggers during high-risk safety states.", "primaryAction": "Choose the next move", "secondaryAction": "Take a pause", "premium": false },
+        { "id": "plan-archive", "title": "Close this chapter", "eyebrow": "Archive", "summary": "Complete, pause, or archive a goal while preserving or deleting its history by user choice.", "primaryAction": "Archive goal", "secondaryAction": "Keep active", "premium": false }
+      ]
+    },
+    {
+      "id": "career",
+      "label": "Career Studio",
+      "description": "Career direction, résumé analysis, job alignment, interview practice, and application tracking.",
+      "screens": [
+        { "id": "career-home", "title": "Career Studio", "eyebrow": "Career", "summary": "Choose direction, résumé, job match, interview practice, skills, applications, or negotiation.", "primaryAction": "Choose a career tool", "secondaryAction": "Talk about work", "premium": false },
+        { "id": "career-assessment", "title": "Where do you fit next?", "eyebrow": "Career direction", "summary": "Explore strengths, experience, needs, interests, constraints, and realistic role families without inventing qualifications.", "primaryAction": "Build my direction map", "secondaryAction": "Save and return", "premium": true },
+        { "id": "career-pathway", "title": "A path, not a promise", "eyebrow": "Career pathway", "summary": "Compare role options, transferable skills, gaps, likely effort, and evidence needed.", "primaryAction": "Choose a path to explore", "secondaryAction": "Compare another path", "premium": true },
+        { "id": "career-resume-upload", "title": "Upload your résumé", "eyebrow": "Résumé", "summary": "Select a supported file, review privacy notes, and confirm that no experience may be fabricated.", "primaryAction": "Choose file", "secondaryAction": "Paste résumé text", "premium": true },
+        { "id": "career-resume-review", "title": "Résumé review", "eyebrow": "Evidence-based feedback", "summary": "Show strengths, risks, clarity issues, missing evidence, keyword fit, and user-approved revisions.", "primaryAction": "Review recommendations", "secondaryAction": "Delete analysis", "premium": true },
+        { "id": "career-job-match", "title": "Match the job to the truth", "eyebrow": "Job alignment", "summary": "Compare a job description with verified résumé evidence and label matches, partial matches, gaps, and unknowns.", "primaryAction": "Analyze fit", "secondaryAction": "Save job", "premium": true },
+        { "id": "career-skill-gap", "title": "Build the missing proof", "eyebrow": "Skill roadmap", "summary": "Turn real gaps into learning, portfolio, certification, or experience steps without promising a job.", "primaryAction": "Create skill plan", "secondaryAction": "Change target role", "premium": true },
+        { "id": "career-interview-setup", "title": "Practice for the room", "eyebrow": "Interview", "summary": "Choose role, level, format, focus areas, answer length, and pressure level.", "primaryAction": "Start practice", "secondaryAction": "Review tips", "premium": true },
+        { "id": "career-interview-session", "title": "Interview practice", "eyebrow": "Live session", "summary": "Answer one question at a time by text or voice with transparent AI evaluation.", "primaryAction": "Submit answer", "secondaryAction": "Ask to repeat", "premium": true },
+        { "id": "career-answer-feedback", "title": "Make the answer stronger", "eyebrow": "Feedback", "summary": "Grade relevance, structure, evidence, clarity, and confidence without changing the user's history.", "primaryAction": "Try again", "secondaryAction": "Save feedback", "premium": true },
+        { "id": "career-applications", "title": "Application tracker", "eyebrow": "Pipeline", "summary": "Track roles, dates, stages, contacts, follow-ups, documents, and outcomes under user control.", "primaryAction": "Add application", "secondaryAction": "Plan follow-up", "premium": true },
+        { "id": "career-negotiation", "title": "Prepare for the conversation", "eyebrow": "Negotiation", "summary": "Organize priorities, market evidence, questions, boundaries, and fallback choices without legal or financial promises.", "primaryAction": "Build negotiation notes", "secondaryAction": "Practice the conversation", "premium": true }
+      ]
+    },
+    {
+      "id": "relationships",
+      "label": "Relationships",
+      "description": "Communication, boundaries, healthy-pattern education, concern detection, and breakup recovery.",
+      "screens": [
+        { "id": "relationships-home", "title": "Relationship support", "eyebrow": "Relationships", "summary": "Choose communication preparation, boundaries, healthy signs, concern check, or recovery support.", "primaryAction": "Choose support", "secondaryAction": "Talk privately", "premium": false },
+        { "id": "relationships-conversation", "title": "Prepare the conversation", "eyebrow": "Communication", "summary": "Clarify the goal, facts, feelings, request, timing, and safer alternatives before a difficult talk.", "primaryAction": "Build my conversation", "secondaryAction": "Practice it", "premium": true },
+        { "id": "relationships-boundary", "title": "A boundary you can explain", "eyebrow": "Boundaries", "summary": "Define the behavior, personal limit, response, and support plan without controlling another person.", "primaryAction": "Save boundary plan", "secondaryAction": "Talk through resistance", "premium": true },
+        { "id": "relationships-healthy-signs", "title": "What healthy can look like", "eyebrow": "Education", "summary": "Review respect, repair, consent, trust, independence, honesty, and mutual responsibility.", "primaryAction": "Reflect on my situation", "secondaryAction": "Save an insight", "premium": false },
+        { "id": "relationships-concern", "title": "Check the pattern", "eyebrow": "Concern check", "summary": "Explore coercion, fear, isolation, threats, stalking, financial control, and escalation without diagnosing or making a safety guarantee.", "primaryAction": "Review safer options", "secondaryAction": "Open private support", "safetyPath": true, "premium": false },
+        { "id": "relationships-breakup", "title": "Getting through the ending", "eyebrow": "Recovery", "summary": "Build a practical recovery plan around contact, routines, support, triggers, identity, and next steps.", "primaryAction": "Create recovery plan", "secondaryAction": "Talk it through", "premium": true },
+        { "id": "relationships-saved-plan", "title": "Your relationship plan", "eyebrow": "Saved work", "summary": "Review and edit a conversation, boundary, recovery, or concern-response plan with privacy controls.", "primaryAction": "Open plan", "secondaryAction": "Delete plan", "premium": false }
+      ]
+    },
+    {
+      "id": "wellness",
+      "label": "Wellness Reset",
+      "description": "Reflection, routines, support connection, and grounded next steps without clinical claims.",
+      "screens": [
+        { "id": "wellness-home", "title": "Wellness Reset", "eyebrow": "Emotional wellness", "summary": "Choose a check-in, reset plan, support connection, routine, or reflection tool.", "primaryAction": "Choose a reset", "secondaryAction": "Talk first", "premium": false },
+        { "id": "wellness-state", "title": "Name what is happening", "eyebrow": "Check-in", "summary": "Describe feelings, thoughts, body cues, pressures, supports, and immediate needs without diagnosis.", "primaryAction": "Continue", "secondaryAction": "Keep this private", "premium": false },
+        { "id": "wellness-reset", "title": "Build a gentle reset", "eyebrow": "Plan", "summary": "Create small actions for sleep routine, food, movement, environment, obligations, and support while respecting health limitations.", "primaryAction": "Create reset plan", "secondaryAction": "Make it smaller", "premium": true },
+        { "id": "wellness-connection", "title": "Bring a real person in", "eyebrow": "Human connection", "summary": "Choose a trusted person or qualified service and draft a simple message asking for support.", "primaryAction": "Draft the message", "secondaryAction": "Choose someone else", "premium": false },
+        { "id": "wellness-routine", "title": "A routine that bends", "eyebrow": "Daily support", "summary": "Build a realistic morning, workday, evening, or recovery routine that can be adjusted without shame.", "primaryAction": "Save routine", "secondaryAction": "Try a lighter version", "premium": true },
+        { "id": "wellness-escalation", "title": "This may need more than an app", "eyebrow": "Support options", "summary": "Encourage qualified care, crisis support, or emergency help based on risk without claiming to diagnose the user.", "primaryAction": "View support options", "secondaryAction": "Contact someone I trust", "safetyPath": true, "premium": false }
+      ]
+    },
+    {
+      "id": "confidence-style",
+      "label": "Confidence & Style",
+      "description": "Identity, presentation, grooming, saved boards, budget awareness, and transparent shopping guidance.",
+      "screens": [
+        { "id": "confidence-home", "title": "Confidence and style", "eyebrow": "Presentation", "summary": "Choose confidence reflection, preference profile, grooming, wardrobe, look board, or budget planning.", "primaryAction": "Choose a tool", "secondaryAction": "Talk about confidence", "premium": false },
+        { "id": "confidence-profile", "title": "What feels like you?", "eyebrow": "Preference profile", "summary": "Capture comfort, fit, colors, maintenance, setting, identity, budget, and accessibility needs.", "primaryAction": "Save preferences", "secondaryAction": "Use simple defaults", "premium": true },
+        { "id": "confidence-grooming", "title": "A routine you can maintain", "eyebrow": "Grooming", "summary": "Build practical hair, skin, beard, makeup, or general-care options with health-safe caveats and no medical claims.", "primaryAction": "Build routine", "secondaryAction": "Change maintenance level", "premium": true },
+        { "id": "confidence-wardrobe", "title": "Dress for the actual life", "eyebrow": "Wardrobe", "summary": "Plan outfits around work, events, climate, mobility, fit, existing items, and budget.", "primaryAction": "Create outfit plan", "secondaryAction": "Use what I own", "premium": true },
+        { "id": "confidence-board", "title": "Your look board", "eyebrow": "Saved board", "summary": "Save user-selected inspiration, notes, colors, pieces, and alternatives without implying inventory guarantees.", "primaryAction": "Save look", "secondaryAction": "Remove item", "premium": true },
+        { "id": "confidence-budget", "title": "Style without wrecking the budget", "eyebrow": "Budget", "summary": "Set a spending limit, prioritize gaps, compare maintenance cost, and label affiliate relationships clearly.", "primaryAction": "Build budget plan", "secondaryAction": "Choose no-buy options", "premium": false }
+      ]
+    },
+    {
+      "id": "safety",
+      "label": "Safety Path",
+      "description": "Discreet, survivor-centered guidance, safer planning education, and verified resources.",
+      "screens": [
+        { "id": "safety-entry", "title": "Private support", "eyebrow": "Discreet entry", "summary": "Enter a safety-focused flow with an immediate quick-exit control and honest device-trace warning.", "primaryAction": "Continue", "secondaryAction": "Quick exit", "safetyPath": true, "premium": false },
+        { "id": "safety-immediate", "title": "Are you in immediate danger?", "eyebrow": "First check", "summary": "Route immediate danger to emergency options and avoid keeping the user inside a long app flow.", "primaryAction": "Show immediate options", "secondaryAction": "No, review other options", "safetyPath": true, "premium": false },
+        { "id": "safety-device", "title": "Could this device be monitored?", "eyebrow": "Safer device notice", "summary": "Explain that app, browser, account, network, location, and notification activity may be visible or recoverable.", "primaryAction": "Review safer-use options", "secondaryAction": "Quick exit", "safetyPath": true, "premium": false },
+        { "id": "safety-situation", "title": "What kind of support fits?", "eyebrow": "Situation options", "summary": "Choose fear, threats, coercion, stalking, digital monitoring, financial control, escalating behavior, or general concern.", "primaryAction": "Continue carefully", "secondaryAction": "Talk to an advocate", "safetyPath": true, "premium": false },
+        { "id": "safety-plan", "title": "Safety-plan workspace", "eyebrow": "User-controlled planning", "summary": "Draft contacts, documents, transportation, medication, children/pets, signals, and safer locations without ordering the user to leave or confront anyone.", "primaryAction": "Edit my plan", "secondaryAction": "Keep only on this device", "safetyPath": true, "premium": false },
+        { "id": "safety-resources", "title": "Verified support resources", "eyebrow": "Resource finder", "summary": "Show only verified, unexpired records with source, jurisdiction, contact methods, access notes, and review date.", "primaryAction": "View contact options", "secondaryAction": "Check verification details", "safetyPath": true, "premium": false },
+        { "id": "safety-advocate", "title": "Connect with a trained advocate", "eyebrow": "Human support", "summary": "Offer call, text, chat, or website options without pretending the app can hand off or monitor the contact in real time.", "primaryAction": "Choose contact method", "secondaryAction": "Return to resources", "safetyPath": true, "premium": false },
+        { "id": "safety-quick-exit", "title": "Quick exit", "eyebrow": "Leave this screen", "summary": "Demonstrate a neutral destination while stating that a quick exit cannot erase browser, app, device, router, carrier, or account history.", "primaryAction": "Exit now", "secondaryAction": "Return", "safetyPath": true, "premium": false },
+        { "id": "safety-education", "title": "Understand the pattern", "eyebrow": "Safety education", "summary": "Offer survivor-centered information on escalation, coercive control, stalking, technology abuse, and support choices without making a diagnosis or prediction.", "primaryAction": "Read safely", "secondaryAction": "Open resources", "safetyPath": true, "premium": false }
+      ]
+    },
+    {
+      "id": "community",
+      "label": "Circles",
+      "description": "Adult, moderated community without direct messages or vulnerable-user solicitation.",
+      "screens": [
+        { "id": "community-home", "title": "Circles", "eyebrow": "Community", "summary": "Browse active adult communities with rules, moderation status, and no direct-message feature.", "primaryAction": "Choose a circle", "secondaryAction": "Review standards", "premium": false },
+        { "id": "community-circle", "title": "A moderated circle", "eyebrow": "Circle", "summary": "Read posts, reactions, community rules, reporting controls, and visible moderation notices.", "primaryAction": "Create a post", "secondaryAction": "Leave circle", "premium": false },
+        { "id": "community-compose", "title": "Share without oversharing", "eyebrow": "New post", "summary": "Write a post with reminders not to expose addresses, credentials, precise location, safety-plan details, or identifying private information.", "primaryAction": "Review post", "secondaryAction": "Discard", "premium": false },
+        { "id": "community-review", "title": "Review before posting", "eyebrow": "Safety check", "summary": "Show moderation feedback, privacy warnings, and user-edit options before publication.", "primaryAction": "Post to circle", "secondaryAction": "Edit post", "premium": false },
+        { "id": "community-report", "title": "Report community content", "eyebrow": "Moderation", "summary": "Report harassment, threats, doxxing, self-harm encouragement, exploitation, illegal content, impersonation, or other harm.", "primaryAction": "Submit report", "secondaryAction": "Block account", "premium": false },
+        { "id": "community-block", "title": "Block this account", "eyebrow": "Control", "summary": "Prevent the blocked account's content from appearing to the user while preserving necessary moderation evidence.", "primaryAction": "Confirm block", "secondaryAction": "Cancel", "premium": false },
+        { "id": "community-standards", "title": "Community Standards", "eyebrow": "Rules", "summary": "Explain adult-only participation, prohibited conduct, moderation, evidence preservation, appeals, and account restrictions.", "primaryAction": "Accept standards", "secondaryAction": "Leave community", "premium": false }
+      ]
+    },
+    {
+      "id": "memory",
+      "label": "Memory Center",
+      "description": "Visible, consensual, editable, explainable, pausable, and deletable memory.",
+      "screens": [
+        { "id": "memory-home", "title": "Memory Center", "eyebrow": "Your control", "summary": "See every saved memory, its category, source, date, status, and why it may influence responses.", "primaryAction": "Review a memory", "secondaryAction": "Pause all memory", "premium": false },
+        { "id": "memory-detail", "title": "Why this was remembered", "eyebrow": "Memory detail", "summary": "Show the exact saved statement, user approval, source conversation, purpose, and edit/delete controls.", "primaryAction": "Edit memory", "secondaryAction": "Delete memory", "premium": false },
+        { "id": "memory-proposal", "title": "Remember this?", "eyebrow": "Permission", "summary": "Present a concise proposed memory that can be edited, approved, or refused without pressure.", "primaryAction": "Approve edited memory", "secondaryAction": "Do not remember", "premium": false },
+        { "id": "memory-paused", "title": "Memory is paused", "eyebrow": "Privacy", "summary": "Explain what pausing changes, what remains stored, and how to delete stored memories separately.", "primaryAction": "Keep paused", "secondaryAction": "Resume proposals", "premium": false },
+        { "id": "memory-delete", "title": "Delete this memory", "eyebrow": "Permanent action", "summary": "Confirm deletion and explain that removing a memory does not necessarily delete its original conversation unless the user chooses that too.", "primaryAction": "Delete permanently", "secondaryAction": "Cancel", "premium": false }
+      ]
+    },
+    {
+      "id": "profile-subscription",
+      "label": "Profile & Subscription",
+      "description": "Identity, preferences, privacy, accessibility, notifications, entitlement, and account controls.",
+      "screens": [
+        { "id": "profile-home", "title": "Profile and settings", "eyebrow": "Account", "summary": "Open companion, life-area, memory, privacy, accessibility, notification, subscription, support, and deletion controls.", "primaryAction": "Choose a setting", "secondaryAction": "Sign out", "premium": false },
+        { "id": "profile-companion", "title": "Companion preferences", "eyebrow": "Personalization", "summary": "Change lane, tone, humor, faith-sensitive language, directness, detail, and question style.", "primaryAction": "Save preferences", "secondaryAction": "Restore balanced defaults", "premium": false },
+        { "id": "profile-privacy", "title": "Privacy controls", "eyebrow": "Data", "summary": "Manage memory, conversation retention, private sessions, analytics, exports, deletion, and consent history.", "primaryAction": "Review privacy choices", "secondaryAction": "Read privacy policy", "premium": false },
+        { "id": "profile-accessibility", "title": "Accessibility", "eyebrow": "Access", "summary": "Set text size, contrast, reduced motion, screen-reader labels, captions, haptics, and voice controls.", "primaryAction": "Save accessibility settings", "secondaryAction": "Use system settings", "premium": false },
+        { "id": "profile-notifications", "title": "Notification controls", "eyebrow": "Attention", "summary": "Choose categories, timing, neutral lock-screen language, quiet hours, and complete opt-out.", "primaryAction": "Save notification choices", "secondaryAction": "Turn all off", "premium": false },
+        { "id": "profile-security", "title": "Security", "eyebrow": "Account protection", "summary": "Manage device lock, active sessions, sign-in methods, recovery, and sign-out from all devices.", "primaryAction": "Review sessions", "secondaryAction": "Enable device lock", "premium": false },
+        { "id": "profile-subscription", "title": "I AM Premium", "eyebrow": "Subscription", "summary": "Show entitlement, included features, store-managed billing, cancellation information, and restore purchase.", "primaryAction": "Manage subscription", "secondaryAction": "Restore purchase", "premium": false },
+        { "id": "profile-support", "title": "Support", "eyebrow": "Help", "summary": "Open technical, billing, privacy, unsafe-AI, safety-resource correction, and general support paths.", "primaryAction": "Open support", "secondaryAction": "Read help topics", "premium": false },
+        { "id": "profile-safety-shortcut", "title": "Private support options", "eyebrow": "Discreet access", "summary": "Reach immediate-danger information, safer-device guidance, planning education, and verified resources.", "primaryAction": "Open private support", "secondaryAction": "Quick exit", "safetyPath": true, "premium": false },
+        { "id": "profile-delete", "title": "Delete your account", "eyebrow": "Permanent action", "summary": "Explain scope, store-subscription handling, limited lawful retention, verification, token revocation, and permanent deletion.", "primaryAction": "Begin deletion", "secondaryAction": "Cancel", "premium": false }
+      ]
+    },
+    {
+      "id": "admin-support",
+      "label": "Admin & Operations",
+      "description": "Protected reports, resources, incidents, support, audit, content, entitlements, and system health.",
+      "screens": [
+        { "id": "admin-dashboard", "title": "Operations dashboard", "eyebrow": "Authorized staff", "summary": "See report queues, resource expirations, incidents, support load, system health, and audit alerts without exposing unnecessary user content.", "primaryAction": "Open priority queue", "secondaryAction": "Review system health", "premium": false },
+        { "id": "admin-reports", "title": "Reports queue", "eyebrow": "Safety and quality", "summary": "Triage unsafe AI, community harm, privacy issues, resource corrections, and technical reports by severity and status.", "primaryAction": "Open report", "secondaryAction": "Filter queue", "premium": false },
+        { "id": "admin-report-detail", "title": "Report review", "eyebrow": "Least-privilege access", "summary": "Review the minimum necessary evidence, assign severity, record action, and preserve an audit trail.", "primaryAction": "Record decision", "secondaryAction": "Escalate incident", "premium": false },
+        { "id": "admin-resources", "title": "Resource governance", "eyebrow": "Verified resources", "summary": "Review draft, pending, verified, expired, suspended, and retired resources with sources and verification history.", "primaryAction": "Review resource", "secondaryAction": "See expiring records", "premium": false },
+        { "id": "admin-resource-review", "title": "Verify a resource", "eyebrow": "Human review", "summary": "Confirm official source, jurisdiction, contact methods, hours, languages, accessibility, reviewer, and next review date.", "primaryAction": "Mark verified", "secondaryAction": "Suspend record", "premium": false },
+        { "id": "admin-incidents", "title": "Incident response", "eyebrow": "Protected operations", "summary": "Track severity, containment, affected surfaces, evidence, rollback, communication, correction, and post-incident review.", "primaryAction": "Open incident", "secondaryAction": "Create incident", "premium": false },
+        { "id": "admin-support-queue", "title": "Support requests", "eyebrow": "Support", "summary": "Handle technical, billing, privacy, deletion, resource, unsafe-AI, and general requests with role-based access.", "primaryAction": "Open request", "secondaryAction": "Assign request", "premium": false },
+        { "id": "admin-content", "title": "Approved content", "eyebrow": "Governance", "summary": "Manage reviewed education, help, safety, career, relationship, wellness, and style content with version and approval metadata.", "primaryAction": "Review content", "secondaryAction": "View change history", "premium": false },
+        { "id": "admin-audit", "title": "Audit trail", "eyebrow": "Accountability", "summary": "Review protected records of administrative access and changes without allowing client-side access.", "primaryAction": "Filter audit events", "secondaryAction": "Export authorized log", "premium": false },
+        { "id": "admin-entitlements", "title": "Entitlements and purchase events", "eyebrow": "Billing operations", "summary": "Review verified store lifecycle events, entitlement state, refunds, expirations, and webhook processing without exposing payment credentials.", "primaryAction": "Review entitlement", "secondaryAction": "Open purchase event", "premium": false },
+        { "id": "admin-health", "title": "System health", "eyebrow": "Reliability", "summary": "See authentication, database, Edge Function, AI, notification, purchase, error, and queue health with alert ownership.", "primaryAction": "Review active alert", "secondaryAction": "Open runbook", "premium": false }
+      ]
+    }
+  ]
+}

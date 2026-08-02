@@ -63,6 +63,8 @@
   },
   "scripts": {
     "start": "craco start",
+    "validate:iam": "node scripts/validate-iam-prototype.cjs",
+    "prebuild": "yarn validate:iam",
     "build": "craco build",
     "test": "craco test"
   },
