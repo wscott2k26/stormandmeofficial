@@ -116,6 +116,26 @@ const STATIC_PAGES = {
     title: "Accessibility Statement | Storm & Me Official",
     description: "Read the Storm & Me Official commitment to accessible navigation, readable content, reduced motion, and visitor feedback.",
   },
+  "/iam": {
+    title: "I AM Private Companion | Working Title",
+    description: "Private entry for the I AM working-title adult AI companion by Storm And Me LLC.",
+  },
+  "/iam/auth": {
+    title: "Sign in to I AM | Working Title",
+    description: "Create or access a private I AM working-title account.",
+  },
+  "/iam/onboarding": {
+    title: "Set Up I AM | Working Title",
+    description: "Choose adult AI boundaries and a private support lane for the I AM working title.",
+  },
+  "/iam/app/talk": {
+    title: "Talk to I AM | Working Title",
+    description: "Private authenticated AI-assisted conversation for adult reflection and next-step planning.",
+  },
+  "/iam/app/conversations": {
+    title: "I AM Conversations | Working Title",
+    description: "Review and resume private saved I AM conversations.",
+  },
   "/iam/internal-prototype": {
     title: "I AM Internal Prototype | Storm And Me LLC",
     description: "A protected, synthetic product-review prototype for the I AM working title. Not a public launch or live user environment.",
@@ -127,6 +147,9 @@ const NO_INDEX_PATHS = new Set([
   "/checkout",
   "/account",
   "/order-confirmation",
+  "/iam",
+  "/iam/auth",
+  "/iam/onboarding",
   "/iam/internal-prototype",
 ]);
 
@@ -167,6 +190,10 @@ function pageForPath(pathname) {
     };
   }
 
+  if (pathname.startsWith("/iam/app")) {
+    return STATIC_PAGES["/iam/app/talk"];
+  }
+
   return {
     title: "Storm & Me Official | Will Scott & Willy Will",
     description: "Books, music, stories, videos, and meaningful creations by Will Scott and Willy Will.",
@@ -180,7 +207,7 @@ export default function SeoManager() {
     const cleanPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
     const page = pageForPath(cleanPath);
     const canonical = `${SITE_URL}${cleanPath === "/" ? "" : cleanPath}`;
-    const noIndex = NO_INDEX_PATHS.has(cleanPath);
+    const noIndex = NO_INDEX_PATHS.has(cleanPath) || cleanPath.startsWith("/iam/app");
 
     document.title = page.title;
     setCanonical(canonical);
