@@ -3,12 +3,8 @@ import { MessageCirclePlus, MessagesSquare, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useIamAuth } from "../auth/IamAuthProvider";
 import { deleteConversation, listConversations } from "./chatApi";
+import { conversationHref } from "./conversationNavigation";
 import "../styles/iam.css";
-
-export function conversationHref(id) {
-  if (!id) throw new Error("Conversation id is required.");
-  return `/iam/app/talk?conversation=${encodeURIComponent(id)}`;
-}
 
 function formatUpdated(value) {
   const date = new Date(value);
