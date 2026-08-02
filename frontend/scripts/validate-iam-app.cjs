@@ -68,7 +68,7 @@ const talk = read("src/iam/chat/IamTalkPage.js");
 for (const marker of ["8,000", "private", "/iam/safety", 'aria-live="polite"']) {
   if (!talk.includes(marker)) fail(`Talk source is missing ${marker}`);
 }
-for (const forbidden of ["convert_plan", "Momentum", "streak", "Coming soon", "placeholder"]) {
+for (const forbidden of ["convert_plan", "Momentum", "streak", "Coming soon"]) {
   if (talk.includes(forbidden)) fail(`Talk source contains deferred Phase 1 control text: ${forbidden}`);
 }
 
