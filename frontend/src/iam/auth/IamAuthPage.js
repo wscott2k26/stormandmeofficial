@@ -3,22 +3,9 @@ import { ArrowLeft, Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-reac
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { loadProfile } from "../profile/profileApi";
 import { isProfileComplete } from "../profile/profileContract";
+import { EMAIL_PATTERN, validateCredentials, validateNewPassword } from "./authValidation";
 import { useIamAuth } from "./IamAuthProvider";
 import "../styles/iam.css";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function validateCredentials(email, password) {
-  if (!EMAIL_PATTERN.test(String(email || "").trim())) return "Enter a valid email address.";
-  if (String(password || "").length < 10) return "Password must be at least 10 characters.";
-  return "";
-}
-
-export function validateNewPassword(password, confirmation) {
-  if (String(password || "").length < 10) return "Password must be at least 10 characters.";
-  if (password !== confirmation) return "The passwords do not match.";
-  return "";
-}
 
 export default function IamAuthPage() {
   const auth = useIamAuth();
