@@ -2,6 +2,33 @@ import fs from "fs";
 import path from "path";
 import { createConversation, deriveConversationTitle, sendChatMessage } from "./chatApi";
 
+function createStandardClient({ invokeResult, messageResult = { data: [], error: null } }) {
+  const createSingle = jest.fn().mockResolvedValue({ data: { id: "conversation-1" }, error: null });
+  const createSelect = jest.fn(() => ({ single: createSingle }));
+  const insert = jest.fn(() => ({ select: createSelect }));
+
+  const deleteLastEq = jest.fn().mockResolvedValue({ error: null });
+  const deleteFirstEq = jest.fn(() => ({ eq: deleteLastEq }));
+  const remove = jest.fn(() => ({ eq: deleteFirstEq }));
+
+  const updateLastEq = jest.fn().mockResolvedValue({ error: null });
+  const updateFirstEq = jest.fn(() => ({ eq: updateLastEq }));
+  const update = jest.fn(() => ({ eq: updateFirstEq }));
+
+  const messageOrder = jest.fn().mockResolvedValue(messageResult);
+  const messageEq = jest.fn(() => ({ order: messageOrder }));
+  const messageSelect = jest.fn(() => ({ eq: messageEq }));
+
+  const conversations = { insert, delete: remove, update };
+  const messages = { select: messageSelect };
+  const client = {
+    from: jest.fn((table) => table === "messages" ? messages : conversations),
+    functions: { invoke: jest.fn().mockResolvedValue(invokeResult) },
+  };
+
+  return { client, insert, remove, update };
+}
+
 describe("I AM chat API contract", () => {
   test("derives a trimmed 60-character title", () => {
     expect(deriveConversationTitle("   I need help changing careers after a layoff   "))
@@ -51,6 +78,68 @@ describe("I AM chat API contract", () => {
       safetyTier: "normal",
       actions: [],
       conversationId: expect.any(String),
+      messages: null,
+    });
+  });
+
+  test("cleans up a newly created blank conversation after an explicit function failure", async () => {
+    const { client, remove } = createStandardClient({
+      invokeResult: { data: null, error: { context: { status: 429 } } },
+    });
+
+    await expect(sendChatMessage({
+      userId: "user-1",
+      message: "Hello",
+      privacyMode: "standard",
+      client,
+    })).rejects.toMatchObject({ status: 429 });
+
+    expect(remove).toHaveBeenCalledTimes(1);
+  });
+
+  test("attaches the new conversation id when an uncertain network failure may have persisted", async () => {
+    const { client, remove } = createStandardClient({
+      invokeResult: { data: null, error: { message: "network interrupted" } },
+    });
+
+    let caught;
+    try {
+      await sendChatMessage({
+        userId: "user-1",
+        message: "Hello",
+        privacyMode: "standard",
+        client,
+      });
+    } catch (error) {
+      caught = error;
+    }
+
+    expect(caught).toMatchObject({
+      conversationId: "conversation-1",
+      mayHavePersisted: true,
+    });
+    expect(remove).not.toHaveBeenCalled();
+  });
+
+  test("keeps a successful AI response usable when history reload fails", async () => {
+    const { client } = createStandardClient({
+      invokeResult: {
+        data: { text: "response text", safetyTier: "normal", actions: [] },
+        error: null,
+      },
+      messageResult: { data: null, error: { message: "history unavailable" } },
+    });
+
+    await expect(sendChatMessage({
+      userId: "user-1",
+      message: "Hello",
+      privacyMode: "standard",
+      client,
+    })).resolves.toEqual({
+      text: "response text",
+      safetyTier: "normal",
+      actions: [],
+      conversationId: "conversation-1",
       messages: null,
     });
   });
