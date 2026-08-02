@@ -72,6 +72,7 @@ export function chatReducer(state, action) {
       return {
         ...state,
         status: "idle",
+        conversationId: action.conversationId || state.conversationId,
         messages: action.messages || [],
         draft: action.persisted ? "" : state.draft,
         error: action.persisted ? "" : "Your message was not found. You can try sending it again.",
