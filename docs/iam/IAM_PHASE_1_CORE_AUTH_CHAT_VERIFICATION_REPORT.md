@@ -4,7 +4,7 @@
 **Owner:** Storm And Me LLC  
 **Working title:** I AM  
 **Branch:** `iam-real-web-phase-1`  
-**Status:** The implementation, source validators, and latest 26-test suite are proven. An earlier Phase 1 revision compiled successfully. The current branch remains **blocked** before final compilation and runtime authentication until the two public Supabase browser variables are configured in Vercel and the owner completes a real browser walkthrough.
+**Status:** The implementation, source validators, and latest 27-test suite are proven through the configuration gate. Final runtime authentication and owner browser walkthrough remain required before merge.
 
 ## 1. Implemented scope
 
@@ -65,25 +65,11 @@ Evidence:
 - Jest: **21 tests passed / 21 total**;
 - Create React App result: **Compiled successfully**.
 
-### Latest functional-source test proof
+### Expanded reliability test proof
 
-Vercel deployment:
+The current branch includes a regression test proving the build validator accepts harmless surrounding whitespace in the approved Supabase URL, matching the runtime configuration parser. The red test failed before the fix; after normalizing the build-time URL with `.trim()`, the branch reached **9 test suites / 27 tests passed** before the strict project-value gate.
 
-- ID: `dpl_DnzMbbGsZv78vWawSRn7h1SKptsi`
-- Commit: `332d2f3da5ea58aac9adcdb7267938ac2d0f6ed2`
-- State: `ERROR` only because the strict environment gate intentionally stopped the build after tests
-
-Evidence before the configuration stop:
-
-- existing prototype validator passed: **13 areas / 113 screens**;
-- Jest: **8 test suites passed / 8 total**;
-- Jest: **26 tests passed / 26 total**;
-- the expanded tests cover first-message interruption cleanup, uncertain-send recovery, preserved conversation identity, failed-history fallback, private-mode no-row creation, auth boundaries, owner profile payloads, route isolation, and safe action filtering;
-- exact stop: `REACT_APP_SUPABASE_URL is missing or does not match the approved I AM project`.
-
-The latest branch has additional honesty-validator and documentation-only changes after that functional-source commit. Final production compilation of the current branch is intentionally impossible until the approved public configuration is present.
-
-The builds emitted existing dependency deprecation and peer-dependency warnings. They are not represented as resolved by Phase 1.
+The builds emit existing dependency deprecation and peer-dependency warnings. They are not represented as resolved by Phase 1.
 
 ## 4. Focused reliability review and fixes
 
@@ -100,7 +86,7 @@ The corrected behavior now:
 - keeps a successful AI response visible even when history reload temporarily fails;
 - automatically re-enables the composer after the temporary client-side rate-limit pause.
 
-These behaviors are covered by the expanded 26-test suite.
+These behaviors are covered by the expanded test suite.
 
 ## 5. Runtime configuration gate
 
@@ -115,13 +101,9 @@ The URL must equal:
 
 The key must be an enabled public/anon or publishable browser key. Service-role and OpenAI credentials are expressly prohibited from the browser.
 
-The connected Vercel tools can inspect projects and deployments but do not expose an environment-variable write action. The owner must add the two public values in Vercel, then redeploy the branch.
+### 2026-08-08 configuration verification
 
-### 2026-08-08 redeploy verification trigger
-
-The owner reported that both public values were added in Vercel. A documentation-only commit was intentionally pushed to this branch to force a fresh Preview deployment so the strict build gate can prove whether those values are actually present in the Preview build environment. No application logic, Supabase schema, Edge Function, Expo/EAS, or native build behavior is changed by this trigger.
-
-A second documentation-only trigger was pushed after the owner confirmed both variables were saved, specifically to prove the updated Preview environment on the `iam-real-web-phase-1` branch rather than relying on a production redeploy of `main`.
+The owner added both public values in Vercel. Fresh Preview deployments proved the variables were reaching the branch. A validator mismatch that compared the URL before trimming was reproduced with a failing regression test and fixed so build-time validation now matches runtime parsing. The owner then corrected the stored URL to the approved project value. This documentation update intentionally triggers a fresh Preview build to prove the corrected URL, publishable key, full 27-test suite, strict validator, and production compilation together.
 
 ## 6. Backend contract and current thread-context limit
 
@@ -154,40 +136,35 @@ True multi-turn continuity requires a separately reviewed Edge Function change w
 - regression evaluation;
 - controlled deployment and rollback evidence.
 
-No silent production Edge Function change was made in this phase.
+No silent production Edge Function change has been made yet.
 
 ## 7. What is not yet proven
 
 The following remain open and block merge/readiness claims:
 
-1. Vercel public Supabase variables are not configured.
-2. The current strict-gate deployment is red by design until configuration is added.
-3. Sign-up, email confirmation, sign-in, password reset, and session restoration have not been completed by a real browser user on the protected preview.
-4. Supabase redirect allowlisting for the protected Vercel preview has not been proven.
-5. A real authenticated standard-mode AI exchange has not been completed end to end from the web client.
-6. A real private-mode exchange has not been manually checked for absence from normal conversation history.
-7. Saved-history opening and conversation deletion have not been manually checked against a real test account.
-8. True multi-turn AI thread context is not implemented.
-9. Owner mobile/desktop visual review has not occurred.
-10. Phase 2 actions—plans, memories, and reports—are intentionally hidden, not implemented.
-11. Momentum, Daily Moves, levels, and full celebration behavior remain Phase 3.
+1. The newest strict-gate Preview deployment must reach `READY` after the corrected URL value.
+2. Sign-up, email confirmation, sign-in, password reset, and session restoration have not yet been completed by a real browser user on the protected preview.
+3. Supabase redirect allowlisting for the protected Vercel preview has not been proven.
+4. A real authenticated standard-mode AI exchange has not been completed end to end from the web client.
+5. A real private-mode exchange has not been manually checked for absence from normal conversation history.
+6. Saved-history opening and conversation deletion have not been manually checked against a real test account.
+7. True multi-turn AI thread context is not implemented.
+8. Owner mobile/desktop visual review has not occurred.
+9. Phase 2 actions—plans, memories, and reports—are intentionally hidden, not implemented.
+10. Momentum, Daily Moves, levels, and full celebration behavior remain Phase 3.
 
 ## 8. Required next verification
 
-After the two public Vercel values are added:
-
-1. Redeploy the latest branch head.
-2. Require both validators, all **26 tests**, and production compilation to pass again.
-3. Open the protected `/iam` preview in a real browser.
-4. Create or use a dedicated test account.
-5. Complete onboarding in each lane at least once.
-6. Send a normal standard-mode message and verify the real AI response and persisted history.
-7. Reload, open, and delete the test conversation while recognizing the current thread-context limitation.
-8. Send a private-mode message and verify it does not enter normal conversation history.
-9. Test sign-out, sign-in, password-reset request, and password update.
-10. Check mobile and desktop layouts, keyboard operation, reduced motion, no dead controls, Safety links, and noindex/no-store headers.
-
-A separate backend plan is required before enabling full multi-turn model context.
+1. Require both validators, all **27 tests**, and production compilation to pass on the latest branch head.
+2. Open the protected `/iam` preview in a real browser.
+3. Create or use a dedicated test account.
+4. Complete onboarding.
+5. Send a normal standard-mode message and verify the real AI response and persisted history.
+6. Reload, open, and delete the test conversation while recognizing the current thread-context limitation.
+7. Send a private-mode message and verify it does not enter normal conversation history.
+8. Test sign-out, sign-in, password-reset request, and password update.
+9. Check mobile and desktop layouts, keyboard operation, reduced motion, no dead controls, Safety links, and noindex/no-store headers.
+10. Resolve true multi-turn continuity through its separately reviewed backend change before final readiness.
 
 ## 9. Merge recommendation
 
@@ -195,11 +172,10 @@ Keep pull request #5 in **draft** state.
 
 Do not merge until:
 
-- the two public Vercel values are configured;
 - the latest branch deployment is `READY` under the strict configuration gate;
 - a real authenticated AI exchange is proven;
 - the owner visually and functionally reviews the protected preview;
-- the current thread-context limitation is accepted for Phase 1 or resolved through a separately approved backend change;
+- true multi-turn continuity is resolved or explicitly deferred;
 - unresolved findings are either fixed or explicitly accepted.
 
 No native build authorization is implied by eventual web merge.
