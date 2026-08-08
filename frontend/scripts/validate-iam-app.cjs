@@ -18,7 +18,7 @@ if (packageJson.dependencies?.["@supabase/supabase-js"] !== "2.106.2") {
 }
 
 const expectedSupabaseUrl = "https://xdstipqlrnnuutggvhbz.supabase.co";
-const configuredSupabaseUrl = String(process.env.REACT_APP_SUPABASE_URL || "").trim();
+const configuredSupabaseUrl = String(process.env.REACT_APP_SUPABASE_URL || "").trim().replace(/\/+$/, "");
 if (!configuredSupabaseUrl) {
   fail("REACT_APP_SUPABASE_URL is missing from the Vercel build environment");
 }
@@ -44,7 +44,6 @@ if (configuredSupabaseUrl !== expectedSupabaseUrl) {
     expectedLength: expectedSupabaseUrl.length,
     startsWithHttps: configuredSupabaseUrl.startsWith("https://"),
     endsWithSupabaseCo: configuredSupabaseUrl.endsWith(".supabase.co"),
-    hasTrailingSlash: configuredSupabaseUrl.endsWith("/"),
     hasWrappingQuote: /^["']|["']$/.test(configuredSupabaseUrl),
     looksLikePublishableKey: configuredSupabaseUrl.startsWith("sb_publishable_"),
     parsesAsUrl: Boolean(parsedUrl),
