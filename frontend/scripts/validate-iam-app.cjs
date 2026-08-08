@@ -113,20 +113,30 @@ for (const marker of [
   "private",
   "/iam/safety",
   'aria-live="polite"',
-  "without using the full prior thread as model context",
+  "up to the 12 most recent user/AI messages",
+  "without loading prior conversation history",
 ]) {
   if (!talk.includes(marker)) fail(`Talk source is missing ${marker}`);
 }
-for (const forbidden of ["convert_plan", "Momentum", "streak", "Coming soon"]) {
-  if (talk.includes(forbidden)) fail(`Talk source contains deferred Phase 1 control text: ${forbidden}`);
+for (const forbidden of [
+  "convert_plan",
+  "Momentum",
+  "streak",
+  "Coming soon",
+  "without using the full prior thread as model context",
+]) {
+  if (talk.includes(forbidden)) fail(`Talk source contains outdated or deferred Phase 1 text: ${forbidden}`);
 }
 
 const conversations = read("src/iam/chat/IamConversationsPage.js");
 if (conversations.includes("Resume saved threads")) {
-  fail("conversation history must not imply full AI thread-context continuity");
+  fail("conversation history must use direct, non-hyped continuity language");
 }
-if (!conversations.includes("newest message rather than using the full prior thread as model context")) {
-  fail("conversation history must disclose the current thread-context limit");
+if (!conversations.includes("up to the 12 most recent user/AI messages")) {
+  fail("conversation history must disclose the bounded recent-context behavior");
+}
+if (conversations.includes("newest message rather than using the full prior thread as model context")) {
+  fail("conversation history contains the obsolete v10 context limitation");
 }
 
 const state = read("src/iam/chat/chatState.js");
@@ -154,4 +164,4 @@ for (const secretMarker of ["SUPABASE_SERVICE_ROLE_KEY", "OPENAI_API_KEY", "sk-"
   if (allIamSource.includes(secretMarker)) fail(`browser I AM source contains forbidden secret marker ${secretMarker}`);
 }
 
-console.log("I AM app validation passed: configured auth, onboarding, real chat, honest history limits, privacy, noindex, safety-action and dead-control checks.");
+console.log("I AM app validation passed: configured auth, onboarding, real chat, bounded saved-thread continuity, private-mode disclosure, privacy, noindex, safety-action and dead-control checks.");
