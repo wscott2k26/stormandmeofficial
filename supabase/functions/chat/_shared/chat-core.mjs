@@ -31,17 +31,15 @@ export function buildRecentContext(rows = [], options = {}) {
   return selectedNewestFirst.reverse();
 }
 
-const asInputText = (text) => [{ type: 'input_text', text }];
-
 export function buildResponseInput(system, user, history = []) {
   const priorTurns = history
     .filter(item => item && (item.role === 'user' || item.role === 'assistant') && typeof item.content === 'string' && item.content.length > 0)
-    .map(item => ({ role: item.role, content: asInputText(item.content) }));
+    .map(item => ({ role: item.role, content: item.content }));
 
   return [
-    { role: 'system', content: asInputText(system) },
+    { role: 'system', content: system },
     ...priorTurns,
-    { role: 'user', content: asInputText(user) },
+    { role: 'user', content: user },
   ];
 }
 
