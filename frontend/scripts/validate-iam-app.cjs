@@ -1,0 +1,182 @@
+const fs = require("fs");
+const path = require("path");
+const { spawnSync } = require("child_process");
+
+const root = path.resolve(__dirname, "..");
+const read = (relative) => {
+  const target = path.join(root, relative);
+  if (!fs.existsSync(target)) fail(`missing ${relative}`);
+  return fs.readFileSync(target, "utf8");
+};
+const fail = (message) => {
+  console.error(`I AM app validation failed: ${message}`);
+  process.exit(1);
+};
+
+const packageJson = JSON.parse(read("package.json"));
+if (packageJson.dependencies?.["@supabase/supabase-js"] !== "2.106.2") {
+  fail("@supabase/supabase-js must be pinned to 2.106.2");
+}
+
+const expectedSupabaseUrl = "https://xdstipqlrnnuutggvhbz.supabase.co";
+const configuredSupabaseUrl = String(process.env.REACT_APP_SUPABASE_URL || "").trim().replace(/\/+$/, "");
+if (!configuredSupabaseUrl) {
+  fail("REACT_APP_SUPABASE_URL is missing from the Vercel build environment");
+}
+if (configuredSupabaseUrl !== expectedSupabaseUrl) {
+  let parsedUrl = null;
+  try {
+    parsedUrl = new URL(configuredSupabaseUrl);
+  } catch (_) {
+    parsedUrl = null;
+  }
+
+  let mismatchIndex = -1;
+  const maxLength = Math.max(configuredSupabaseUrl.length, expectedSupabaseUrl.length);
+  for (let index = 0; index < maxLength; index += 1) {
+    if (configuredSupabaseUrl[index] !== expectedSupabaseUrl[index]) {
+      mismatchIndex = index;
+      break;
+    }
+  }
+
+  const diagnostics = {
+    length: configuredSupabaseUrl.length,
+    expectedLength: expectedSupabaseUrl.length,
+    startsWithHttps: configuredSupabaseUrl.startsWith("https://"),
+    endsWithSupabaseCo: configuredSupabaseUrl.endsWith(".supabase.co"),
+    hasWrappingQuote: /^["']|["']$/.test(configuredSupabaseUrl),
+    looksLikePublishableKey: configuredSupabaseUrl.startsWith("sb_publishable_"),
+    parsesAsUrl: Boolean(parsedUrl),
+    approvedHostname: parsedUrl?.hostname === "xdstipqlrnnuutggvhbz.supabase.co",
+    rootPathOnly: parsedUrl ? parsedUrl.pathname === "/" || parsedUrl.pathname === "" : false,
+    mismatchIndex,
+  };
+
+  fail(`REACT_APP_SUPABASE_URL does not match the approved I AM project; safe diagnostics ${JSON.stringify(diagnostics)}`);
+}
+if (!String(process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim()) {
+  fail("REACT_APP_SUPABASE_ANON_KEY is missing from the Vercel build environment");
+}
+
+const requiredFiles = [
+  "src/iam/config/iamConfig.js",
+  "src/iam/data/supabaseClient.js",
+  "src/iam/auth/authState.js",
+  "src/iam/auth/authValidation.js",
+  "src/iam/auth/IamAuthProvider.js",
+  "src/iam/auth/IamProtectedRoute.js",
+  "src/iam/auth/IamEntryPage.js",
+  "src/iam/auth/IamAuthPage.js",
+  "src/iam/profile/profileContract.js",
+  "src/iam/profile/profileApi.js",
+  "src/iam/profile/IamOnboardingPage.js",
+  "src/iam/layout/IamAppShell.js",
+  "src/iam/chat/chatApi.js",
+  "src/iam/chat/chatState.js",
+  "src/iam/chat/conversationNavigation.js",
+  "src/iam/chat/IamTalkPage.js",
+  "src/iam/chat/IamConversationsPage.js",
+  "src/iam/styles/iam.css",
+];
+requiredFiles.forEach(read);
+
+const app = read("src/App.js");
+for (const marker of [
+  'path="/iam"',
+  'path="/iam/auth"',
+  'path="/iam/onboarding"',
+  'path="/iam/app"',
+  'path="talk"',
+  'path="conversations"',
+]) {
+  if (!app.includes(marker)) fail(`App.js is missing route marker ${marker}`);
+}
+const firstLayoutClose = app.indexOf("</Route>");
+const realIamEntry = app.indexOf('path="/iam"');
+if (firstLayoutClose < 0 || realIamEntry < firstLayoutClose) {
+  fail("real I AM application routes must be outside the Storm site Layout route");
+}
+
+const navbar = read("src/components/Navbar.js");
+for (const privatePath of ["/iam/app", "/iam/auth", "/iam/onboarding"]) {
+  if (navbar.includes(privatePath)) fail(`${privatePath} must not appear in public navigation`);
+}
+
+const seo = read("src/components/SeoManager.js");
+for (const marker of ["/iam/auth", "/iam/onboarding", "/iam/app", "noindex,follow"]) {
+  if (!seo.includes(marker)) fail(`SeoManager is missing ${marker}`);
+}
+
+const talk = read("src/iam/chat/IamTalkPage.js");
+for (const marker of [
+  "8,000",
+  "private",
+  "/iam/safety",
+  'aria-live="polite"',
+  "up to the 12 most recent user/AI messages",
+  "without loading prior conversation history",
+]) {
+  if (!talk.includes(marker)) fail(`Talk source is missing ${marker}`);
+}
+for (const forbidden of [
+  "convert_plan",
+  "Momentum",
+  "streak",
+  "Coming soon",
+  "without using the full prior thread as model context",
+]) {
+  if (talk.includes(forbidden)) fail(`Talk source contains outdated or deferred Phase 1 text: ${forbidden}`);
+}
+
+const conversations = read("src/iam/chat/IamConversationsPage.js");
+if (conversations.includes("Resume saved threads")) {
+  fail("conversation history must use direct, non-hyped continuity language");
+}
+if (!conversations.includes("up to the 12 most recent user/AI messages")) {
+  fail("conversation history must disclose the bounded recent-context behavior");
+}
+if (conversations.includes("newest message rather than using the full prior thread as model context")) {
+  fail("conversation history contains the obsolete v10 context limitation");
+}
+
+const state = read("src/iam/chat/chatState.js");
+for (const forbiddenAction of ['action.type === "convert_plan"', 'action.type === "save"', 'action.type === "report"']) {
+  if (state.includes(forbiddenAction)) fail(`Phase 1 action filter exposes ${forbiddenAction}`);
+}
+
+const provider = read("src/iam/auth/IamAuthProvider.js");
+for (const call of ["signUp", "signInWithPassword", "resetPasswordForEmail", "updateUser"]) {
+  if (!provider.includes(call)) fail(`authentication provider is missing ${call}`);
+}
+
+const onboarding = read("src/iam/profile/IamOnboardingPage.js");
+for (const marker of ["at least 18", "not therapy or emergency monitoring", "memoryEnabled", "off by default"]) {
+  if (!onboarding.includes(marker)) fail(`onboarding is missing ${marker}`);
+}
+
+const config = read("src/iam/config/iamConfig.js");
+if (!config.includes("REACT_APP_SUPABASE_URL") || !config.includes("REACT_APP_SUPABASE_ANON_KEY")) {
+  fail("browser configuration must use only the approved public Supabase variables");
+}
+
+const allIamSource = requiredFiles.map(read).join("\n");
+for (const secretMarker of ["SUPABASE_SERVICE_ROLE_KEY", "OPENAI_API_KEY", "sk-"]) {
+  if (allIamSource.includes(secretMarker)) fail(`browser I AM source contains forbidden secret marker ${secretMarker}`);
+}
+
+const edgeTest = spawnSync(
+  process.execPath,
+  ["--test", path.resolve(root, "../supabase/functions/chat/_shared/chat-core.test.mjs")],
+  { stdio: "inherit" },
+);
+if (edgeTest.status !== 0) fail("bounded I AM Edge continuity tests failed");
+
+const edgeContract = spawnSync(
+  process.execPath,
+  [path.resolve(root, "scripts/validate-iam-edge.cjs")],
+  { stdio: "inherit" },
+);
+if (edgeContract.status !== 0) fail("I AM Edge continuity contract validation failed");
+
+console.log("I AM app validation passed: configured auth, onboarding, real chat, bounded saved-thread continuity, private-mode disclosure, privacy, noindex, safety-action, Edge-context, and dead-control checks.");

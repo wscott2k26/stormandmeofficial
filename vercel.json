@@ -69,6 +69,34 @@
       ]
     },
     {
+      "source": "/iam",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/iam/auth",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/iam/onboarding",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/iam/app/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
       "source": "/iam/internal-prototype",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
