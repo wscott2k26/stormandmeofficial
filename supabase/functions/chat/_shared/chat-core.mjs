@@ -1,6 +1,12 @@
 export const MAX_CONTEXT_MESSAGES = 12;
 export const MAX_CONTEXT_CHARS = 12000;
 
+export function normalizeOpenAIModel(value) {
+  const model = String(value ?? '').trim();
+  if (!model) throw new Error('OPENAI_MODEL missing');
+  return model;
+}
+
 export function buildRecentContext(rows = [], options = {}) {
   const maxMessages = Number.isInteger(options.maxMessages) && options.maxMessages > 0
     ? options.maxMessages
@@ -66,6 +72,6 @@ export function sanitizeProviderFailure(error, stage, model) {
     status,
     code: code ? String(code).slice(0, 80) : null,
     type: type ? String(type).slice(0, 80) : null,
-    model: String(model || 'unknown').slice(0, 80),
+    model: String(model || 'unknown').trim().slice(0, 80),
   };
 }
