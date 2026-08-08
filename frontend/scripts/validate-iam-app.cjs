@@ -23,7 +23,7 @@ if (!configuredSupabaseUrl) {
   fail("REACT_APP_SUPABASE_URL is missing from the Vercel build environment");
 }
 if (configuredSupabaseUrl !== expectedSupabaseUrl) {
-  fail("REACT_APP_SUPABASE_URL does not match the approved I AM project");
+  fail(`REACT_APP_SUPABASE_URL does not match the approved I AM project; received public URL ${JSON.stringify(configuredSupabaseUrl)}`);
 }
 if (!String(process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim()) {
   fail("REACT_APP_SUPABASE_ANON_KEY is missing from the Vercel build environment");
