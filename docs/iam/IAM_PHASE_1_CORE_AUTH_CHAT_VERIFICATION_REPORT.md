@@ -1,14 +1,15 @@
 # I AM Phase 1 Core Auth and Chat — Verification Report
 
-**Date:** 2026-08-02  
+**Updated:** 2026-08-08  
 **Owner:** Storm And Me LLC  
 **Working title:** I AM  
 **Branch:** `iam-real-web-phase-1`  
-**Status:** The implementation, source validators, and latest 27-test suite are proven through the configuration gate. Final runtime authentication and owner browser walkthrough remain required before merge.
+**Pull request:** #5  
+**Status:** Automated source, test, backend-deployment, and Vercel build gates are green. A real signed-in owner browser walkthrough remains required before merge.
 
-## 1. Implemented scope
+## 1. Implemented web scope
 
-Phase 1 adds a real web-application surface under the existing Storm And Me deployment without using the normal Storm website header/footer.
+Phase 1 provides a real private I AM web application surface under the existing Storm And Me deployment, outside the normal Storm website header/footer.
 
 Implemented:
 
@@ -21,161 +22,146 @@ Implemented:
 - Him, Her, and Becoming lane selection;
 - memory default off with explicit opt-in language;
 - protected application routes;
-- real standard-mode conversation creation and saved history;
-- real authenticated invocation of the existing Supabase `chat` Edge Function;
-- accurately described private mode that does not intentionally persist normal conversation history;
-- owner-scoped saved-history opening and conversation deletion;
+- real standard-mode conversation creation, history opening, and deletion;
+- authenticated invocation of the Supabase `chat` Edge Function;
+- private mode with accurate non-persistence and trace limitations;
 - safe filtering that hides unsupported Phase 2 plan, memory, and report actions;
 - deliberate `tel:` and Safety Path actions returned by the backend;
 - 8,000-character composer limit, loading, offline, rate-limit, retry, and uncertain-send reconciliation states;
-- premium responsive gradients and a living-light visual foundation;
+- premium responsive gradients and living-light visual foundation;
 - reduced-motion and keyboard-focus support;
 - noindex/no-store handling for private routes;
-- build-blocking checks for configuration, dead controls, route isolation, browser secrets, auth capabilities, honest history language, and the existing 13-area/113-screen product map.
+- build-blocking validation for configuration, route isolation, browser secrets, auth capability, continuity disclosures, safety actions, and dead controls.
 
-## 2. Isolation and diff verification
+## 2. Isolation and no-spend verification
 
-The branch started from reviewed `main` commit:
+The work remains isolated on `iam-real-web-phase-1` and is unmerged in draft PR #5.
 
-`97751673cca440ad5758d417a6e8c3b64f343e72`
+No Expo or EAS build was run. No TestFlight or Google Play upload occurred. No native build credit was used. No new Supabase or Vercel project was created. No domain was purchased, no trademark was filed, and no subscription was activated.
 
-The branch remains:
+No production database DDL or schema migration was applied for this work.
 
-- isolated from open PR #3 (`feat/featured-shirts-deploy`);
-- limited to I AM frontend code, tests, validators, verification documentation, `App.js`, `SeoManager.js`, `frontend/package.json`, and private-route Vercel headers;
-- unmerged and contained in draft PR #5.
+## 3. Vercel configuration resolution
 
-No Expo, EAS, native app, TestFlight, Google Play, domain, trademark, subscription, or production database migration was touched.
-
-## 3. Proven build and test evidence
-
-### Earlier full compile proof
-
-Vercel deployment:
-
-- ID: `dpl_59VAdkcN611rBFYKnK5pjeQdzUYm`
-- Commit: `669afb8b3251399a1c6f6346594bf0ffaa709a73`
-- State: `READY`
-
-Evidence:
-
-- existing prototype validator passed: **13 areas, 113 screens, 13 unique area IDs, 113 unique screen IDs**;
-- real-app validator passed;
-- Jest: **8 test suites passed / 8 total**;
-- Jest: **21 tests passed / 21 total**;
-- Create React App result: **Compiled successfully**.
-
-### Expanded reliability test proof
-
-The current branch includes a regression test proving the build validator accepts harmless surrounding whitespace in the approved Supabase URL, matching the runtime configuration parser. The red test failed before the fix; after normalizing the build-time URL with `.trim()`, the branch reached **9 test suites / 27 tests passed** before the strict project-value gate.
-
-The builds emit existing dependency deprecation and peer-dependency warnings. They are not represented as resolved by Phase 1.
-
-## 4. Focused reliability review and fixes
-
-A focused review of authentication, protected routing, standard/private chat, saved history, and deletion found and corrected a first-message interruption edge case.
-
-Before the correction, a brand-new standard conversation could be created before the Edge Function request, then a network interruption could leave the browser without the new conversation ID for reconciliation.
-
-The corrected behavior now:
-
-- removes a newly created blank conversation after an explicit HTTP/function failure;
-- preserves the new conversation ID when an uncertain network interruption may have persisted the message;
-- reconciles against the server before allowing a duplicate resend;
-- preserves the conversation identity after reconciliation;
-- keeps a successful AI response visible even when history reload temporarily fails;
-- automatically re-enables the composer after the temporary client-side rate-limit pause.
-
-These behaviors are covered by the expanded test suite.
-
-## 5. Runtime configuration gate
-
-The preview cannot be called functional unless Vercel provides:
+The browser requires these public Vercel values:
 
 - `REACT_APP_SUPABASE_URL`
 - `REACT_APP_SUPABASE_ANON_KEY`
 
-The URL must equal:
+The approved Supabase project URL is `https://xdstipqlrnnuutggvhbz.supabase.co`.
 
-`https://xdstipqlrnnuutggvhbz.supabase.co`
+The owner configured both values for Vercel. Fresh Preview builds proved they were present. Testing then identified that the copied project URL contained a harmless trailing `/`. Rather than requiring fragile exact formatting, runtime and build-time parsing now trim whitespace and normalize trailing slashes before validating the approved project.
 
-The key must be an enabled public/anon or publishable browser key. Service-role and OpenAI credentials are expressly prohibited from the browser.
+Regression coverage proves both surrounding whitespace and a copied trailing slash are accepted while a different Supabase project is still rejected.
 
-### 2026-08-08 configuration verification
+## 4. Web reliability fixes
 
-The owner added both public values in Vercel. Fresh Preview deployments proved the variables were reaching the branch. A validator mismatch that compared the URL before trimming was reproduced with a failing regression test and fixed so build-time validation now matches runtime parsing. The owner then corrected the stored URL to the approved project value. This documentation update intentionally triggers a fresh Preview build to prove the corrected URL, publishable key, full 27-test suite, strict validator, and production compilation together.
+A focused auth/chat/history review found and corrected an interrupted first-message edge case. The client now:
 
-## 6. Backend contract and current thread-context limit
+- removes a newly created blank conversation after explicit function failure;
+- preserves the conversation ID after an uncertain network interruption;
+- checks persisted history before allowing a duplicate resend;
+- preserves conversation identity after reconciliation;
+- keeps a successful AI response visible if history reload temporarily fails;
+- automatically re-enables the composer after the temporary client-side rate-limit pause.
 
-The existing production backend remains unchanged.
+## 5. True bounded multi-turn continuity — implemented
 
-Verified facts used by Phase 1:
+The earlier v10 limitation has been resolved.
 
-- Supabase project: `xdstipqlrnnuutggvhbz`;
-- `chat` Edge Function is active and requires JWT;
-- the function authenticates the user, rate-limits requests, moderates input/output, classifies safety risk, retrieves the user's profile/memories/goals, calls the server-side OpenAI Responses API, persists standard-mode messages, and returns structured safety actions;
-- profiles, conversations, messages, memories, and goals already exist;
-- owner RLS checks use `auth.uid()`;
-- deleting a conversation cascades to its messages;
-- separately saved memories set their source-conversation reference to null rather than being silently deleted;
-- no production DDL was required or applied.
+Supabase `chat` Edge Function **version 11** is ACTIVE with JWT verification enabled.
 
-### Important limitation
+Deployment identity:
 
-The current `chat` Edge Function does **not** load prior messages from the selected conversation into the model request. Saved messages can be displayed and deleted, but the AI currently responds to the newest user message plus profile, approved memories, and active goals—not the full prior thread.
+- Function ID: `79fb70a4-1878-4c81-ac4b-7e541aa1c447`
+- Version: `11`
+- Status: `ACTIVE`
+- `verify_jwt`: `true`
+- Deployed SHA: `692a1dafd985d05b3dcff40d3a9ef6722733497da3e9f916aebc81f2892e14da`
 
-The web interface now discloses this limitation and uses `Open saved history` language rather than claiming full thread continuity.
+Saved-mode continuity behavior:
 
-True multi-turn continuity requires a separately reviewed Edge Function change with:
+1. The requested conversation is first verified to belong to the authenticated user.
+2. History is read through the authenticated RLS client, never through the service-role client.
+3. Only prior `user` and `assistant` messages from that conversation are eligible.
+4. At most the newest **12** eligible messages are loaded.
+5. Combined history is capped at **12,000 characters** without slicing a message or skipping an intervening over-cap turn to reach older context.
+6. Selected history is restored to chronological order before the current user message.
+7. Prior conversation text remains ordinary conversation content and is never promoted to system/developer authority.
+8. The OpenAI Responses request keeps `store: false`.
 
-- owner-only conversation lookup;
-- bounded recent-message retrieval;
-- context/token limits;
-- private-mode exclusion;
-- safety and prompt-injection tests;
-- regression evaluation;
-- controlled deployment and rollback evidence.
+Private-mode behavior:
 
-No silent production Edge Function change has been made yet.
+- private mode does not verify or load a saved conversation;
+- private mode does not query prior message history;
+- private mode is not intentionally persisted to the normal conversation history;
+- the UI explicitly warns that private mode cannot erase browser, device, network, provider, or security logs.
 
-## 7. What is not yet proven
+Safety ordering:
 
-The following remain open and block merge/readiness claims:
+- the current message is moderated and classified first;
+- high-risk self-harm, violence, and medical-emergency routing occurs before any saved thread history is loaded;
+- abuse guidance retains the existing safer-device and trained-resource behavior.
 
-1. The newest strict-gate Preview deployment must reach `READY` after the corrected URL value.
-2. Sign-up, email confirmation, sign-in, password reset, and session restoration have not yet been completed by a real browser user on the protected preview.
-3. Supabase redirect allowlisting for the protected Vercel preview has not been proven.
-4. A real authenticated standard-mode AI exchange has not been completed end to end from the web client.
-5. A real private-mode exchange has not been manually checked for absence from normal conversation history.
-6. Saved-history opening and conversation deletion have not been manually checked against a real test account.
-7. True multi-turn AI thread context is not implemented.
-8. Owner mobile/desktop visual review has not occurred.
-9. Phase 2 actions—plans, memories, and reports—are intentionally hidden, not implemented.
-10. Momentum, Daily Moves, levels, and full celebration behavior remain Phase 3.
+## 6. Backend source and rollback
 
-## 8. Required next verification
+The reviewed v11 source is now version-controlled in PR #5:
 
-1. Require both validators, all **27 tests**, and production compilation to pass on the latest branch head.
-2. Open the protected `/iam` preview in a real browser.
-3. Create or use a dedicated test account.
-4. Complete onboarding.
-5. Send a normal standard-mode message and verify the real AI response and persisted history.
-6. Reload, open, and delete the test conversation while recognizing the current thread-context limitation.
-7. Send a private-mode message and verify it does not enter normal conversation history.
-8. Test sign-out, sign-in, password-reset request, and password update.
-9. Check mobile and desktop layouts, keyboard operation, reduced motion, no dead controls, Safety links, and noindex/no-store headers.
-10. Resolve true multi-turn continuity through its separately reviewed backend change before final readiness.
+- `supabase/functions/chat/source/index.ts`
+- `supabase/functions/chat/_shared/openai.ts`
+- `supabase/functions/chat/_shared/cors.ts`
+- `supabase/functions/chat/_shared/safety.ts`
+- `supabase/functions/chat/_shared/chat-core.mjs`
+- `supabase/functions/chat/_shared/chat-core.test.mjs`
 
-## 9. Merge recommendation
+The exact previous production v10 core sources were preserved before deployment under `supabase/functions/chat/rollback/` so a rollback reference exists.
 
-Keep pull request #5 in **draft** state.
+## 7. Latest automated verification
 
-Do not merge until:
+Latest fully evaluated Preview deployment before this documentation-only commit:
 
-- the latest branch deployment is `READY` under the strict configuration gate;
-- a real authenticated AI exchange is proven;
-- the owner visually and functionally reviews the protected preview;
-- true multi-turn continuity is resolved or explicitly deferred;
-- unresolved findings are either fixed or explicitly accepted.
+- Deployment: `dpl_EDnN3fWhSFnQ3nGVyXmaiTHWiJaB`
+- Commit: `2e6fd01950ca7df70498059cbdc9e503f2145e3f`
+- State: **READY**
 
-No native build authorization is implied by eventual web merge.
+Fresh evidence from that deployment:
+
+- original I AM prototype validator: **13 areas / 113 screens passed**;
+- frontend Jest: **9 test suites passed / 9 total**;
+- frontend Jest: **29 tests passed / 29 total**;
+- bounded Edge continuity tests: **8 passed / 8 total**;
+- Edge contract validator passed owner-only history, private-mode exclusion, safety-first ordering, context caps, role boundaries, and `store:false` checks;
+- I AM app validator passed auth, onboarding, real chat, bounded continuity disclosures, privacy, noindex, safety-action, Edge-context, and dead-control checks;
+- Create React App optimized production build: **Compiled successfully**;
+- Vercel deployment: **READY**.
+
+Existing dependency/deprecation warnings remain and are not represented as fixed.
+
+## 8. Honest remaining manual verification
+
+Automated verification does **not** substitute for a real signed-in browser walkthrough. The protected Vercel preview may redirect automated fetches through Vercel SSO, so the following still require owner testing in the browser:
+
+1. Create an account or sign in.
+2. Complete onboarding and verify the selected lane persists.
+3. In Saved mode, send an identifiable first message and receive a real AI response.
+4. Send a follow-up that depends on the first message and confirm the AI uses the recent thread context.
+5. Reload/open that saved conversation, send another follow-up, and confirm continuity still works.
+6. Open History and delete a test conversation.
+7. Switch to Private mode and confirm the UI clearly states that each private message is handled without loading prior conversation history.
+8. Verify a private exchange does not appear in normal saved conversation history.
+9. Test sign-out/sign-in and password reset/update.
+10. Review the mobile layout, Safety Path, keyboard/focus behavior, and visible controls for dead or misleading interactions.
+
+No claim of end-to-end signed-in browser success should be made until this walkthrough is completed.
+
+## 9. Scope still deferred
+
+Phase 2 remains intentionally deferred: real plan conversion, Memory Center writes, and reporting workflows.
+
+Phase 3 remains intentionally deferred: Momentum, Daily Moves, levels/milestones, premium celebration behavior, and broader gamification.
+
+## 10. Merge recommendation
+
+Keep PR #5 in **draft** until the owner completes the real browser walkthrough and confirms the experience visually and functionally.
+
+Web merge authorization remains separate from any future Expo/EAS, TestFlight, Google Play, or native-app build authorization.
