@@ -1,4 +1,4 @@
-import { buildResponseInput } from './chat-core.mjs';
+import { buildResponseInput, normalizeOpenAIModel } from './chat-core.mjs';
 
 const key = () => {
   const value = Deno.env.get('OPENAI_API_KEY');
@@ -24,8 +24,7 @@ export async function respond(
   user: string,
   history: Array<{ role: 'user' | 'assistant'; content: string }> = [],
 ) {
-  const model = Deno.env.get('OPENAI_MODEL');
-  if (!model) throw new Error('OPENAI_MODEL missing');
+  const model = normalizeOpenAIModel(Deno.env.get('OPENAI_MODEL'));
 
   const response = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
