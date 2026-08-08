@@ -52,7 +52,8 @@ if (historyBlock.includes('admin.')) {
 
 const openaiCompact = openai.replace(/\s+/g, '');
 for (const marker of [
-  "import{buildResponseInput}from'./chat-core.mjs';",
+  "import{buildResponseInput,normalizeOpenAIModel}from'./chat-core.mjs';",
+  "normalizeOpenAIModel(Deno.env.get('OPENAI_MODEL'))",
   'buildResponseInput(system,user,history)',
   'store:false',
 ]) {
@@ -62,6 +63,8 @@ for (const marker of [
 for (const marker of [
   'MAX_CONTEXT_MESSAGES = 12',
   'MAX_CONTEXT_CHARS = 12000',
+  'export function normalizeOpenAIModel',
+  "String(value ?? '').trim()",
   "row.role !== 'user' && row.role !== 'assistant'",
   'return selectedNewestFirst.reverse()',
   "item.role === 'user' || item.role === 'assistant'",
@@ -83,4 +86,4 @@ if (index.includes('console.error(e)')) {
   fail('outer chat error handling must not print raw provider errors');
 }
 
-console.log('I AM Edge validation passed: owner-only bounded history, private-mode exclusion, safety-first ordering, context caps, role boundaries, store:false, and sanitized provider diagnostics checks.');
+console.log('I AM Edge validation passed: owner-only bounded history, private-mode exclusion, safety-first ordering, context caps, role boundaries, normalized model config, store:false, and sanitized provider diagnostics checks.');
