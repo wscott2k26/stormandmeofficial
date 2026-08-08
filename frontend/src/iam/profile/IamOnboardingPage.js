@@ -12,7 +12,7 @@ const LANE_COPY = {
   becoming: ["Becoming", "Balanced, adaptive and shaped by your choices."],
 };
 
-export default function IamOnboardingPage({ profile }) {
+export default function IamOnboardingPage({ profile, refreshProfile }) {
   const auth = useIamAuth();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
@@ -39,6 +39,7 @@ export default function IamOnboardingPage({ profile }) {
         memoryEnabled,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
       });
+      if (typeof refreshProfile === "function") await refreshProfile();
       navigate("/iam/app/talk", { replace: true });
     } catch (_caught) {
       setError("Your choices were not saved. Please try again.");
