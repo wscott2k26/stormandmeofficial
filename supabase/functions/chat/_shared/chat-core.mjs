@@ -38,3 +38,34 @@ export function buildResponseInput(system, user, history = []) {
     { role: 'user', content: asInputText(user) },
   ];
 }
+
+export function sanitizeProviderFailure(error, stage, model) {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+  const statusMatch = message.match(/(?:Responses API|Moderation) failed\s+(\d{3})/i);
+  const status = statusMatch ? Number(statusMatch[1]) : null;
+  let code = null;
+  let type = null;
+
+  const jsonStart = message.indexOf('{');
+  if (jsonStart >= 0) {
+    try {
+      const parsed = JSON.parse(message.slice(jsonStart));
+      code = parsed?.error?.code ?? null;
+      type = parsed?.error?.type ?? null;
+    } catch (_) {
+      // Diagnostics intentionally ignore provider text that is not valid JSON.
+    }
+  }
+
+  if (!code && message.includes('OPENAI_MODEL missing')) code = 'openai_model_missing';
+  if (!code && message.includes('OPENAI_API_KEY missing')) code = 'openai_api_key_missing';
+  if (!code && message.includes('Model output failed safety review')) code = 'output_flagged';
+
+  return {
+    stage: String(stage || 'unknown').slice(0, 40),
+    status,
+    code: code ? String(code).slice(0, 80) : null,
+    type: type ? String(type).slice(0, 80) : null,
+    model: String(model || 'unknown').slice(0, 80),
+  };
+}
