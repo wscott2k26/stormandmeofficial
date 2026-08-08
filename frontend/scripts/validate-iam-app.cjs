@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 
 const root = path.resolve(__dirname, "..");
 const read = (relative) => {
@@ -164,4 +165,18 @@ for (const secretMarker of ["SUPABASE_SERVICE_ROLE_KEY", "OPENAI_API_KEY", "sk-"
   if (allIamSource.includes(secretMarker)) fail(`browser I AM source contains forbidden secret marker ${secretMarker}`);
 }
 
-console.log("I AM app validation passed: configured auth, onboarding, real chat, bounded saved-thread continuity, private-mode disclosure, privacy, noindex, safety-action and dead-control checks.");
+const edgeTest = spawnSync(
+  process.execPath,
+  ["--test", path.resolve(root, "../supabase/functions/chat/_shared/chat-core.test.mjs")],
+  { stdio: "inherit" },
+);
+if (edgeTest.status !== 0) fail("bounded I AM Edge continuity tests failed");
+
+const edgeContract = spawnSync(
+  process.execPath,
+  [path.resolve(root, "scripts/validate-iam-edge.cjs")],
+  { stdio: "inherit" },
+);
+if (edgeContract.status !== 0) fail("I AM Edge continuity contract validation failed");
+
+console.log("I AM app validation passed: configured auth, onboarding, real chat, bounded saved-thread continuity, private-mode disclosure, privacy, noindex, safety-action, Edge-context, and dead-control checks.");
