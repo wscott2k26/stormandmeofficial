@@ -51,7 +51,7 @@ export default function IamConversationsPage() {
           <div>
             <p className="iam-kicker">Private history · working title</p>
             <h1 id="iam-conversations-title">Conversations</h1>
-            <p>Open saved history or start fresh. In this Phase 1 preview, the AI still responds to the newest message rather than using the full prior thread as model context.</p>
+            <p>Open a saved conversation to continue with bounded recent context. I AM uses up to the 12 most recent user/AI messages from that conversation for the next reply; older saved messages remain visible but may fall outside that context window.</p>
           </div>
           <Link className="iam-button iam-button-primary" to="/iam/app/talk"><MessageCirclePlus aria-hidden="true" /> Start a conversation</Link>
         </header>
