@@ -23,7 +23,37 @@ if (!configuredSupabaseUrl) {
   fail("REACT_APP_SUPABASE_URL is missing from the Vercel build environment");
 }
 if (configuredSupabaseUrl !== expectedSupabaseUrl) {
-  fail(`REACT_APP_SUPABASE_URL does not match the approved I AM project; received public URL ${JSON.stringify(configuredSupabaseUrl)}`);
+  let parsedUrl = null;
+  try {
+    parsedUrl = new URL(configuredSupabaseUrl);
+  } catch (_) {
+    parsedUrl = null;
+  }
+
+  let mismatchIndex = -1;
+  const maxLength = Math.max(configuredSupabaseUrl.length, expectedSupabaseUrl.length);
+  for (let index = 0; index < maxLength; index += 1) {
+    if (configuredSupabaseUrl[index] !== expectedSupabaseUrl[index]) {
+      mismatchIndex = index;
+      break;
+    }
+  }
+
+  const diagnostics = {
+    length: configuredSupabaseUrl.length,
+    expectedLength: expectedSupabaseUrl.length,
+    startsWithHttps: configuredSupabaseUrl.startsWith("https://"),
+    endsWithSupabaseCo: configuredSupabaseUrl.endsWith(".supabase.co"),
+    hasTrailingSlash: configuredSupabaseUrl.endsWith("/"),
+    hasWrappingQuote: /^["']|["']$/.test(configuredSupabaseUrl),
+    looksLikePublishableKey: configuredSupabaseUrl.startsWith("sb_publishable_"),
+    parsesAsUrl: Boolean(parsedUrl),
+    approvedHostname: parsedUrl?.hostname === "xdstipqlrnnuutggvhbz.supabase.co",
+    rootPathOnly: parsedUrl ? parsedUrl.pathname === "/" || parsedUrl.pathname === "" : false,
+    mismatchIndex,
+  };
+
+  fail(`REACT_APP_SUPABASE_URL does not match the approved I AM project; safe diagnostics ${JSON.stringify(diagnostics)}`);
 }
 if (!String(process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim()) {
   fail("REACT_APP_SUPABASE_ANON_KEY is missing from the Vercel build environment");
