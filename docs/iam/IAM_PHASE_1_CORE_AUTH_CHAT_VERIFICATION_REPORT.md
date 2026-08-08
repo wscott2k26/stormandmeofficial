@@ -121,6 +121,8 @@ The connected Vercel tools can inspect projects and deployments but do not expos
 
 The owner reported that both public values were added in Vercel. A documentation-only commit was intentionally pushed to this branch to force a fresh Preview deployment so the strict build gate can prove whether those values are actually present in the Preview build environment. No application logic, Supabase schema, Edge Function, Expo/EAS, or native build behavior is changed by this trigger.
 
+A second documentation-only trigger was pushed after the owner confirmed both variables were saved, specifically to prove the updated Preview environment on the `iam-real-web-phase-1` branch rather than relying on a production redeploy of `main`.
+
 ## 6. Backend contract and current thread-context limit
 
 The existing production backend remains unchanged.
