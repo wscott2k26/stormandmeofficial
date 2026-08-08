@@ -51,12 +51,13 @@ if (historyBlock.includes('admin.')) {
   fail('history block must use the authenticated RLS client, not service role');
 }
 
+const openaiCompact = openai.replace(/\s+/g, '');
 for (const marker of [
-  "import { buildResponseInput } from './chat-core.mjs'",
+  "import{buildResponseInput}from'./chat-core.mjs';",
   'buildResponseInput(system,user,history)',
   'store:false',
 ]) {
-  if (!openai.includes(marker)) fail(`OpenAI wrapper is missing ${marker}`);
+  if (!openaiCompact.includes(marker)) fail(`OpenAI wrapper is missing semantic marker ${marker}`);
 }
 
 for (const marker of [
