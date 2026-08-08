@@ -53,15 +53,15 @@ test('preserves prior prompt-injection text as ordinary user content', () => {
   ]);
 });
 
-test('builds system, prior user/assistant turns, then current user turn', () => {
+test('builds Responses API history as plain message text, including prior assistant turns', () => {
   assert.deepEqual(buildResponseInput('SYSTEM', 'CURRENT', [
     { role:'user', content:'prior user' },
     { role:'assistant', content:'prior assistant' },
   ]), [
-    { role:'system', content:[{type:'input_text', text:'SYSTEM'}] },
-    { role:'user', content:[{type:'input_text', text:'prior user'}] },
-    { role:'assistant', content:[{type:'input_text', text:'prior assistant'}] },
-    { role:'user', content:[{type:'input_text', text:'CURRENT'}] },
+    { role:'system', content:'SYSTEM' },
+    { role:'user', content:'prior user' },
+    { role:'assistant', content:'prior assistant' },
+    { role:'user', content:'CURRENT' },
   ]);
 });
 
@@ -72,7 +72,7 @@ test('never promotes history to system or developer roles', () => {
     { role:'user', content:'safe context' },
   ]);
   assert.deepEqual(input.map(item=>item.role), ['system','user','user']);
-  assert.equal(input[1].content[0].text, 'safe context');
+  assert.equal(input[1].content, 'safe context');
 });
 
 test('normalizes copied OpenAI model names before API use', () => {
