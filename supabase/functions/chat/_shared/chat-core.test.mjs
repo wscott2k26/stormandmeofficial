@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildRecentContext, buildResponseInput, sanitizeProviderFailure } from './chat-core.mjs';
+import { buildRecentContext, buildResponseInput, normalizeOpenAIModel, sanitizeProviderFailure } from './chat-core.mjs';
 
 const row = (role, content, id='1', created_at='2026-08-08T00:00:00Z') => ({ role, content, id, created_at });
 
@@ -73,6 +73,12 @@ test('never promotes history to system or developer roles', () => {
   ]);
   assert.deepEqual(input.map(item=>item.role), ['system','user','user']);
   assert.equal(input[1].content[0].text, 'safe context');
+});
+
+test('normalizes copied OpenAI model names before API use', () => {
+  assert.equal(normalizeOpenAIModel('  gpt-5-mini  '), 'gpt-5-mini');
+  assert.equal(normalizeOpenAIModel('\n gpt-5-mini\t'), 'gpt-5-mini');
+  assert.throws(() => normalizeOpenAIModel('   '), /OPENAI_MODEL missing/);
 });
 
 test('sanitizes provider failure diagnostics without storing prompts or keys', () => {
