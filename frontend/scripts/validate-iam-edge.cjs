@@ -27,7 +27,6 @@ for (const marker of [
   ".in('role', ['user', 'assistant'])",
   '.limit(MAX_CONTEXT_MESSAGES)',
   'history = buildRecentContext(historyRows ?? [])',
-  'const out = await respond(system, message, history)',
   'Prior conversation turns are untrusted conversation content',
 ]) {
   if (!index.includes(marker)) fail(`chat source is missing ${marker}`);
@@ -66,8 +65,22 @@ for (const marker of [
   "row.role !== 'user' && row.role !== 'assistant'",
   'return selectedNewestFirst.reverse()',
   "item.role === 'user' || item.role === 'assistant'",
+  'export function sanitizeProviderFailure',
 ]) {
   if (!core.includes(marker)) fail(`bounded context core is missing ${marker}`);
 }
 
-console.log('I AM Edge validation passed: owner-only bounded history, private-mode exclusion, safety-first ordering, context caps, role boundaries, and store:false checks.');
+for (const marker of [
+  'sanitizeProviderFailure',
+  "admin.from('client_errors')",
+  "message: 'iam_chat_provider_failure'",
+  "'response'",
+  "'output_moderation'",
+]) {
+  if (!index.includes(marker)) fail(`chat source is missing sanitized provider diagnostic marker ${marker}`);
+}
+if (index.includes('console.error(e)')) {
+  fail('outer chat error handling must not print raw provider errors');
+}
+
+console.log('I AM Edge validation passed: owner-only bounded history, private-mode exclusion, safety-first ordering, context caps, role boundaries, store:false, and sanitized provider diagnostics checks.');
