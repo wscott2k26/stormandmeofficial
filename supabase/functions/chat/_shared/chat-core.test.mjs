@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildRecentContext, buildResponseInput } from './chat-core.mjs';
+import { buildRecentContext, buildResponseInput, sanitizeProviderFailure } from './chat-core.mjs';
 
 const row = (role, content, id='1', created_at='2026-08-08T00:00:00Z') => ({ role, content, id, created_at });
 
@@ -73,4 +73,15 @@ test('never promotes history to system or developer roles', () => {
   ]);
   assert.deepEqual(input.map(item=>item.role), ['system','user','user']);
   assert.equal(input[1].content[0].text, 'safe context');
+});
+
+test('sanitizes provider failure diagnostics without storing prompts or keys', () => {
+  const error = new Error('Responses API failed 429: {"error":{"message":"quota exceeded for secret sk-do-not-store and prompt private words","type":"insufficient_quota","code":"insufficient_quota"}}');
+  assert.deepEqual(sanitizeProviderFailure(error, 'response', 'gpt-5.4-mini'), {
+    stage: 'response',
+    status: 429,
+    code: 'insufficient_quota',
+    type: 'insufficient_quota',
+    model: 'gpt-5.4-mini',
+  });
 });
