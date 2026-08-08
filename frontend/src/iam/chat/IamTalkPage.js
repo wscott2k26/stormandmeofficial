@@ -204,11 +204,11 @@ export default function IamTalkPage() {
         </header>
 
         {state.privacyMode === "private" && (
-          <div className="iam-private-caution"><LockKeyhole aria-hidden="true" /><span>Private mode is not intentionally saved to I AM conversation history. It cannot erase browser, device, network, provider or security logs.</span></div>
+          <div className="iam-private-caution"><LockKeyhole aria-hidden="true" /><span>Private mode is not intentionally saved to I AM conversation history, and each private message is handled without loading prior conversation history. It cannot erase browser, device, network, provider or security logs.</span></div>
         )}
 
         {state.privacyMode === "standard" && state.messages.length > 0 && (
-          <div className="iam-private-caution"><AlertTriangle aria-hidden="true" /><span>Phase 1 transparency: saved messages are visible here, but the current AI backend responds to the newest message without using the full prior thread as model context.</span></div>
+          <div className="iam-private-caution"><AlertTriangle aria-hidden="true" /><span>Saved mode continuity: I AM uses up to the 12 most recent user/AI messages from this conversation as bounded context for the next reply. Older saved messages remain visible here but may fall outside that context window.</span></div>
         )}
 
         <div className="iam-message-list" aria-label="Conversation messages">
