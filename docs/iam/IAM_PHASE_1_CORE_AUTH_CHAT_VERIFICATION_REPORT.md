@@ -63,7 +63,7 @@ Evidence:
 - real-app validator passed;
 - Jest: **8 test suites passed / 8 total**;
 - Jest: **21 tests passed / 21 total**;
-- Create React App: **Compiled successfully**.
+- Create React App result: **Compiled successfully**.
 
 ### Latest functional-source test proof
 
@@ -116,6 +116,10 @@ The URL must equal:
 The key must be an enabled public/anon or publishable browser key. Service-role and OpenAI credentials are expressly prohibited from the browser.
 
 The connected Vercel tools can inspect projects and deployments but do not expose an environment-variable write action. The owner must add the two public values in Vercel, then redeploy the branch.
+
+### 2026-08-08 redeploy verification trigger
+
+The owner reported that both public values were added in Vercel. A documentation-only commit was intentionally pushed to this branch to force a fresh Preview deployment so the strict build gate can prove whether those values are actually present in the Preview build environment. No application logic, Supabase schema, Edge Function, Expo/EAS, or native build behavior is changed by this trigger.
 
 ## 6. Backend contract and current thread-context limit
 
