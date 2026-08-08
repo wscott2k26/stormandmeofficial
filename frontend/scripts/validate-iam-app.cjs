@@ -18,8 +18,12 @@ if (packageJson.dependencies?.["@supabase/supabase-js"] !== "2.106.2") {
 }
 
 const expectedSupabaseUrl = "https://xdstipqlrnnuutggvhbz.supabase.co";
-if (process.env.REACT_APP_SUPABASE_URL !== expectedSupabaseUrl) {
-  fail("REACT_APP_SUPABASE_URL is missing or does not match the approved I AM project");
+const configuredSupabaseUrl = String(process.env.REACT_APP_SUPABASE_URL || "").trim();
+if (!configuredSupabaseUrl) {
+  fail("REACT_APP_SUPABASE_URL is missing from the Vercel build environment");
+}
+if (configuredSupabaseUrl !== expectedSupabaseUrl) {
+  fail("REACT_APP_SUPABASE_URL does not match the approved I AM project");
 }
 if (!String(process.env.REACT_APP_SUPABASE_ANON_KEY || "").trim()) {
   fail("REACT_APP_SUPABASE_ANON_KEY is missing from the Vercel build environment");
