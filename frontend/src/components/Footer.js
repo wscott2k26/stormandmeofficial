@@ -42,7 +42,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-14 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-storm-silver/50">© 2026 {BRAND.domain}. All rights reserved. Created by {BRAND.creator}.</p>
+          <p className="text-xs text-storm-silver/50 text-center sm:text-left">© 2026 Storm And Me LLC. All rights reserved. StormAndMeOfficial.com is owned and operated by Storm And Me LLC.</p>
           <p className="font-display italic text-sm text-storm-gold/80">"{BRAND.line}"</p>
         </div>
         <p className="mt-5 text-center text-[10px] leading-relaxed text-storm-silver/35">
