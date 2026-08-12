@@ -2,9 +2,19 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowUpRight, ShoppingBag } from "lucide-react";
 
-const SHOP_URL = "https://stormandme.printify.me";
+const SHOP_URL = "https://storm-and-me-official.printify.me";
 
 const PRODUCTS = [
+  {
+    id: "broken-pieces-masterpieces",
+    title: "God Makes Masterpieces From Broken Pieces — Cracked Heart Tee",
+    price: "$33.99",
+    kind: "image",
+    image: "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78888/98445/god-makes-masterpieces-from-broken-pieces-cracked-heart-tee.jpg?camera_label=front&revision=1786500190017&s=2048",
+    url: "https://storm-and-me-official.printify.me/product/30876182",
+    accent: "#b7944c",
+    colors: ["#111111", "#f4d7df", "#6f7462"],
+  },
   {
     id: "survived-the-storm",
     title: "I Survived the Storm — Found My Way Back",
@@ -40,6 +50,10 @@ const PRODUCTS = [
 ];
 
 function ProductArt({ product }) {
+  if (product.kind === "image") {
+    return <img className="sam-product-photo" src={product.image} alt={product.title} loading="lazy" />;
+  }
+
   const safeId = product.id.replace(/[^a-z0-9-]/gi, "");
 
   if (product.kind === "hoodie") {
@@ -101,7 +115,7 @@ function ProductArt({ product }) {
 
 function ProductCard({ product }) {
   return (
-    <a className="sam-card" href={SHOP_URL} target="_blank" rel="noreferrer" aria-label={`Shop ${product.title}`}>
+    <a className="sam-card" href={product.url || SHOP_URL} target="_blank" rel="noreferrer" aria-label={`Shop ${product.title}`}>
       <div className="sam-image">
         <span className="sam-badge">Official product</span>
         <ProductArt product={product} />
@@ -228,7 +242,7 @@ export default function FeaturedMerchPortal() {
         }
         .sam-grid {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(5, minmax(0, 1fr));
           gap: 18px;
         }
         .sam-card {
@@ -291,6 +305,15 @@ export default function FeaturedMerchPortal() {
           transition: transform 220ms ease;
         }
         .sam-card:hover .sam-art { transform: scale(1.035); }
+        .sam-product-photo {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 220ms ease;
+        }
+        .sam-card:hover .sam-product-photo { transform: scale(1.035); }
         .sam-info { padding: 18px 17px 19px; }
         .sam-title-row {
           display: grid;
@@ -354,7 +377,7 @@ export default function FeaturedMerchPortal() {
           .sam-image { aspect-ratio: 1.12 / 1; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .sam-card, .sam-art, .sam-shop, .sam-shop-bottom, .sam-title-row svg { transition: none; }
+          .sam-card, .sam-art, .sam-product-photo, .sam-shop, .sam-shop-bottom, .sam-title-row svg { transition: none; }
         }
       `}</style>
 
@@ -362,7 +385,7 @@ export default function FeaturedMerchPortal() {
         <div>
           <p className="sam-eyebrow"><ShoppingBag size={15} aria-hidden="true" /> Official Storm &amp; Me products</p>
           <h2 id="sam-store-title">Wear what you survived.</h2>
-          <p className="sam-intro">The real storefront lineup—clean product cards, accurate names, accurate prices, and no made-up merchandise.</p>
+          <p className="sam-intro">The live Storm & Me collection—real product photos, accurate prices, and secure checkout through our official Printify store.</p>
         </div>
         <a className="sam-shop" href={SHOP_URL} target="_blank" rel="noreferrer">Shop all products <ArrowUpRight size={17} aria-hidden="true" /></a>
       </div>
