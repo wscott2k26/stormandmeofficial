@@ -281,15 +281,36 @@ export default function Home() {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden" data-testid="home-music-record-fallback">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.16),transparent_62%)]" />
+                  <style>{`
+                    @keyframes sam-record-spin {
+                      from { transform: rotate(0deg); }
+                      to { transform: rotate(360deg); }
+                    }
+                    .sam-record-disc {
+                      animation: sam-record-spin 5s linear infinite;
+                      transform-origin: 50% 50%;
+                      will-change: transform;
+                    }
+                    @media (prefers-reduced-motion: reduce) {
+                      .sam-record-disc { animation-duration: 18s; }
+                    }
+                  `}</style>
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.24),transparent_62%)]" />
                   <div className="relative h-52 w-52 sm:h-60 sm:w-60">
-                    <div className="absolute inset-2 rounded-full bg-black/70 shadow-[0_30px_90px_rgba(0,0,0,.55)]" />
-                    <img
-                      src={ASSETS.logo}
-                      alt="Storm & Me Official spinning record"
-                      className="relative h-full w-full rounded-full border-4 border-white/10 object-cover animate-[spin_20s_linear_infinite] motion-reduce:animate-none"
-                    />
-                    <div className="pointer-events-none absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/30 bg-slate-950 shadow-inner" />
+                    <div className="absolute inset-1 rounded-full bg-black/80 shadow-[0_30px_90px_rgba(0,0,0,.62)]" />
+                    <div className="sam-record-disc relative h-full w-full rounded-full border-4 border-white/10 shadow-2xl">
+                      <img
+                        src={ASSETS.logo}
+                        alt="Storm & Me Official spinning record"
+                        className="absolute inset-0 h-full w-full rounded-full object-cover"
+                      />
+                      <div
+                        className="pointer-events-none absolute inset-0 rounded-full opacity-45"
+                        style={{ background: "repeating-radial-gradient(circle, transparent 0 8px, rgba(255,255,255,.20) 9px, transparent 10px 15px)" }}
+                      />
+                      <span className="pointer-events-none absolute left-1/2 top-2 h-3 w-3 -translate-x-1/2 rounded-full bg-storm-gold shadow-[0_0_16px_rgba(215,180,97,.95)]" />
+                    </div>
+                    <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/40 bg-slate-950 shadow-inner" />
                   </div>
                 </div>
               )}
