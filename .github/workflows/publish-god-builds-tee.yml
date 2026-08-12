@@ -1,0 +1,26 @@
+name: Publish God Builds Broken Pieces Tee
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-god-builds-tee.yml"
+      - "automation/printify/publish_god_builds_tee.py"
+      - "automation/printify/god-builds-back.png.b64"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish the approved shirt
+        run: python automation/printify/publish_god_builds_tee.py
