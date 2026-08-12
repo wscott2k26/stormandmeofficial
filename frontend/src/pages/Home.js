@@ -7,6 +7,7 @@ import { ASSETS, BRAND } from "../lib/assets";
 import { SectionHeading, GlowButton, Overline, NewsletterSection, SocialIcons, Reveal } from "../components/shared";
 import { BookCard, ProductCard } from "../components/cards";
 import CinematicClouds from "../components/CinematicClouds";
+import FeaturedMerchPortal from "../components/FeaturedMerchPortal";
 
 const HERO_MESSAGE_LIBRARY = [
   { lead: "The Storm Doesn't Get the", accent: "Final Word." },
@@ -139,6 +140,7 @@ export default function Home() {
 
   return (
     <div>
+      <FeaturedMerchPortal />
       {/* HERO */}
       <section className="relative min-h-screen flex items-center overflow-hidden" data-testid="hero-section">
         <HeroBackdrop />
