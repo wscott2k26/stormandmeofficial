@@ -16,6 +16,16 @@ const PRODUCTS = [
     colors: ["#111111", "#f4d7df", "#6f7462"],
   },
   {
+    id: "god-builds-masterpieces",
+    title: "God Builds Masterpieces Out of Broken Pieces — Cracked Heart Tee",
+    price: "$33.99",
+    kind: "image",
+    image: "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/78888/98445/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=front&revision=1786502519400&s=2048",
+    url: "https://storm-and-me-official.printify.me/product/30877072",
+    accent: "#b7944c",
+    colors: ["#111111", "#f4d7df", "#6f7462"],
+  },
+  {
     id: "survived-the-storm",
     title: "I Survived the Storm — Found My Way Back",
     price: "$34.99",
@@ -242,7 +252,7 @@ export default function FeaturedMerchPortal() {
         }
         .sam-grid {
           display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 18px;
         }
         .sam-card {
