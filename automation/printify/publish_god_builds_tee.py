@@ -9,7 +9,7 @@ from pathlib import Path
 
 API = "https://api.printify.com/v1"
 TOKEN = os.environ["PRINTIFY_API_TOKEN"].strip()
-SHOP_ID = os.environ.get("PRINTIFY_SHOP_ID", "28312107").strip()
+SHOP_ID = os.environ.get("PRINTIFY_SHOP_ID", "").strip() or "28312107"
 SOURCE_ID = "6a7bd33e44cf7ff645047bd3"
 TARGET_ID = "6a7bd78b62d856b0f700a290"
 TITLE = "God Builds Masterpieces Out of Broken Pieces — Cracked Heart Tee"
