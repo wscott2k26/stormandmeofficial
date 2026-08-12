@@ -245,19 +245,35 @@ export default function FeaturedMerchPortal() {
           place-items: center;
           aspect-ratio: 1 / 1;
           overflow: hidden;
-          background: radial-gradient(circle at 50% 25%, #fff 0%, #f3f0eb 42%, #e3ded7 100%);
+          border-bottom: 1px solid rgba(215, 180, 97, .3);
+          background:
+            radial-gradient(circle at 72% 16%, rgba(120, 169, 255, .55), transparent 25%),
+            radial-gradient(circle at 48% 40%, rgba(245, 248, 252, .92) 0%, rgba(190, 203, 220, .84) 48%, rgba(41, 57, 79, .96) 100%),
+            linear-gradient(145deg, #172436, #526885 58%, #090f18);
+        }
+        .sam-image::before {
+          content: "";
+          position: absolute;
+          z-index: 0;
+          inset: 0;
+          background:
+            linear-gradient(118deg, transparent 0 53%, rgba(215, 180, 97, .18) 53.5%, transparent 55%),
+            radial-gradient(ellipse at 50% 105%, rgba(7, 12, 20, .78), transparent 58%);
+          pointer-events: none;
         }
         .sam-image::after {
           content: "";
           position: absolute;
-          z-index: 0;
-          left: 10%;
-          right: 10%;
-          bottom: 7%;
-          height: 18px;
+          z-index: 2;
+          left: 9%;
+          right: 9%;
+          bottom: 5%;
+          height: 20px;
           border-radius: 50%;
-          background: rgba(22, 24, 27, .14);
-          filter: blur(9px);
+          background: rgba(5, 10, 18, .38);
+          box-shadow: 0 0 28px rgba(215, 180, 97, .16);
+          filter: blur(10px);
+          pointer-events: none;
         }
         .sam-badge {
           position: absolute;
@@ -289,7 +305,9 @@ export default function FeaturedMerchPortal() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 220ms ease;
+          mix-blend-mode: multiply;
+          filter: contrast(1.04) saturate(1.08);
+          transition: transform 220ms ease, filter 220ms ease;
         }
         .sam-card:hover .sam-product-photo { transform: scale(1.035); }
         .sam-info { padding: 18px 17px 19px; }
