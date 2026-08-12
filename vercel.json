@@ -17,7 +17,7 @@
   "redirects": [
     {
       "source": "/shop",
-      "destination": "https://shop.stormandmeofficial.com/collections/all",
+      "destination": "https://storm-and-me-official.printify.me",
       "permanent": true
     },
     {
@@ -27,22 +27,22 @@
     },
     {
       "source": "/products/:path*",
-      "destination": "https://shop.stormandmeofficial.com/products/:path*",
+      "destination": "https://storm-and-me-official.printify.me",
       "permanent": true
     },
     {
       "source": "/collections/:path*",
-      "destination": "https://shop.stormandmeofficial.com/collections/:path*",
+      "destination": "https://storm-and-me-official.printify.me",
       "permanent": true
     },
     {
       "source": "/cart",
-      "destination": "https://shop.stormandmeofficial.com/cart",
+      "destination": "https://storm-and-me-official.printify.me",
       "permanent": false
     },
     {
       "source": "/account",
-      "destination": "https://shop.stormandmeofficial.com/account",
+      "destination": "https://storm-and-me-official.printify.me",
       "permanent": false
     },
     {
