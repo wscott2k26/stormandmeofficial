@@ -25,38 +25,6 @@ const PRODUCTS = [
     accent: "#b7944c",
     colors: ["#111111", "#f4d7df", "#6f7462"],
   },
-  {
-    id: "survived-the-storm",
-    title: "I Survived the Storm — Found My Way Back",
-    price: "$34.99",
-    kind: "tee",
-    accent: "#b7944c",
-    colors: ["#111111", "#4d353c", "#35463d"],
-  },
-  {
-    id: "house-that-pain-built",
-    title: "The House That Pain Built — Still Standing",
-    price: "$34.99",
-    kind: "tee",
-    accent: "#b7944c",
-    colors: ["#202634", "#343944", "#111111"],
-  },
-  {
-    id: "worth-it",
-    title: "Some Things Ain’t Worth It… But You Are",
-    price: "$34.99",
-    kind: "tee",
-    accent: "#91423f",
-    colors: ["#5a2d31", "#405244", "#1a1a1a"],
-  },
-  {
-    id: "urban-pullover",
-    title: "Unisex Urban Pullover Hoodie",
-    price: "$75.00",
-    kind: "hoodie",
-    accent: "#2e3338",
-    colors: ["#f4f4f1", "#cfd2d3", "#151515"],
-  },
 ];
 
 function ProductArt({ product }) {
@@ -252,7 +220,7 @@ export default function FeaturedMerchPortal() {
         }
         .sam-grid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 18px;
         }
         .sam-card {
