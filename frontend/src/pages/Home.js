@@ -280,7 +280,18 @@ export default function Home() {
                   src={`https://www.youtube.com/embed/${featuredVideo.youtube_id}`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-storm-silver/50 text-sm px-8 text-center">Official videos will appear here as they are connected.</div>
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden" data-testid="home-music-record-fallback">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.16),transparent_62%)]" />
+                  <div className="relative h-52 w-52 sm:h-60 sm:w-60">
+                    <div className="absolute inset-2 rounded-full bg-black/70 shadow-[0_30px_90px_rgba(0,0,0,.55)]" />
+                    <img
+                      src={ASSETS.logo}
+                      alt="Storm & Me Official spinning record"
+                      className="relative h-full w-full rounded-full border-4 border-white/10 object-cover animate-[spin_20s_linear_infinite] motion-reduce:animate-none"
+                    />
+                    <div className="pointer-events-none absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/30 bg-slate-950 shadow-inner" />
+                  </div>
+                </div>
               )}
             </div>
           </div>
