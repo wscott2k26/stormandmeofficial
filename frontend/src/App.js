@@ -31,6 +31,7 @@ import Account from "./pages/Account";
 import LegalPage from "./pages/LegalPage";
 import IamLegalPage from "./pages/IamLegalPage";
 import IamPrototype from "./pages/IamPrototype";
+import AfterStormLegalPage from "./pages/AfterStormLegalPage";
 
 function App() {
   return (
@@ -68,6 +69,9 @@ function App() {
                 <Route path="/shipping" element={<LegalPage slug="shipping" />} />
                 <Route path="/returns" element={<LegalPage slug="returns" />} />
                 <Route path="/accessibility" element={<LegalPage slug="accessibility" />} />
+                <Route path="/afterstorm" element={<AfterStormLegalPage />} />
+                <Route path="/afterstorm/privacy" element={<AfterStormLegalPage slug="privacy" />} />
+                <Route path="/afterstorm/support" element={<AfterStormLegalPage slug="support" />} />
                 <Route path="/iam/privacy" element={<IamLegalPage slug="privacy" />} />
                 <Route path="/iam/terms" element={<IamLegalPage slug="terms" />} />
                 <Route path="/iam/safety" element={<IamLegalPage slug="safety" />} />
