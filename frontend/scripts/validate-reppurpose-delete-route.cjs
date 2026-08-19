@@ -43,17 +43,23 @@ if (!fs.existsSync(vercelConfig)) {
   }
 
   const rewrites = Array.isArray(config?.rewrites) ? config.rewrites : [];
+  const isCanonicalFrontendDestination = (destination) =>
+    destination &&
+    typeof destination === 'object' &&
+    destination.service === 'frontend' &&
+    destination.path === '/reppurpose/delete-account.html';
+
   const hasCleanDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account' && route?.destination === '/reppurpose/delete-account.html'
+    (route) => route?.source === '/delete-account' && isCanonicalFrontendDestination(route?.destination)
   );
   const hasSlashDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account/' && route?.destination === '/reppurpose/delete-account.html'
+    (route) => route?.source === '/delete-account/' && isCanonicalFrontendDestination(route?.destination)
   );
 
-  if (!hasCleanDeleteRoute) fail('/delete-account root rewrite is missing or points somewhere else.');
-  if (!hasSlashDeleteRoute) fail('/delete-account/ root rewrite is missing or points somewhere else.');
+  if (!hasCleanDeleteRoute) fail('/delete-account must route to the canonical file inside the frontend service.');
+  if (!hasSlashDeleteRoute) fail('/delete-account/ must route to the canonical file inside the frontend service.');
 }
 
 if (!process.exitCode) {
-  console.log('PASS: RepPurpose public account-deletion route is pinned in repository-root Vercel config.');
+  console.log('PASS: RepPurpose public account-deletion route is pinned in the effective multi-service Vercel config.');
 }
