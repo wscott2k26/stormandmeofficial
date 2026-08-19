@@ -1,0 +1,28 @@
+name: RepPurpose Delete Route Contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/scripts/validate-reppurpose-delete-route.cjs'
+      - 'frontend/vercel.json'
+      - 'frontend/public/reppurpose/delete-account.html'
+  pull_request:
+    paths:
+      - 'frontend/scripts/validate-reppurpose-delete-route.cjs'
+      - 'frontend/vercel.json'
+      - 'frontend/public/reppurpose/delete-account.html'
+
+permissions:
+  contents: read
+
+jobs:
+  deletion-route-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify public RepPurpose deletion route
+        run: node frontend/scripts/validate-reppurpose-delete-route.cjs
