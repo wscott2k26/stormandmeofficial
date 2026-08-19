@@ -4,7 +4,8 @@ const path = require('node:path');
 const repoRoot = path.resolve(__dirname, '..', '..');
 const frontendRoot = path.join(repoRoot, 'frontend');
 const canonicalPage = path.join(frontendRoot, 'public', 'reppurpose', 'delete-account.html');
-const vercelConfig = path.join(frontendRoot, 'vercel.json');
+const vercelConfig = path.join(repoRoot, 'vercel.json');
+const shadowFrontendConfig = path.join(frontendRoot, 'vercel.json');
 
 function fail(message) {
   console.error(`FAIL: ${message}`);
@@ -27,28 +28,38 @@ if (!fs.existsSync(canonicalPage)) {
   }
 }
 
+if (fs.existsSync(shadowFrontendConfig)) {
+  fail('frontend/vercel.json must not shadow the repository-root Vercel project configuration.');
+}
+
 if (!fs.existsSync(vercelConfig)) {
-  fail('frontend/vercel.json is missing; /delete-account cannot be pinned to the canonical deletion page.');
+  fail('Repository-root vercel.json is missing; Vercel will not apply the clean deletion rewrite.');
 } else {
   let config;
   try {
     config = JSON.parse(fs.readFileSync(vercelConfig, 'utf8'));
   } catch (error) {
-    fail(`frontend/vercel.json is invalid JSON: ${error.message}`);
+    fail(`Repository-root vercel.json is invalid JSON: ${error.message}`);
   }
 
   const rewrites = Array.isArray(config?.rewrites) ? config.rewrites : [];
+  const isCanonicalFrontendDestination = (destination) =>
+    destination &&
+    typeof destination === 'object' &&
+    destination.service === 'frontend' &&
+    destination.path === '/reppurpose/delete-account.html';
+
   const hasCleanDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account' && route?.destination === '/reppurpose/delete-account.html'
+    (route) => route?.source === '/delete-account' && isCanonicalFrontendDestination(route?.destination)
   );
   const hasSlashDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account/' && route?.destination === '/reppurpose/delete-account.html'
+    (route) => route?.source === '/delete-account/' && isCanonicalFrontendDestination(route?.destination)
   );
 
-  if (!hasCleanDeleteRoute) fail('/delete-account rewrite is missing or points somewhere else.');
-  if (!hasSlashDeleteRoute) fail('/delete-account/ rewrite is missing or points somewhere else.');
+  if (!hasCleanDeleteRoute) fail('/delete-account must route to the canonical file inside the frontend service.');
+  if (!hasSlashDeleteRoute) fail('/delete-account/ must route to the canonical file inside the frontend service.');
 }
 
 if (!process.exitCode) {
-  console.log('PASS: RepPurpose public account-deletion route contract is pinned.');
+  console.log('PASS: RepPurpose public account-deletion route is pinned in the effective multi-service Vercel config.');
 }
