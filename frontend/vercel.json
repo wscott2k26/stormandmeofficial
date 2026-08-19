@@ -1,3 +1,12 @@
 {
-  "rewrites": []
+  "rewrites": [
+    {
+      "source": "/delete-account",
+      "destination": "/reppurpose/delete-account.html"
+    },
+    {
+      "source": "/delete-account/",
+      "destination": "/reppurpose/delete-account.html"
+    }
+  ]
 }
