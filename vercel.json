@@ -100,6 +100,20 @@
   ],
   "rewrites": [
     {
+      "source": "/delete-account",
+      "destination": {
+        "service": "frontend",
+        "path": "/reppurpose/delete-account.html"
+      }
+    },
+    {
+      "source": "/delete-account/",
+      "destination": {
+        "service": "frontend",
+        "path": "/reppurpose/delete-account.html"
+      }
+    },
+    {
       "source": "/api/(.*)",
       "destination": {
         "service": "backend"
