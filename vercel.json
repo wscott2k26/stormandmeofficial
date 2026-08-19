@@ -16,6 +16,16 @@
   },
   "redirects": [
     {
+      "source": "/delete-account",
+      "destination": "/reppurpose/delete-account.html",
+      "permanent": true
+    },
+    {
+      "source": "/delete-account/",
+      "destination": "/reppurpose/delete-account.html",
+      "permanent": true
+    },
+    {
       "source": "/shop",
       "destination": "https://storm-and-me-official.printify.me",
       "permanent": true
@@ -99,20 +109,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/delete-account",
-      "destination": {
-        "service": "frontend",
-        "path": "/reppurpose/delete-account.html"
-      }
-    },
-    {
-      "source": "/delete-account/",
-      "destination": {
-        "service": "frontend",
-        "path": "/reppurpose/delete-account.html"
-      }
-    },
     {
       "source": "/api/(.*)",
       "destination": {
