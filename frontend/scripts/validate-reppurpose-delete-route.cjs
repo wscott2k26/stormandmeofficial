@@ -33,7 +33,7 @@ if (fs.existsSync(shadowFrontendConfig)) {
 }
 
 if (!fs.existsSync(vercelConfig)) {
-  fail('Repository-root vercel.json is missing; Vercel will not apply the clean deletion rewrite.');
+  fail('Repository-root vercel.json is missing; Vercel cannot expose the clean deletion URL.');
 } else {
   let config;
   try {
@@ -42,24 +42,25 @@ if (!fs.existsSync(vercelConfig)) {
     fail(`Repository-root vercel.json is invalid JSON: ${error.message}`);
   }
 
+  const redirects = Array.isArray(config?.redirects) ? config.redirects : [];
   const rewrites = Array.isArray(config?.rewrites) ? config.rewrites : [];
-  const isCanonicalFrontendDestination = (destination) =>
-    destination &&
-    typeof destination === 'object' &&
-    destination.service === 'frontend' &&
-    destination.path === '/reppurpose/delete-account.html';
+  const canonicalDestination = '/reppurpose/delete-account.html';
 
-  const hasCleanDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account' && isCanonicalFrontendDestination(route?.destination)
+  const hasCleanDeleteRedirect = redirects.some(
+    (route) => route?.source === '/delete-account' && route?.destination === canonicalDestination && route?.permanent === true
   );
-  const hasSlashDeleteRoute = rewrites.some(
-    (route) => route?.source === '/delete-account/' && isCanonicalFrontendDestination(route?.destination)
+  const hasSlashDeleteRedirect = redirects.some(
+    (route) => route?.source === '/delete-account/' && route?.destination === canonicalDestination && route?.permanent === true
+  );
+  const hasObsoleteDeleteRewrite = rewrites.some(
+    (route) => route?.source === '/delete-account' || route?.source === '/delete-account/'
   );
 
-  if (!hasCleanDeleteRoute) fail('/delete-account must route to the canonical file inside the frontend service.');
-  if (!hasSlashDeleteRoute) fail('/delete-account/ must route to the canonical file inside the frontend service.');
+  if (!hasCleanDeleteRedirect) fail('/delete-account must permanently redirect to the canonical RepPurpose deletion page.');
+  if (!hasSlashDeleteRedirect) fail('/delete-account/ must permanently redirect to the canonical RepPurpose deletion page.');
+  if (hasObsoleteDeleteRewrite) fail('Deletion aliases must not use CRA-swallowed service rewrites.');
 }
 
 if (!process.exitCode) {
-  console.log('PASS: RepPurpose public account-deletion route is pinned in the effective multi-service Vercel config.');
+  console.log('PASS: RepPurpose clean deletion URLs permanently redirect to the canonical public deletion page.');
 }
