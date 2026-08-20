@@ -21,6 +21,7 @@ OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
 # Same x/scale as the current approved true-left-chest placement; only y changes.
+# Screenshot target: center the mark inside the user's gray square without touching the back art.
 CANDIDATES = [
     {'name': 'high-a', 'x': 0.86, 'y': 0.12, 'scale': 0.22},
     {'name': 'high-b', 'x': 0.86, 'y': 0.14, 'scale': 0.22},
@@ -49,7 +50,7 @@ def create_canary(source, spec, candidate, logo_id, back_id):
     payload = {
         'title': f"QA HEIGHT {spec['title']} — {candidate['name']}",
         'description': 'Unpublished vertical left-chest placement canary.',
-        'tags': ['Storm And Me', 'QA', 'Rules Don't Exist Anymore'],
+        'tags': ['Storm And Me', 'QA', 'Rules Don\'t Exist Anymore'],
         'blueprint_id': int(source['blueprint_id']),
         'print_provider_id': int(source['print_provider_id']),
         'variants': variants,
