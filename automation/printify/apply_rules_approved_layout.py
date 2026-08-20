@@ -151,7 +151,12 @@ def main():
             "external": product.get("external"),
             "variant_count": len(variants),
         }
-        variant_ids = [row["id"] for row in variants]
+        # Printify requires every product variant ID in each print-area map, even
+        # when only a small subset is enabled for sale. We are changing art only,
+        # not the enabled variant set or prices.
+        variant_ids = [variant["id"] for variant in product.get("variants", []) if variant.get("id") is not None]
+        if not variant_ids:
+            raise RuntimeError(f"{spec['title']}: no product variant IDs available for print-area update")
         update_when_editable(
             spec["id"],
             {"print_areas": placements_for(spec, logo_id, art_ids[spec["palette"]], variant_ids)},
