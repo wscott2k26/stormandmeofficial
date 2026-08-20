@@ -19,9 +19,12 @@ from finalize_rules_collection_layout import (
 OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
+# Print-area top edge clips the full mark at scale .22. These canaries shrink it
+# like a classic Polo/Tommy chest hit so the entire mark can sit higher intact.
 CANDIDATES = [
-    {'name': 'edge-zero', 'x': 0.86, 'y': 0.00, 'scale': 0.22},
-    {'name': 'edge-neg', 'x': 0.86, 'y': -0.03, 'scale': 0.22},
+    {'name': 'small-a', 'x': 0.86, 'y': 0.02, 'scale': 0.16},
+    {'name': 'small-b', 'x': 0.86, 'y': 0.02, 'scale': 0.18},
+    {'name': 'small-c', 'x': 0.86, 'y': 0.02, 'scale': 0.20},
 ]
 
 
@@ -29,8 +32,8 @@ def create_canary(source, spec, candidate, logo_id, back_id):
     variants = enabled_variants(source)
     ids = [row['id'] for row in source.get('variants', []) if row.get('id') is not None]
     payload = {
-        'title': f"QA EDGE HEIGHT {spec['title']} — {candidate['name']}",
-        'description': 'Unpublished folded-view edge calibration canary.',
+        'title': f"QA SMALL HIGH {spec['title']} — {candidate['name']}",
+        'description': 'Unpublished smaller classic left-chest placement canary.',
         'tags': ['Storm And Me', 'QA', 'Rules Don\'t Exist Anymore'],
         'blueprint_id': int(source['blueprint_id']),
         'print_provider_id': int(source['print_provider_id']),
@@ -50,8 +53,8 @@ def main():
     spec = PRODUCTS[0]
     source = get_product(spec['id'])
     verify_product(source, spec)
-    logo_id = upload('storm-and-me-folded-edge-logo.png', official_logo_rgba())
-    back_id = upload('rules-folded-edge-back.png', tight_back_art(spec['palette']))
+    logo_id = upload('storm-and-me-small-high-logo.png', official_logo_rgba())
+    back_id = upload('rules-small-high-back.png', tight_back_art(spec['palette']))
     created = []
     report = []
     try:
@@ -82,7 +85,7 @@ def main():
             except Exception as exc:
                 print(f'warning: canary cleanup failed {product_id}: {exc}')
     (OUT / 'report.json').write_text(json.dumps({'candidates': report}, indent=2) + '\n', encoding='utf-8')
-    print('LEFT_CHEST_EDGE_CALIBRATION_COMPLETE')
+    print('LEFT_CHEST_SMALL_HIGH_CALIBRATION_COMPLETE')
 
 
 if __name__ == '__main__':
