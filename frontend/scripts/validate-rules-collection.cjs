@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// Contract-first regression check for the featured collection.
 const portalPath = path.join(__dirname, '..', 'src', 'components', 'FeaturedMerchPortal.js');
 const source = fs.readFileSync(portalPath, 'utf8');
 
