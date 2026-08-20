@@ -1,0 +1,115 @@
+name: Publish Obama 2028 reference drop
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-obama-reference-drop.yml"
+      - "automation/printify/publish_obama_reference_drop.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: obama-reference-drop-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Gate 1 — syntax and print-art contract
+        run: |
+          python -m py_compile automation/printify/publish_obama_reference_drop.py
+          python - <<'PY'
+          import importlib.util
+          path='automation/printify/publish_obama_reference_drop.py'
+          spec=importlib.util.spec_from_file_location('drop', path)
+          drop=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(drop)
+          for name in ['collegiate','yes_we_can_gray','yes_we_can_black']:
+              art=drop.text_art(name)
+              assert art.size == (4500, 5400)
+              assert art.mode == 'RGBA'
+              assert art.getbbox() is not None
+          print('Gate 1 PASS: three transparent 4500x5400 print files generate cleanly.')
+          PY
+
+      - name: Gate 2 — create and publish exact reference-drop products
+        run: python automation/printify/publish_obama_reference_drop.py
+
+      - name: Gate 3 — verify live Printify products
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('frontend/src/data/obama-reference-products.generated.json').read_text())
+          assert str(data['shop_id']) == '28312107'
+          assert len(data['products']) == 3
+          expected={
+              'obama-2028-collegiate-heather',
+              'obama-2028-yes-we-can-heather',
+              'obama-2028-yes-we-can-black',
+          }
+          assert {p['id'] for p in data['products']} == expected
+          for p in data['products']:
+              assert p['price_cents'] == 3200
+              assert p['price'] == '$32.00'
+              assert p['visible'] is True
+              assert p['image'].startswith('https://images-api.printify.com/mockup/')
+              assert p['url'].startswith('https://storm-and-me-official.printify.me/product/')
+              assert p['printify_product_id']
+          print('Gate 3 PASS: all three live products, prices, mockups and storefront URLs verified.')
+          PY
+
+      - name: Gate 4 — verify Storm And Me featured-store wiring
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          portal=Path('frontend/src/components/FeaturedMerchPortal.js').read_text()
+          assert 'obama-reference-products.generated.json' in portal
+          assert '[...rulesProductData.products, ...referenceProductData.products]' in portal
+          assert 'actual print artwork, never the screenshot or model photo' in portal
+          assert 'back-view product mockup' not in portal
+          assert '.rules-card:last-child:nth-child(odd)' in portal
+          print('Gate 4 PASS: homepage collection merges the new live products and keeps six-card responsive layout sane.')
+          PY
+
+      - name: Commit generated live product data and feature wiring
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add frontend/src/data/obama-reference-products.generated.json frontend/src/components/FeaturedMerchPortal.js
+          if git diff --cached --quiet; then
+            echo "Generated storefront files already current."
+          else
+            git commit -m "feat: feature Obama 2028 reference drop"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload quadruple-check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: obama-reference-drop-publish-report
+          path: |
+            automation-output/obama-reference-drop-results.json
+            automation-output/obama-reference-art
+          if-no-files-found: error
+          retention-days: 14
