@@ -4,7 +4,7 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 const portal = fs.readFileSync(path.join(root, 'src', 'components', 'FeaturedMerchPortal.js'), 'utf8');
 const dataPath = path.join(root, 'src', 'data', 'rules-products.generated.json');
-const publisherPath = path.join(root, '..', 'automation', 'printify', 'publish_rules_collection.py');
+const publisherPath = path.join(root, '..', 'automation', 'printify', 'publish_rules_collection_v2.py');
 
 const failures = [];
 
@@ -39,16 +39,17 @@ if (!fs.existsSync(dataPath)) {
         if (product.price_cents !== price) failures.push(`${id} price must be ${price}`);
         if (!product.image || !/^https:\/\//.test(product.image)) failures.push(`${id} must have a real HTTPS product image`);
         if (!product.url || !/^https:\/\//.test(product.url)) failures.push(`${id} must have a real product URL`);
+        if (!product.printify_product_id) failures.push(`${id} must have a Printify product ID`);
       }
     }
   }
 }
 
 if (!fs.existsSync(publisherPath)) {
-  failures.push('Missing Printify publisher script');
+  failures.push('Missing Printify publisher v2 script');
 } else {
   const publisher = fs.readFileSync(publisherPath, 'utf8');
-  for (const needle of ['3200', '6200', '2800', '"back"', '"front"', 'RULES DON’T EXIST ANYMORE']) {
+  for (const needle of ['3200', '6200', '2800', "'position':'back'", "'position':'front'", 'RULES DON’T EXIST ANYMORE']) {
     requireContains(publisher, needle, `publisher contract token ${needle}`);
   }
 }
