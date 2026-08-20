@@ -28,6 +28,23 @@ class BrokenPiecesMerchContractTests(unittest.TestCase):
         self.assertEqual(module.PRODUCTS[3]["back_text"], "")
         self.assertEqual(module.PRODUCTS[4]["back_text"], "STILL BECOMING.")
 
+    def test_print_art_is_textured_not_flat_placeholder_art(self):
+        module = self.load_publisher()
+        for product in module.PRODUCTS:
+            front, back = module.build_art(product)
+            for side_name, art in (("front", front), ("back", back)):
+                crop = art.crop((650, 450, 3850, 4700)).convert("RGBA")
+                opaque_rgb = {
+                    (r, g, b)
+                    for r, g, b, a in crop.getdata()
+                    if a >= 32
+                }
+                self.assertGreaterEqual(
+                    len(opaque_rgb),
+                    96,
+                    f"{product['slug']} {side_name} is visually too flat ({len(opaque_rgb)} opaque colors); print art must use real texture/shading, not placeholder-style flat fills",
+                )
+
     def test_obama_products_are_explicitly_removed(self):
         module = self.load_publisher()
         self.assertEqual(
