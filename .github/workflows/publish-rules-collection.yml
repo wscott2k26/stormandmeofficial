@@ -7,6 +7,12 @@ on:
     paths:
       - 'automation/printify/publish_rules_collection.py'
       - '.github/workflows/publish-rules-collection.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/publish_rules_collection.py'
+      - '.github/workflows/publish-rules-collection.yml'
   workflow_dispatch:
 
 permissions:
