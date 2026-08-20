@@ -19,12 +19,10 @@ from finalize_rules_collection_layout import (
 OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
-# Small classic chest-hit candidates: keep the full official mark intact while
-# fitting inside Printify's top print boundary.
+# Final edge canaries: classic small mark at the highest printable y.
 CANDIDATES = [
-    {'name': 'tiny-a', 'x': 0.86, 'y': 0.02, 'scale': 0.10},
-    {'name': 'tiny-b', 'x': 0.86, 'y': 0.02, 'scale': 0.12},
-    {'name': 'tiny-c', 'x': 0.86, 'y': 0.02, 'scale': 0.14},
+    {'name': 'final-a', 'x': 0.86, 'y': 0.00, 'scale': 0.12},
+    {'name': 'final-b', 'x': 0.86, 'y': 0.00, 'scale': 0.14},
 ]
 
 
@@ -32,8 +30,8 @@ def create_canary(source, spec, candidate, logo_id, back_id):
     variants = enabled_variants(source)
     ids = [row['id'] for row in source.get('variants', []) if row.get('id') is not None]
     payload = {
-        'title': f"QA TINY HIGH {spec['title']} — {candidate['name']}",
-        'description': 'Unpublished tiny classic left-chest placement canary.',
+        'title': f"QA FINAL HIGH {spec['title']} — {candidate['name']}",
+        'description': 'Unpublished final classic left-chest placement canary.',
         'tags': ['Storm And Me', 'QA', 'Rules Don\'t Exist Anymore'],
         'blueprint_id': int(source['blueprint_id']),
         'print_provider_id': int(source['print_provider_id']),
@@ -53,8 +51,8 @@ def main():
     spec = PRODUCTS[0]
     source = get_product(spec['id'])
     verify_product(source, spec)
-    logo_id = upload('storm-and-me-tiny-high-logo.png', official_logo_rgba())
-    back_id = upload('rules-tiny-high-back.png', tight_back_art(spec['palette']))
+    logo_id = upload('storm-and-me-final-high-logo.png', official_logo_rgba())
+    back_id = upload('rules-final-high-back.png', tight_back_art(spec['palette']))
     created = []
     report = []
     try:
@@ -83,7 +81,7 @@ def main():
             except Exception as exc:
                 print(f'warning: canary cleanup failed {product_id}: {exc}')
     (OUT / 'report.json').write_text(json.dumps({'candidates': report}, indent=2) + '\n', encoding='utf-8')
-    print('LEFT_CHEST_TINY_HIGH_CALIBRATION_COMPLETE')
+    print('LEFT_CHEST_FINAL_HIGH_CALIBRATION_COMPLETE')
 
 
 if __name__ == '__main__':
