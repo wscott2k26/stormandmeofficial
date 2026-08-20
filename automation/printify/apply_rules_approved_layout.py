@@ -24,9 +24,10 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 # Visually selected from real unpublished Printify canaries against the approved mockups.
 # Wearer's left chest appears viewer-right in the generated storefront mockup.
-FRONT_X = 0.72
-FRONT_Y = 0.24
-FRONT_SCALE = 0.28
+# This is the classic Polo/Tommy-style upper-left chest zone, not mid-chest.
+FRONT_X = 0.86
+FRONT_Y = 0.21
+FRONT_SCALE = 0.22
 TEE_BACK_X = 0.50
 TEE_BACK_Y = 0.43
 TEE_BACK_SCALE = 0.88
@@ -213,7 +214,7 @@ def main():
                 "external": external,
             }
         )
-        print(f"LIVE VERIFIED: {spec['title']} — small left chest mark + large clean back graphic")
+        print(f"LIVE VERIFIED: {spec['title']} — true wearer-left chest mark + large clean back graphic")
 
     (OUT / "report.json").write_text(json.dumps({"shop_id": SHOP_ID, "products": report}, indent=2) + "\n", encoding="utf-8")
     print("APPROVED_RULES_LAYOUT_LIVE_COMPLETE")
