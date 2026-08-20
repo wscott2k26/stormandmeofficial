@@ -321,7 +321,7 @@ def create_product(shop_id, spec, back_image_id, chest_logo_id, hoodie_choice):
                     },
                     {
                         "position": "front",
-                        "images": [{"id": chest_logo_id, "x": 0.33, "y": 0.28, "scale": 0.22, "angle": 0}],
+                        "images": [{"id": chest_logo_id, "x": 0.5, "y": 0.38, "scale": 3.0, "angle": 0}],
                     },
                 ],
             }
