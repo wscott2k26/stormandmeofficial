@@ -21,11 +21,11 @@ OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
 # Same x/scale as the current approved true-left-chest placement; only y changes.
-# Screenshot target: center the mark inside the user's gray square without touching the back art.
+# Second-pass canaries bracket the screenshot's marked square center much more aggressively.
 CANDIDATES = [
-    {'name': 'high-a', 'x': 0.86, 'y': 0.12, 'scale': 0.22},
-    {'name': 'high-b', 'x': 0.86, 'y': 0.14, 'scale': 0.22},
-    {'name': 'high-c', 'x': 0.86, 'y': 0.16, 'scale': 0.22},
+    {'name': 'target-a', 'x': 0.86, 'y': 0.02, 'scale': 0.22},
+    {'name': 'target-b', 'x': 0.86, 'y': 0.05, 'scale': 0.22},
+    {'name': 'target-c', 'x': 0.86, 'y': 0.08, 'scale': 0.22},
 ]
 
 
@@ -74,7 +74,6 @@ def main():
     created = []
     report = []
     try:
-        # Black tee + hoodie cover the two garment geometries; white tee shares tee geometry.
         for spec in (PRODUCTS[0], PRODUCTS[1]):
             source = get_product(spec['id'])
             verify_product(source, spec)
