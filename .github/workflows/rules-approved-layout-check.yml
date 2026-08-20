@@ -1,0 +1,32 @@
+name: Rules approved layout check
+
+on:
+  push:
+    branches:
+      - fix/rules-approved-streetwear-layout
+    paths:
+      - 'frontend/scripts/validate-rules-approved-layout.cjs'
+      - 'automation/printify/finalize_rules_collection_layout.py'
+      - 'automation/printify/apply_rules_approved_layout.py'
+      - '.github/workflows/publish-rules-collection.yml'
+      - '.github/workflows/rules-approved-layout-check.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'frontend/scripts/validate-rules-approved-layout.cjs'
+      - 'automation/printify/finalize_rules_collection_layout.py'
+      - 'automation/printify/apply_rules_approved_layout.py'
+      - '.github/workflows/publish-rules-collection.yml'
+      - '.github/workflows/rules-approved-layout-check.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Validate approved Rules streetwear layout
+        run: node frontend/scripts/validate-rules-approved-layout.cjs

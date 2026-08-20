@@ -26,9 +26,12 @@ jobs:
         run: python -m pip install --disable-pip-version-check pillow
       - name: Publish or reconcile exact approved products
         run: python automation/printify/publish_rules_collection_v2.py
+      - name: Enforce final approved streetwear layout
+        run: python automation/printify/apply_rules_approved_layout.py
       - name: Verify storefront output
         run: |
           test -s frontend/src/data/rules-products.generated.json
+          node frontend/scripts/validate-rules-approved-layout.cjs
           python - <<'PY'
           import json
           data=json.load(open('frontend/src/data/rules-products.generated.json'))
@@ -41,12 +44,14 @@ jobs:
               assert 'camera_label=back' in p['image']
               assert p['url'].startswith('https://storm-and-me-official.printify.me/product/')
               assert p['visible'] is True
-          print('Verified the three official live Rules collection products.')
+          print('Verified the three official live Rules collection products and approved placement contract.')
           PY
       - name: Upload publisher report
         uses: actions/upload-artifact@v4
         with:
           name: rules-collection-publish-report
-          path: automation-output/rules-collection-results.json
+          path: |
+            automation-output/rules-collection-results.json
+            automation-output/rules-approved-live
           if-no-files-found: error
           retention-days: 14
