@@ -6,6 +6,8 @@ on:
     paths:
       - ".github/workflows/publish-broken-pieces-collection.yml"
       - "automation/printify/publish_broken_pieces_collection.py"
+      - "automation/printify/broken_pieces_core.py"
+      - "automation/printify/broken_pieces_premium_art.py"
       - "tests/broken_pieces_merch_contract_test.py"
   workflow_dispatch:
 
@@ -38,7 +40,7 @@ jobs:
 
       - name: Gate 1 — syntax and five-design artwork contract
         run: |
-          python -m py_compile automation/printify/publish_broken_pieces_collection.py
+          python -m py_compile automation/printify/publish_broken_pieces_collection.py automation/printify/broken_pieces_core.py automation/printify/broken_pieces_premium_art.py
           python - <<'PY'
           import importlib.util
           path='automation/printify/publish_broken_pieces_collection.py'
