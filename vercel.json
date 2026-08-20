@@ -26,6 +26,16 @@
       "permanent": true
     },
     {
+      "source": "/reppurpose/delete-account",
+      "destination": "/reppurpose/delete-account.html",
+      "permanent": true
+    },
+    {
+      "source": "/reppurpose/delete-account/",
+      "destination": "/reppurpose/delete-account.html",
+      "permanent": true
+    },
+    {
       "source": "/shop",
       "destination": "https://storm-and-me-official.printify.me",
       "permanent": true
