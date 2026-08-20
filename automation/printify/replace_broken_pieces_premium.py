@@ -66,10 +66,10 @@ def find_existing_replacement(spec):
     return None
 
 
-def create_replacement(source, spec):
+def launch_replacement(source, spec):
     existing = find_existing_replacement(spec)
     if existing:
-        return existing, "reused"
+        return existing["id"], "reused"
 
     front, back = build_art(spec)
     if front.getbbox() is None or back.getbbox() is None:
@@ -77,10 +77,8 @@ def create_replacement(source, spec):
 
     art_dir = OUT / "broken-pieces-premium-art"
     art_dir.mkdir(parents=True, exist_ok=True)
-    front_path = art_dir / f"{spec['slug']}-front.png"
-    back_path = art_dir / f"{spec['slug']}-back.png"
-    front.save(front_path, "PNG", optimize=True)
-    back.save(back_path, "PNG", optimize=True)
+    front.save(art_dir / f"{spec['slug']}-front.png", "PNG", optimize=True)
+    back.save(art_dir / f"{spec['slug']}-back.png", "PNG", optimize=True)
 
     front_id = core.upload(f"broken-pieces-{spec['slug']}-premium-v2-front.png", core.to_png_bytes(front))
     back_id = core.upload(f"broken-pieces-{spec['slug']}-premium-v2-back.png", core.to_png_bytes(back))
@@ -95,10 +93,26 @@ def create_replacement(source, spec):
         f"/shops/{core.SHOP_ID}/products/{product_id}/publish.json",
         {"title": True, "description": True, "images": True, "variants": True, "tags": True, "keyFeatures": True},
     )
-    product = core.poll_product(product_id, attempts=42)
-    if not product_ready(product):
-        raise RuntimeError(f"Replacement did not become storefront-ready: {spec['slug']} / {product_id}")
-    return product, "created"
+    return product_id, "created"
+
+
+def wait_for_all(launched, attempts=42):
+    ready = {}
+    pending = {spec["slug"]: (spec, pid, action) for spec, pid, action in launched}
+    for attempt in range(attempts):
+        for slug, (spec, pid, action) in list(pending.items()):
+            product = full_product(pid)
+            if product_ready(product):
+                ready[slug] = (spec, product, action)
+                pending.pop(slug)
+                print(f"storefront ready: {slug} -> {pid}")
+        if not pending:
+            break
+        print(f"waiting on Printify round {attempt + 1}: {sorted(pending)}")
+        time.sleep(5)
+    if pending:
+        raise RuntimeError("Timed out waiting for replacements: " + ", ".join(sorted(pending)))
+    return [ready[spec["slug"]] for spec in core.PRODUCTS]
 
 
 def site_record(spec, product):
@@ -131,23 +145,18 @@ def already_migrated():
     except Exception:
         return False
     products = data.get("products", [])
-    if len(products) != 5:
+    if len(products) != 5 or data.get("art_revision") != REVISION_TAG:
         return False
     legacy = set(LEGACY_BAD_IDS.values())
     ids = {p.get("printify_product_id") for p in products}
     if ids & legacy:
         return False
-    for row in products:
-        product = full_product(row.get("printify_product_id"))
-        if not product_ready(product):
-            return False
-    return True
+    return all(product_ready(full_product(row.get("printify_product_id"))) for row in products)
 
 
 def main():
     if not core.TOKEN:
         raise RuntimeError("Missing PRINTIFY_API_TOKEN")
-
     if already_migrated():
         print("Broken Pieces premium replacement already verified; no migration needed.")
         return
@@ -156,12 +165,19 @@ def main():
     if not source:
         raise RuntimeError("Source tee template is unavailable")
 
-    replacements = []
-    report = []
-    # Phase 1: create/reuse AND verify all five premium replacements. Do not delete anything yet.
+    # Launch all five first so Printify can generate mockups/storefront records in parallel.
+    launched = []
     for spec in core.PRODUCTS:
-        product, action = create_replacement(source, spec)
-        replacements.append((spec, product))
+        pid, action = launch_replacement(source, spec)
+        launched.append((spec, pid, action))
+        print(f"launched replacement: {spec['slug']} -> {pid} ({action})")
+
+    replacements = wait_for_all(launched)
+    if len(replacements) != 5 or not all(product_ready(product) for _, product, _ in replacements):
+        raise RuntimeError("Safety gate failed: all five replacements must be verified before legacy deletion")
+
+    report = []
+    for spec, product, action in replacements:
         report.append({
             "slug": spec["slug"],
             "old_id": LEGACY_BAD_IDS[spec["slug"]],
@@ -171,12 +187,8 @@ def main():
             "url": core.storefront_url(product),
             "visible": product.get("visible"),
         })
-        print(f"verified replacement: {spec['slug']} -> {product['id']} ({action})")
 
-    if len(replacements) != 5 or not all(product_ready(p) for _, p in replacements):
-        raise RuntimeError("Safety gate failed: all five replacements must be verified before legacy deletion")
-
-    # Phase 2: remove only the five known flat-art products after all replacements are ready.
+    # Only now remove the five known flat-art products.
     deleted = []
     for slug, old_id in LEGACY_BAD_IDS.items():
         old = full_product(old_id)
@@ -186,7 +198,7 @@ def main():
         else:
             deleted.append({"slug": slug, "old_id": old_id, "status": "already_absent"})
 
-    records = [site_record(spec, product) for spec, product in replacements]
+    records = [site_record(spec, product) for spec, product, _ in replacements]
     DATA.write_text(
         json.dumps({
             "collection": "BROKEN PIECES COLLECTION",
