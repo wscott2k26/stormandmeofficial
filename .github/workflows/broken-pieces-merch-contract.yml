@@ -1,0 +1,23 @@
+name: Broken Pieces merch contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/broken-pieces-merch-contract.yml"
+      - "tests/broken_pieces_merch_contract_test.py"
+      - "automation/printify/publish_broken_pieces_collection.py"
+      - "frontend/src/components/FeaturedMerchPortal.js"
+      - "frontend/src/data/broken-pieces-products.generated.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Broken Pieces merch contract
+        run: python -m unittest tests/broken_pieces_merch_contract_test.py -v
