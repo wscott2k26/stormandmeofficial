@@ -1,0 +1,73 @@
+name: Persist Broken Pieces premium replacement result
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/replace-broken-pieces-premium-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: broken-pieces-premium-replacement
+  cancel-in-progress: true
+
+jobs:
+  replace-and-record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pillow
+      - name: Execute replacement and capture result
+        id: replace
+        shell: bash
+        run: |
+          mkdir -p automation-output
+          set +e
+          python automation/printify/replace_broken_pieces_premium.py > automation-output/broken-pieces-premium-last-ci.txt 2>&1
+          RC=$?
+          set -e
+          echo "replacement_exit=$RC" >> automation-output/broken-pieces-premium-last-ci.txt
+          cat automation-output/broken-pieces-premium-last-ci.txt
+          echo "rc=$RC" >> "$GITHUB_OUTPUT"
+      - name: Run regression contract if replacement succeeded
+        id: tests
+        if: steps.replace.outputs.rc == '0'
+        shell: bash
+        run: |
+          set +e
+          python -m unittest tests/broken_pieces_merch_contract_test.py -v >> automation-output/broken-pieces-premium-last-ci.txt 2>&1
+          RC=$?
+          set -e
+          echo "tests_exit=$RC" >> automation-output/broken-pieces-premium-last-ci.txt
+          echo "rc=$RC" >> "$GITHUB_OUTPUT"
+          cat automation-output/broken-pieces-premium-last-ci.txt
+      - name: Record outcome and generated product data
+        shell: bash
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/broken-pieces-premium-last-ci.txt
+          test -f automation-output/broken-pieces-premium-replacement.json && git add automation-output/broken-pieces-premium-replacement.json || true
+          test -f frontend/src/data/broken-pieces-products.generated.json && git add frontend/src/data/broken-pieces-products.generated.json || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: record Broken Pieces premium replacement"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Final gate
+        shell: bash
+        run: |
+          test "${{ steps.replace.outputs.rc }}" = "0"
+          if [ -n "${{ steps.tests.outputs.rc }}" ]; then test "${{ steps.tests.outputs.rc }}" = "0"; fi
