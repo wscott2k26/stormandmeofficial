@@ -1,0 +1,63 @@
+name: Inspect Broken Pieces variant structure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/inspect-broken-pieces-variants.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inspect accepted source and target variant layouts
+        run: |
+          mkdir -p automation-output
+          python - <<'PY' > automation-output/broken-pieces-variant-inspection.txt
+          import importlib.util
+          from pathlib import Path
+          p=Path('automation/printify/broken_pieces_core.py')
+          spec=importlib.util.spec_from_file_location('core',p)
+          core=importlib.util.module_from_spec(spec); spec.loader.exec_module(core)
+          source=core.request('GET', f'/shops/{core.SHOP_ID}/products/{core.SOURCE_TEE_ID}.json')
+          target=core.request('GET', f'/shops/{core.SHOP_ID}/products/6a8748a22ca30d29770c609d.json')
+          def report(name, product):
+              variants=product.get('variants',[])
+              ids={v['id'] for v in variants}
+              pa_ids=set()
+              for area in product.get('print_areas',[]):
+                  pa_ids.update(area.get('variant_ids',[]))
+              print(name)
+              print('blueprint=',product.get('blueprint_id'),'provider=',product.get('print_provider_id'))
+              print('variant_count=',len(variants),'print_area_variant_count=',len(pa_ids))
+              print('variants_missing_from_print_areas=',sorted(ids-pa_ids))
+              print('print_area_ids_missing_from_variants=',sorted(pa_ids-ids))
+              for v in variants:
+                  print('variant',v.get('id'),v.get('title'),'enabled=',v.get('is_enabled'),'available=',v.get('is_available'))
+              print('print_areas=',[(a.get('variant_ids',[]),[p.get('position') for p in a.get('placeholders',[])]) for a in product.get('print_areas',[])])
+          report('SOURCE',source)
+          report('TARGET',target)
+          selected=core.select_black_variants(source)
+          print('SELECTED_FROM_SOURCE=',[(v['id'],v.get('title')) for v in selected])
+          PY
+      - name: Commit inspection
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/broken-pieces-variant-inspection.txt
+          git commit -m "chore: inspect Broken Pieces variant structure"
+          git pull --rebase origin main
+          git push origin HEAD:main
