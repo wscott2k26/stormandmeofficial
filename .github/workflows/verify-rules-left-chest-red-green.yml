@@ -1,0 +1,46 @@
+name: Verify Rules left chest red green
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/apply_rules_approved_layout.py'
+      - 'frontend/scripts/validate-rules-left-chest.cjs'
+      - 'frontend/scripts/validate-rules-approved-layout.cjs'
+      - '.github/workflows/verify-rules-left-chest-red-green.yml'
+
+jobs:
+  red-base:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Confirm old placement fails new contract
+        shell: bash
+        run: |
+          set +e
+          node frontend/scripts/validate-rules-left-chest.cjs
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "Expected main/old placement to fail the new left-chest contract, but it passed."
+            exit 1
+          fi
+          echo "RED CONFIRMED: old placement fails the new contract."
+
+  green-head:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Confirm new placement passes both contracts
+        run: |
+          node frontend/scripts/validate-rules-left-chest.cjs
+          node frontend/scripts/validate-rules-approved-layout.cjs
