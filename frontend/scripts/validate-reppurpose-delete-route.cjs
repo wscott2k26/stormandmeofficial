@@ -46,21 +46,26 @@ if (!fs.existsSync(vercelConfig)) {
   const rewrites = Array.isArray(config?.rewrites) ? config.rewrites : [];
   const canonicalDestination = '/reppurpose/delete-account.html';
 
-  const hasCleanDeleteRedirect = redirects.some(
-    (route) => route?.source === '/delete-account' && route?.destination === canonicalDestination && route?.permanent === true
-  );
-  const hasSlashDeleteRedirect = redirects.some(
-    (route) => route?.source === '/delete-account/' && route?.destination === canonicalDestination && route?.permanent === true
-  );
-  const hasObsoleteDeleteRewrite = rewrites.some(
-    (route) => route?.source === '/delete-account' || route?.source === '/delete-account/'
-  );
+  const requiredAliases = [
+    '/delete-account',
+    '/delete-account/',
+    '/reppurpose/delete-account',
+    '/reppurpose/delete-account/',
+  ];
 
-  if (!hasCleanDeleteRedirect) fail('/delete-account must permanently redirect to the canonical RepPurpose deletion page.');
-  if (!hasSlashDeleteRedirect) fail('/delete-account/ must permanently redirect to the canonical RepPurpose deletion page.');
+  for (const source of requiredAliases) {
+    const hasPermanentRedirect = redirects.some(
+      (route) => route?.source === source && route?.destination === canonicalDestination && route?.permanent === true
+    );
+    if (!hasPermanentRedirect) {
+      fail(`${source} must permanently redirect to the canonical RepPurpose deletion page.`);
+    }
+  }
+
+  const hasObsoleteDeleteRewrite = rewrites.some((route) => requiredAliases.includes(route?.source));
   if (hasObsoleteDeleteRewrite) fail('Deletion aliases must not use CRA-swallowed service rewrites.');
 }
 
 if (!process.exitCode) {
-  console.log('PASS: RepPurpose clean deletion URLs permanently redirect to the canonical public deletion page.');
+  console.log('PASS: RepPurpose deletion aliases permanently redirect to the canonical public deletion page.');
 }
