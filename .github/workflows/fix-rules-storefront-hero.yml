@@ -34,8 +34,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify and capture live storefront hero images
-        run: python automation/printify/fix_rules_storefront_hero.py
+      - name: Apply visually verified storefront front treatment
+        run: |
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          path = Path('automation/printify/fix_rules_storefront_hero.py')
+          spec = importlib.util.spec_from_file_location('rules_storefront_fix', path)
+          mod = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          mod.TARGET_FRONT_SCALE = 3.0
+          mod.TARGET_FRONT_X = 0.50
+          mod.TARGET_FRONT_Y = 0.38
+          mod.main()
+          PY
       - name: Probe larger front-logo sizes on unpublished canaries
         run: python automation/printify/probe_rules_front_scale.py
       - name: Upload storefront hero QA mockups
