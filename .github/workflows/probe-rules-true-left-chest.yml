@@ -7,6 +7,12 @@ on:
     paths:
       - 'automation/printify/probe_rules_true_left_chest.py'
       - '.github/workflows/probe-rules-true-left-chest.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/probe_rules_true_left_chest.py'
+      - '.github/workflows/probe-rules-true-left-chest.yml'
 
 permissions:
   contents: read
