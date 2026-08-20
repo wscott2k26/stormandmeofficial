@@ -1,0 +1,43 @@
+{
+  "collection": "RULES DON\u2019T EXIST ANYMORE \u2014 Reference Drop",
+  "shop_id": "28312107",
+  "generated_at": "2026-08-20T17:09:40Z",
+  "products": [
+    {
+      "id": "obama-2028-collegiate-heather",
+      "printify_product_id": "6a8734ac4334f6ea37086290",
+      "title": "Obama 2028 \u2014 Collegiate Heather Statement Tee",
+      "label": "Heather Gray",
+      "price_cents": 3200,
+      "price": "$32.00",
+      "image": "https://images-api.printify.com/mockup/6a8734ac4334f6ea37086290/78973/98445/obama-2028-collegiate-heather-statement-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31137759",
+      "description": "Clean collegiate OBAMA 2028 front print inspired by the reference image.",
+      "visible": true
+    },
+    {
+      "id": "obama-2028-yes-we-can-heather",
+      "printify_product_id": "6a8734bad916929e7500b843",
+      "title": "Obama 2028 \u2014 Yes We Can Heather Tee",
+      "label": "Heather Gray",
+      "price_cents": 3200,
+      "price": "$32.00",
+      "image": "https://images-api.printify.com/mockup/6a8734bad916929e7500b843/78973/98445/obama-2028-yes-we-can-heather-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31137761",
+      "description": "Stacked OBAMA 2028 with YES WE CAN beneath it, matched to the reference image treatment.",
+      "visible": true
+    },
+    {
+      "id": "obama-2028-yes-we-can-black",
+      "printify_product_id": "6a8734c729aeb510e50271a8",
+      "title": "Obama 2028 \u2014 Yes We Can Black Tee",
+      "label": "Black",
+      "price_cents": 3200,
+      "price": "$32.00",
+      "image": "https://images-api.printify.com/mockup/6a8734c729aeb510e50271a8/79048/98445/obama-2028-yes-we-can-black-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31137767",
+      "description": "High-contrast OBAMA 2028 with YES WE CAN on a dark statement tee.",
+      "visible": true
+    }
+  ]
+}

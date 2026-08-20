@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { ArrowUpRight, ShoppingBag } from "lucide-react";
 import { ASSETS } from "../lib/assets";
 import rulesProductData from "../data/rules-products.generated.json";
+import referenceProductData from "../data/obama-reference-products.generated.json";
 
 const SHOP_URL = "https://storm-and-me-official.printify.me";
 
@@ -25,7 +26,7 @@ const PRODUCTS = [
   },
 ];
 
-const RULES_DONT_EXIST_PRODUCTS = rulesProductData.products;
+const RULES_DONT_EXIST_PRODUCTS = [...rulesProductData.products, ...referenceProductData.products];
 
 function RulesCard({ item }) {
   return (
@@ -41,7 +42,7 @@ function RulesCard({ item }) {
         <img
           className="rules-product-photo"
           src={item.image}
-          alt={`${item.title} — real Printify back-view product mockup`}
+          alt={`${item.title} — real Printify product mockup`}
           loading="lazy"
         />
       </div>
@@ -177,7 +178,7 @@ export default function FeaturedMerchPortal() {
           .rules-hero { grid-template-columns:1fr; }
           .rules-logo-panel { justify-self:start; width:205px; }
           .rules-grid { grid-template-columns:1fr 1fr; }
-          .rules-card:last-child { grid-column:1/-1; width:min(50%,430px); justify-self:center; }
+          .rules-card:last-child:nth-child(odd) { grid-column:1/-1; width:min(50%,430px); justify-self:center; }
         }
         @media (max-width:720px) {
           .sam-store { width:min(100% - 24px,560px); padding:52px 0 64px; }
@@ -225,7 +226,7 @@ export default function FeaturedMerchPortal() {
           <div>
             <p className="rules-overline">Rules Don’t Exist Anymore collection</p>
             <h3 id="rules-collection-title">RULES DON’T EXIST ANYMORE</h3>
-            <p className="rules-hero-copy">The straight-face joke is now a real collection: <strong>OBAMA 2028</strong>, the punchline underneath, and the full official Storm And Me cloud-and-lightning mark worked into the actual garments.</p>
+            <p className="rules-hero-copy">The straight-face joke is now a real collection. The reference drop adds the clean front-print looks from the viral image: big collegiate <strong>OBAMA 2028</strong> plus the stacked <strong>YES WE CAN</strong> treatment — actual print artwork, never the screenshot or model photo.</p>
             <p className="rules-disclaimer">Satirical apparel. Not affiliated with, endorsed by, or connected to any political campaign.</p>
           </div>
           <div className="rules-logo-panel">
@@ -239,7 +240,7 @@ export default function FeaturedMerchPortal() {
         </div>
 
         <div className="rules-footer">
-          <p>These cards use Printify’s real product mockups for the exact live products — no drawn garment placeholders.</p>
+          <p>These cards use Printify’s real product mockups for the live products — the uploaded reference image itself is never printed on the garment.</p>
           <a className="rules-cta" href={SHOP_URL} target="_blank" rel="noreferrer">Shop the collection <ArrowUpRight size={16} aria-hidden="true" /></a>
         </div>
       </section>
