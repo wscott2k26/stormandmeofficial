@@ -1,0 +1,20 @@
+name: Rules left chest check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/apply_rules_approved_layout.py'
+      - 'frontend/scripts/validate-rules-left-chest.cjs'
+      - '.github/workflows/rules-left-chest-check.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node frontend/scripts/validate-rules-left-chest.cjs
