@@ -3,30 +3,12 @@ import { createPortal } from "react-dom";
 import { ArrowUpRight, ShoppingBag } from "lucide-react";
 import { ASSETS } from "../lib/assets";
 import rulesProductData from "../data/rules-products.generated.json";
-import referenceProductData from "../data/obama-reference-products.generated.json";
+import brokenPiecesProductData from "../data/broken-pieces-products.generated.json";
 
 const SHOP_URL = "https://storm-and-me-official.printify.me";
 
-const PRODUCTS = [
-  {
-    id: "broken-pieces-masterpieces",
-    title: "God Makes Masterpieces From Broken Pieces — Cracked Heart Tee",
-    price: "$33.99",
-    image: "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78888/98445/god-makes-masterpieces-from-broken-pieces-cracked-heart-tee.jpg?camera_label=front&revision=1786500190017&s=2048",
-    url: "https://storm-and-me-official.printify.me/product/30876182",
-    colors: ["#111111", "#f4d7df", "#6f7462"],
-  },
-  {
-    id: "god-builds-masterpieces",
-    title: "God Builds Masterpieces Out of Broken Pieces — Cracked Heart Tee",
-    price: "$33.99",
-    image: "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/79048/98445/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=front&revision=1786502519400&s=2048",
-    url: "https://storm-and-me-official.printify.me/product/30877072",
-    colors: ["#111111", "#f4d7df", "#6f7462"],
-  },
-];
-
-const RULES_DONT_EXIST_PRODUCTS = [...rulesProductData.products, ...referenceProductData.products];
+const BROKEN_PIECES_PRODUCTS = brokenPiecesProductData.products;
+const RULES_DONT_EXIST_PRODUCTS = rulesProductData.products;
 
 function RulesCard({ item }) {
   return (
@@ -129,6 +111,23 @@ export default function FeaturedMerchPortal() {
         .sam-shop,.sam-shop-bottom,.rules-cta { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:48px; padding:0 21px; border:1px solid rgba(215,180,97,.55); border-radius:999px; background:#d7b461; color:#10141b; font-size:14px; font-weight:800; text-decoration:none; transition:transform 180ms ease,box-shadow 180ms ease,background 180ms ease; }
         .sam-shop:hover,.sam-shop-bottom:hover,.rules-cta:hover { transform:translateY(-2px); background:#e6ca7c; box-shadow:0 12px 28px rgba(0,0,0,.24); }
 
+        .broken-shell { position:relative; overflow:hidden; margin:34px 0 46px; border:1px solid rgba(215,180,97,.28); border-radius:28px; background:radial-gradient(circle at 78% 8%,rgba(215,180,97,.12),transparent 28%),linear-gradient(145deg,#11100f 0%,#171513 55%,#090909 100%); color:#f2e7d8; box-shadow:0 28px 70px rgba(0,0,0,.38); }
+        .broken-shell::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg,rgba(255,255,255,.025),transparent 38%); }
+        .broken-shell .rules-overline { color:#d7b461; }
+        .broken-shell .rules-hero h3 { color:#eadcc8; }
+        .broken-shell .rules-hero-copy,.broken-shell .rules-disclaimer { color:rgba(242,231,216,.68); }
+        .broken-shell .rules-logo-panel { border-color:rgba(215,180,97,.2); background:rgba(255,255,255,.045); }
+        .broken-shell .rules-logo-panel span { color:rgba(242,231,216,.62); }
+        .broken-shell .rules-card { border-color:rgba(215,180,97,.18); background:#171513; color:#f2e7d8; }
+        .broken-shell .rules-card-top { background:linear-gradient(145deg,#22201e,#0d0c0b); }
+        .broken-shell .rules-live-badge { background:#d7b461; color:#11100f; }
+        .broken-shell .rules-label { color:#d7b461; }
+        .broken-shell .rules-card-copy h4 { color:#f2e7d8; }
+        .broken-shell .rules-card-copy p { color:rgba(242,231,216,.62); }
+        .broken-shell .rules-price-row { border-top-color:rgba(215,180,97,.16); }
+        .broken-shell .rules-price,.broken-shell .rules-view { color:#d7b461; }
+        .broken-shell .rules-footer p { color:rgba(242,231,216,.6); }
+
         .rules-shell { position:relative; overflow:hidden; margin:34px 0 42px; border:1px solid rgba(255,255,255,.13); border-radius:28px; background:linear-gradient(135deg,#f7f2e8 0%,#eee7dc 58%,#dbe3ed 100%); color:#101a2c; box-shadow:0 28px 70px rgba(0,0,0,.28); }
         .rules-shell::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 10% 0%,rgba(181,42,47,.12),transparent 32%),radial-gradient(circle at 90% 5%,rgba(17,38,74,.15),transparent 36%); }
         .rules-hero { position:relative; display:grid; grid-template-columns:minmax(0,1.2fr) minmax(230px,.65fr); gap:28px; align-items:center; padding:38px 40px 26px; }
@@ -221,12 +220,36 @@ export default function FeaturedMerchPortal() {
         <a className="sam-shop" href={SHOP_URL} target="_blank" rel="noreferrer">Shop all products <ArrowUpRight size={17} aria-hidden="true" /></a>
       </div>
 
+      <section className="broken-shell" data-testid="broken-pieces-collection" aria-labelledby="broken-pieces-title">
+        <div className="rules-hero">
+          <div>
+            <p className="rules-overline">Featured collection · inspired by the song</p>
+            <h3 id="broken-pieces-title">BROKEN PIECES COLLECTION</h3>
+            <p className="rules-hero-copy">Five pieces. Five ways of saying the same thing: what broke you does not get to finish the story. Cracked Heart, Kintsugi Heart, Broken Cross, Still Breathing streetwear, and The Puzzle Piece are live now.</p>
+            <p className="rules-disclaimer">Original Storm And Me / Willy Will merchandise. Real Printify products and checkout.</p>
+          </div>
+          <div className="rules-logo-panel">
+            <img src={ASSETS.logo} alt="Storm And Me official logo" loading="lazy" />
+            <span>Broken Pieces · Storm And Me</span>
+          </div>
+        </div>
+
+        <div className="rules-grid">
+          {BROKEN_PIECES_PRODUCTS.map((item) => <RulesCard key={item.id} item={item} />)}
+        </div>
+
+        <div className="rules-footer">
+          <p>The five featured cards use Printify’s real live product mockups — not the concept-board screenshot.</p>
+          <a className="rules-cta" href={SHOP_URL} target="_blank" rel="noreferrer">Shop Broken Pieces <ArrowUpRight size={16} aria-hidden="true" /></a>
+        </div>
+      </section>
+
       <section className="rules-shell" data-testid="rules-dont-exist-collection" aria-labelledby="rules-collection-title">
         <div className="rules-hero">
           <div>
             <p className="rules-overline">Rules Don’t Exist Anymore collection</p>
             <h3 id="rules-collection-title">RULES DON’T EXIST ANYMORE</h3>
-            <p className="rules-hero-copy">The straight-face joke is now a real collection. The reference drop adds the clean front-print looks from the viral image: big collegiate <strong>OBAMA 2028</strong> plus the stacked <strong>YES WE CAN</strong> treatment — actual print artwork, never the screenshot or model photo.</p>
+            <p className="rules-hero-copy">The original satire collection stays in its own lane. Broken Pieces is featured first above, while the Rules Don’t Exist Anymore drop remains available here for the folks who came for the running joke.</p>
             <p className="rules-disclaimer">Satirical apparel. Not affiliated with, endorsed by, or connected to any political campaign.</p>
           </div>
           <div className="rules-logo-panel">
@@ -240,14 +263,11 @@ export default function FeaturedMerchPortal() {
         </div>
 
         <div className="rules-footer">
-          <p>These cards use Printify’s real product mockups for the live products — the uploaded reference image itself is never printed on the garment.</p>
+          <p>These are the original Rules Don’t Exist Anymore products, kept separate from the featured Broken Pieces collection.</p>
           <a className="rules-cta" href={SHOP_URL} target="_blank" rel="noreferrer">Shop the collection <ArrowUpRight size={16} aria-hidden="true" /></a>
         </div>
       </section>
 
-      <div className="sam-grid">
-        {PRODUCTS.map((product) => <ProductCard key={product.id} product={product} />)}
-      </div>
 
       <div className="sam-bottom-wrap">
         <a className="sam-shop-bottom" href={SHOP_URL} target="_blank" rel="noreferrer">Shop all products <ArrowUpRight size={17} aria-hidden="true" /></a>
