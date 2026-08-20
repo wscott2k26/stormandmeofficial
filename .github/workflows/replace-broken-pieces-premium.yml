@@ -1,0 +1,107 @@
+name: Replace Broken Pieces with premium art
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/replace-broken-pieces-premium.yml"
+      - "automation/printify/replace_broken_pieces_premium.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: broken-pieces-premium-replacement
+  cancel-in-progress: true
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Gate 1 — premium renderer contract
+        run: |
+          python -m py_compile automation/printify/replace_broken_pieces_premium.py automation/printify/broken_pieces_premium_art.py
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          path=Path('automation/printify/publish_broken_pieces_collection.py')
+          spec=importlib.util.spec_from_file_location('bp', path)
+          bp=importlib.util.module_from_spec(spec); spec.loader.exec_module(bp)
+          assert len(bp.PRODUCTS) == 5
+          for item in bp.PRODUCTS:
+              front, back = bp.build_art(item)
+              assert front.size == (4500, 5400) and back.size == (4500, 5400)
+              assert front.getbbox() and back.getbbox()
+              sample=front.crop((700,500,3800,4500)).resize((310,400)).convert('RGBA')
+              colors={(r,g,b) for r,g,b,a in sample.getdata() if a==255}
+              assert len(colors) >= 64, (item['slug'], len(colors))
+          print('Gate 1 PASS: five premium textured front/back designs render cleanly.')
+          PY
+
+      - name: Gate 2 — create, verify, then delete flat products
+        run: python automation/printify/replace_broken_pieces_premium.py
+
+      - name: Gate 3 — verify five new live product IDs and old IDs absent from site data
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          legacy={
+            '6a8748a22ca30d29770c609d','6a8748b22ba83235c9030589','6a8748c3affe644160009855',
+            '6a8748d42ca30d29770c60cf','6a8748e6cc388d717f01e40d'
+          }
+          data=json.loads(Path('frontend/src/data/broken-pieces-products.generated.json').read_text())
+          assert data.get('art_revision') == 'premium-art-v2'
+          assert len(data['products']) == 5
+          ids={p['printify_product_id'] for p in data['products']}
+          assert not (ids & legacy), ids & legacy
+          assert len(ids) == 5
+          for p in data['products']:
+              assert p['visible'] is True
+              assert p['image'].startswith('https://images-api.printify.com/mockup/')
+              assert p['url'].startswith('https://storm-and-me-official.printify.me/product/')
+          print('Gate 3 PASS:', sorted(ids))
+          PY
+
+      - name: Gate 4 — existing merch regression contract
+        run: python -m unittest tests/broken_pieces_merch_contract_test.py -v
+
+      - name: Commit verified live product data
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add frontend/src/data/broken-pieces-products.generated.json automation-output/broken-pieces-premium-replacement.json
+          if git diff --cached --quiet; then
+            echo "Verified product data already current."
+          else
+            git commit -m "fix: switch site to premium Broken Pieces products"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Upload verification artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-pieces-premium-verification
+          path: |
+            automation-output/broken-pieces-premium-replacement.json
+            automation-output/broken-pieces-premium-art
+          if-no-files-found: error
+          retention-days: 14
