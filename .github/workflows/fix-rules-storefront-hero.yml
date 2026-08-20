@@ -6,12 +6,14 @@ on:
       - fix/rules-storefront-hero
     paths:
       - 'automation/printify/fix_rules_storefront_hero.py'
+      - 'automation/printify/probe_rules_front_scale.py'
       - '.github/workflows/fix-rules-storefront-hero.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'automation/printify/fix_rules_storefront_hero.py'
+      - 'automation/printify/probe_rules_front_scale.py'
       - '.github/workflows/fix-rules-storefront-hero.yml'
   workflow_dispatch:
 
@@ -32,12 +34,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fix and capture storefront collection-card hero images
+      - name: Verify and capture live storefront hero images
         run: python automation/printify/fix_rules_storefront_hero.py
+      - name: Probe larger front-logo sizes on unpublished canaries
+        run: python automation/printify/probe_rules_front_scale.py
       - name: Upload storefront hero QA mockups
         uses: actions/upload-artifact@v4
         with:
           name: rules-storefront-hero-qa
-          path: automation-output/storefront-hero-mockups
+          path: |
+            automation-output/storefront-hero-mockups
+            automation-output/front-scale-probe
           if-no-files-found: error
           retention-days: 7
