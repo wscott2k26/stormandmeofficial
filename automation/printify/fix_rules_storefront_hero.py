@@ -9,9 +9,16 @@ import urllib.request
 API = "https://api.printify.com/v1"
 TOKEN = os.environ.get("PRINTIFY_API_TOKEN", "").strip()
 SHOP_ID = os.environ.get("PRINTIFY_SHOP_ID", "").strip() or "28312107"
-SOURCE_ID = "6a869680606e476ad103a016"
-SOURCE_TITLE = "Obama 2028 — Vintage Black Statement Tee"
-TEST_TITLE = SOURCE_TITLE + " — STOREFRONT HERO TEST"
+
+PRODUCTS = {
+    "6a869680606e476ad103a016": "Obama 2028 — Vintage Black Statement Tee",
+    "6a86968a6ad239171c07ee5b": "Obama 2028 — Statement Hoodie",
+    "6a86969021939a43b002c79c": "Obama 2028 — White Statement Tee",
+}
+
+TARGET_FRONT_SCALE = 0.52
+TARGET_FRONT_X = 0.50
+TARGET_FRONT_Y = 0.34
 
 
 def request(method, path, payload=None):
@@ -23,7 +30,7 @@ def request(method, path, payload=None):
         headers={
             "Authorization": f"Bearer {TOKEN}",
             "Content-Type": "application/json",
-            "User-Agent": "StormAndMe-StorefrontHeroCanary/1.0",
+            "User-Agent": "StormAndMe-StorefrontHeroFix/2.0",
         },
     )
     try:
@@ -35,123 +42,128 @@ def request(method, path, payload=None):
         raise RuntimeError(f"Printify API {exc.code} on {path}: {detail}") from exc
 
 
-def list_products():
-    result = request("GET", f"/shops/{SHOP_ID}/products.json?limit=50&page=1")
-    return result.get("data", []) if isinstance(result, dict) else []
-
-
-def delete_old_canaries():
-    for row in list_products():
-        if row.get("title") == TEST_TITLE:
-            request("DELETE", f"/shops/{SHOP_ID}/products/{row['id']}.json")
-            print(f"deleted stale canary {row['id']}")
-
-
-def clean_image(image):
-    return {
+def clean_image(image, position):
+    result = {
         "id": image["id"],
         "x": image.get("x", 0.5),
         "y": image.get("y", 0.5),
         "scale": image.get("scale", 1),
         "angle": image.get("angle", 0),
     }
+    if position == "front":
+        result.update({"x": TARGET_FRONT_X, "y": TARGET_FRONT_Y, "scale": TARGET_FRONT_SCALE, "angle": 0})
+    return result
 
 
-def back_only_print_areas(product):
+def rebuilt_print_areas(product):
     areas = []
+    front_found = False
+    back_found = False
     for area in product.get("print_areas", []):
-        back_placeholders = []
+        placeholders = []
         for placeholder in area.get("placeholders", []):
-            if str(placeholder.get("position", "")).lower() != "back":
+            position = str(placeholder.get("position", "")).lower()
+            if position not in {"front", "back"}:
                 continue
-            back_placeholders.append(
-                {
-                    "position": "back",
-                    "images": [clean_image(image) for image in placeholder.get("images", [])],
-                }
-            )
-        if back_placeholders:
-            areas.append({"variant_ids": area.get("variant_ids", []), "placeholders": back_placeholders})
-    if not areas:
-        raise RuntimeError("Source product has no back print area")
+            images = [clean_image(image, position) for image in placeholder.get("images", [])]
+            if not images:
+                continue
+            placeholders.append({"position": position, "images": images})
+            front_found = front_found or position == "front"
+            back_found = back_found or position == "back"
+        if placeholders:
+            areas.append({"variant_ids": area.get("variant_ids", []), "placeholders": placeholders})
+    if not front_found:
+        raise RuntimeError(f"{product.get('title')}: expected existing front branding placeholder")
+    if not back_found:
+        raise RuntimeError(f"{product.get('title')}: expected existing back statement artwork")
     return areas
 
 
-def clone_variants(product):
+def inspect_positions(product):
     rows = []
-    for variant in product.get("variants", []):
-        if not variant.get("is_enabled"):
-            continue
-        rows.append(
-            {
-                "id": variant["id"],
-                "price": int(variant["price"]),
-                "is_enabled": True,
-                "is_default": bool(variant.get("is_default")),
-            }
-        )
-    if not rows:
-        raise RuntimeError("Source product has no enabled variants")
-    if not any(row["is_default"] for row in rows):
-        rows[0]["is_default"] = True
+    for area in product.get("print_areas", []):
+        for placeholder in area.get("placeholders", []):
+            position = str(placeholder.get("position", "")).lower()
+            for image in placeholder.get("images", []):
+                rows.append(
+                    {
+                        "position": position,
+                        "id": image.get("id"),
+                        "x": image.get("x"),
+                        "y": image.get("y"),
+                        "scale": image.get("scale"),
+                        "angle": image.get("angle"),
+                    }
+                )
     return rows
-
-
-def wait_for_images(product_id, attempts=24):
-    latest = {}
-    for _ in range(attempts):
-        latest = request("GET", f"/shops/{SHOP_ID}/products/{product_id}.json")
-        if latest.get("images"):
-            return latest
-        time.sleep(5)
-    return latest
 
 
 def main():
     if not TOKEN:
         raise RuntimeError("Missing PRINTIFY_API_TOKEN")
 
-    delete_old_canaries()
-    source = request("GET", f"/shops/{SHOP_ID}/products/{SOURCE_ID}.json")
-    if source.get("title") != SOURCE_TITLE:
-        raise RuntimeError(f"Source title mismatch: {source.get('title')!r}")
+    report = []
+    for product_id, expected_title in PRODUCTS.items():
+        product = request("GET", f"/shops/{SHOP_ID}/products/{product_id}.json")
+        if product.get("title") != expected_title:
+            raise RuntimeError(
+                f"Refusing to update {product_id}: expected {expected_title!r}, got {product.get('title')!r}"
+            )
 
-    payload = {
-        "title": TEST_TITLE,
-        "description": "Unpublished technical canary used to verify the Printify storefront title-image behavior.",
-        "tags": ["Storm And Me", "storefront hero test"],
-        "blueprint_id": int(source["blueprint_id"]),
-        "print_provider_id": int(source["print_provider_id"]),
-        "variants": clone_variants(source),
-        "print_areas": back_only_print_areas(source),
-    }
-    created = request("POST", f"/shops/{SHOP_ID}/products.json", payload)
-    product_id = created["id"]
-    print(f"created unpublished back-only canary {product_id}")
+        before = inspect_positions(product)
+        request(
+            "PUT",
+            f"/shops/{SHOP_ID}/products/{product_id}.json",
+            {"print_areas": rebuilt_print_areas(product)},
+        )
+        request(
+            "POST",
+            f"/shops/{SHOP_ID}/products/{product_id}/publish.json",
+            {
+                "title": False,
+                "description": False,
+                "images": True,
+                "variants": False,
+                "tags": False,
+                "keyFeatures": False,
+            },
+        )
+        time.sleep(8)
+        latest = request("GET", f"/shops/{SHOP_ID}/products/{product_id}.json")
+        after = inspect_positions(latest)
 
-    latest = wait_for_images(product_id)
-    images = latest.get("images", [])
-    defaults = [image for image in images if image.get("is_default")]
-    summary = [
-        {
-            "position": image.get("position"),
-            "is_default": image.get("is_default"),
-            "src": image.get("src"),
-        }
-        for image in images[:12]
-    ]
-    print(json.dumps({"product_id": product_id, "defaults": defaults, "images": summary}, indent=2))
+        front = [row for row in after if row["position"] == "front"]
+        back = [row for row in after if row["position"] == "back"]
+        if not front or not back:
+            raise RuntimeError(f"{expected_title}: front/back artwork missing after update")
+        if any(abs(float(row.get("scale") or 0) - TARGET_FRONT_SCALE) > 0.02 for row in front):
+            raise RuntimeError(f"{expected_title}: front logo scale did not update: {front}")
+        if any(abs(float(row.get("x") or 0) - TARGET_FRONT_X) > 0.02 for row in front):
+            raise RuntimeError(f"{expected_title}: front logo x did not update: {front}")
+        if any(abs(float(row.get("y") or 0) - TARGET_FRONT_Y) > 0.02 for row in front):
+            raise RuntimeError(f"{expected_title}: front logo y did not update: {front}")
 
-    # Always delete the unpublished canary after inspection.
-    request("DELETE", f"/shops/{SHOP_ID}/products/{product_id}.json")
-    print(f"deleted canary {product_id}")
+        default_images = [
+            {"position": img.get("position"), "src": img.get("src"), "is_default": img.get("is_default")}
+            for img in latest.get("images", [])
+            if img.get("is_default")
+        ]
+        if not default_images or any(str(img.get("position", "")).lower() != "front" for img in default_images):
+            raise RuntimeError(f"{expected_title}: unexpected storefront default image state: {default_images}")
 
-    if not defaults:
-        raise RuntimeError("Back-only canary produced no default mockup")
-    if any(str(image.get("position", "")).lower() != "back" for image in defaults):
-        raise RuntimeError(f"Back-only canary still defaults to a non-back mockup: {defaults}")
+        report.append(
+            {
+                "product_id": product_id,
+                "title": expected_title,
+                "before": before,
+                "after": after,
+                "default_images": default_images,
+            }
+        )
+        print(f"fixed: {expected_title} -> storefront default front now uses a visible centered Storm And Me mark")
 
-    print("CANARY PASS: a back-only Printify product defaults to the back mockup, so safe recreation will fix the storefront cards without changing the approved garment design.")
+    print(json.dumps({"shop_id": SHOP_ID, "products": report}, indent=2))
 
 
 if __name__ == "__main__":
