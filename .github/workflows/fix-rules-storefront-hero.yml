@@ -7,6 +7,12 @@ on:
     paths:
       - 'automation/printify/fix_rules_storefront_hero.py'
       - '.github/workflows/fix-rules-storefront-hero.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/fix_rules_storefront_hero.py'
+      - '.github/workflows/fix-rules-storefront-hero.yml'
   workflow_dispatch:
 
 permissions:
