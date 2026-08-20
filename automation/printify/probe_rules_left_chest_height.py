@@ -19,15 +19,18 @@ from finalize_rules_collection_layout import (
 OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
-TARGET = {'name': 'folded-calibration', 'x': 0.86, 'y': 0.05, 'scale': 0.22}
+CANDIDATES = [
+    {'name': 'edge-zero', 'x': 0.86, 'y': 0.00, 'scale': 0.22},
+    {'name': 'edge-neg', 'x': 0.86, 'y': -0.03, 'scale': 0.22},
+]
 
 
-def create_canary(source, spec, logo_id, back_id):
+def create_canary(source, spec, candidate, logo_id, back_id):
     variants = enabled_variants(source)
     ids = [row['id'] for row in source.get('variants', []) if row.get('id') is not None]
     payload = {
-        'title': f"QA FOLDED HEIGHT {spec['title']}",
-        'description': 'Unpublished folded-view calibration canary.',
+        'title': f"QA EDGE HEIGHT {spec['title']} — {candidate['name']}",
+        'description': 'Unpublished folded-view edge calibration canary.',
         'tags': ['Storm And Me', 'QA', 'Rules Don\'t Exist Anymore'],
         'blueprint_id': int(source['blueprint_id']),
         'print_provider_id': int(source['print_provider_id']),
@@ -35,7 +38,7 @@ def create_canary(source, spec, logo_id, back_id):
         'print_areas': [{
             'variant_ids': ids,
             'placeholders': [
-                {'position': 'front', 'images': [{'id': logo_id, 'x': TARGET['x'], 'y': TARGET['y'], 'scale': TARGET['scale'], 'angle': 0}]},
+                {'position': 'front', 'images': [{'id': logo_id, 'x': candidate['x'], 'y': candidate['y'], 'scale': candidate['scale'], 'angle': 0}]},
                 {'position': 'back', 'images': [{'id': back_id, 'x': 0.50, 'y': 0.43, 'scale': 0.88, 'angle': 0}]},
             ],
         }],
@@ -47,36 +50,39 @@ def main():
     spec = PRODUCTS[0]
     source = get_product(spec['id'])
     verify_product(source, spec)
-    logo_id = upload('storm-and-me-folded-calibration-logo.png', official_logo_rgba())
-    back_id = upload('rules-folded-calibration-back.png', tight_back_art(spec['palette']))
-    canary = create_canary(source, spec, logo_id, back_id)
+    logo_id = upload('storm-and-me-folded-edge-logo.png', official_logo_rgba())
+    back_id = upload('rules-folded-edge-back.png', tight_back_art(spec['palette']))
+    created = []
+    report = []
     try:
-        latest = wait_for_images(canary['id'])
-        images = latest.get('images', [])
-        manifest = []
-        for idx, image in enumerate(images):
-            src = image.get('src')
-            if not src:
-                continue
-            position = str(image.get('position') or 'unknown').replace('/', '-')
-            path = OUT / f'image-{idx:02d}-{position}.jpg'
-            path.write_bytes(fetch_bytes(src))
-            manifest.append({
-                'index': idx,
-                'position': image.get('position'),
-                'is_default': image.get('is_default'),
-                'variant_ids': image.get('variant_ids'),
-                'src': src,
-                'file': str(path),
-            })
-        (OUT / 'report.json').write_text(json.dumps({'target': TARGET, 'images': manifest}, indent=2) + '\n', encoding='utf-8')
-        print(f'CAPTURED {len(manifest)} PRINTIFY MOCKUPS FOR FOLDED CALIBRATION')
+        for candidate in CANDIDATES:
+            canary = create_canary(source, spec, candidate, logo_id, back_id)
+            created.append(canary['id'])
+            latest = wait_for_images(canary['id'])
+            folded = None
+            front = None
+            for image in latest.get('images', []):
+                src = image.get('src') or ''
+                if 'camera_label=folded' in src:
+                    folded = src
+                if 'camera_label=front' in src:
+                    front = src
+            if not folded or not front:
+                raise RuntimeError(f"{candidate['name']}: missing front/folded mockup")
+            front_path = OUT / f"{candidate['name']}-front.jpg"
+            folded_path = OUT / f"{candidate['name']}-folded.jpg"
+            front_path.write_bytes(fetch_bytes(front))
+            folded_path.write_bytes(fetch_bytes(folded))
+            report.append({'candidate': candidate, 'front': front, 'folded': folded})
+            print(f"CAPTURED {candidate['name']}")
     finally:
-        try:
-            request('DELETE', f'/shops/{SHOP_ID}/products/{canary["id"]}.json')
-        except Exception as exc:
-            print(f'warning: canary cleanup failed {canary["id"]}: {exc}')
-    print('LEFT_CHEST_FOLDED_CALIBRATION_COMPLETE')
+        for product_id in created:
+            try:
+                request('DELETE', f'/shops/{SHOP_ID}/products/{product_id}.json')
+            except Exception as exc:
+                print(f'warning: canary cleanup failed {product_id}: {exc}')
+    (OUT / 'report.json').write_text(json.dumps({'candidates': report}, indent=2) + '\n', encoding='utf-8')
+    print('LEFT_CHEST_EDGE_CALIBRATION_COMPLETE')
 
 
 if __name__ == '__main__':
