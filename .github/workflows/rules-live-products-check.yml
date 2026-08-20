@@ -1,0 +1,24 @@
+name: Rules live products check
+
+on:
+  push:
+    branches:
+      - feature/rules-live-products
+  pull_request:
+    paths:
+      - 'frontend/src/components/FeaturedMerchPortal.js'
+      - 'frontend/src/data/rules-products.generated.json'
+      - 'frontend/scripts/validate-rules-live-products.cjs'
+      - 'automation/printify/publish_rules_collection.py'
+      - '.github/workflows/rules-live-products-check.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Validate live Rules collection contract
+        run: node frontend/scripts/validate-rules-live-products.cjs

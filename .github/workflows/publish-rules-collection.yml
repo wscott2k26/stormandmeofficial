@@ -1,0 +1,52 @@
+name: Publish Rules collection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rules-live-products-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Publish or reconcile exact approved products
+        run: python automation/printify/publish_rules_collection_v2.py
+      - name: Verify storefront output
+        run: |
+          test -s frontend/src/data/rules-products.generated.json
+          python - <<'PY'
+          import json
+          data=json.load(open('frontend/src/data/rules-products.generated.json'))
+          assert str(data['shop_id']) == '28312107'
+          assert len(data['products']) == 3
+          expected={'rules-black-tee':3200,'rules-hoodie':6200,'rules-white-tee':2800}
+          for p in data['products']:
+              assert p['price_cents'] == expected[p['id']]
+              assert p['image'].startswith('https://images-api.printify.com/mockup/')
+              assert 'camera_label=back' in p['image']
+              assert p['url'].startswith('https://storm-and-me-official.printify.me/product/')
+              assert p['visible'] is True
+          print('Verified the three official live Rules collection products.')
+          PY
+      - name: Upload publisher report
+        uses: actions/upload-artifact@v4
+        with:
+          name: rules-collection-publish-report
+          path: automation-output/rules-collection-results.json
+          if-no-files-found: error
+          retention-days: 14

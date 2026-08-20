@@ -1,0 +1,43 @@
+{
+  "collection": "RULES DON\u2019T EXIST ANYMORE",
+  "shop_id": "28312107",
+  "generated_at": "2026-08-20T05:58:12Z",
+  "products": [
+    {
+      "id": "rules-black-tee",
+      "printify_product_id": "6a869680606e476ad103a016",
+      "title": "Obama 2028 \u2014 Vintage Black Statement Tee",
+      "label": "Washed Black",
+      "price_cents": 3200,
+      "price": "$32.00",
+      "image": "https://images-api.printify.com/mockup/6a869680606e476ad103a016/79048/98446/obama-2028-vintage-black-statement-tee.jpg?camera_label=back",
+      "url": "https://storm-and-me-official.printify.me/product/31128157",
+      "description": "Vintage wash. Bold truth. No apologies.",
+      "visible": true
+    },
+    {
+      "id": "rules-hoodie",
+      "printify_product_id": "6a86968a6ad239171c07ee5b",
+      "title": "Obama 2028 \u2014 Statement Hoodie",
+      "label": "Premium Hoodie",
+      "price_cents": 6200,
+      "price": "$62.00",
+      "image": "https://images-api.printify.com/mockup/6a86968a6ad239171c07ee5b/42166/98425/obama-2028-statement-hoodie.jpg?camera_label=back",
+      "url": "https://storm-and-me-official.printify.me/product/31128159",
+      "description": "Premium heavy blend. Comfort meets conviction.",
+      "visible": true
+    },
+    {
+      "id": "rules-white-tee",
+      "printify_product_id": "6a86969021939a43b002c79c",
+      "title": "Obama 2028 \u2014 White Statement Tee",
+      "label": "White Tee",
+      "price_cents": 2800,
+      "price": "$28.00",
+      "image": "https://images-api.printify.com/mockup/6a86969021939a43b002c79c/73207/98446/obama-2028-white-statement-tee.jpg?camera_label=back",
+      "url": "https://storm-and-me-official.printify.me/product/31128160",
+      "description": "Crisp, clean, and loud. The message speaks for itself.",
+      "visible": true
+    }
+  ]
+}
