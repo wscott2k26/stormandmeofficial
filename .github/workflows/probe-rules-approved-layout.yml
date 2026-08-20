@@ -7,6 +7,12 @@ on:
     paths:
       - 'automation/printify/finalize_rules_collection_layout.py'
       - '.github/workflows/probe-rules-approved-layout.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'automation/printify/finalize_rules_collection_layout.py'
+      - '.github/workflows/probe-rules-approved-layout.yml'
 
 permissions:
   contents: read
