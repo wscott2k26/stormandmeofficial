@@ -34,15 +34,15 @@ class BrokenPiecesMerchContractTests(unittest.TestCase):
             front, back = module.build_art(product)
             for side_name, art in (("front", front), ("back", back)):
                 crop = art.crop((650, 450, 3850, 4700)).convert("RGBA")
-                opaque_rgb = {
+                fully_opaque_rgb = {
                     (r, g, b)
                     for r, g, b, a in crop.getdata()
-                    if a >= 32
+                    if a == 255
                 }
                 self.assertGreaterEqual(
-                    len(opaque_rgb),
-                    96,
-                    f"{product['slug']} {side_name} is visually too flat ({len(opaque_rgb)} opaque colors); print art must use real texture/shading, not placeholder-style flat fills",
+                    len(fully_opaque_rgb),
+                    64,
+                    f"{product['slug']} {side_name} is visually too flat ({len(fully_opaque_rgb)} solid colors); approved print art must use real texture/shading rather than flat placeholder fills",
                 )
 
     def test_obama_products_are_explicitly_removed(self):
