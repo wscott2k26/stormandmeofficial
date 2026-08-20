@@ -1,12 +1,12 @@
 {
-  "collection": "RULES DON’T EXIST ANYMORE",
+  "collection": "RULES DON\u2019T EXIST ANYMORE",
   "shop_id": "28312107",
-  "generated_at": "2026-08-20T05:55:09Z",
+  "generated_at": "2026-08-20T05:57:23Z",
   "products": [
     {
       "id": "rules-black-tee",
       "printify_product_id": "6a869680606e476ad103a016",
-      "title": "Obama 2028 — Vintage Black Statement Tee",
+      "title": "Obama 2028 \u2014 Vintage Black Statement Tee",
       "label": "Washed Black",
       "price_cents": 3200,
       "price": "$32.00",
@@ -18,7 +18,7 @@
     {
       "id": "rules-hoodie",
       "printify_product_id": "6a86968a6ad239171c07ee5b",
-      "title": "Obama 2028 — Statement Hoodie",
+      "title": "Obama 2028 \u2014 Statement Hoodie",
       "label": "Premium Hoodie",
       "price_cents": 6200,
       "price": "$62.00",
@@ -30,7 +30,7 @@
     {
       "id": "rules-white-tee",
       "printify_product_id": "6a86969021939a43b002c79c",
-      "title": "Obama 2028 — White Statement Tee",
+      "title": "Obama 2028 \u2014 White Statement Tee",
       "label": "White Tee",
       "price_cents": 2800,
       "price": "$28.00",
