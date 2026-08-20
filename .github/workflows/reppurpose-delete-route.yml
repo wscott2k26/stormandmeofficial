@@ -5,12 +5,12 @@ on:
     branches: [main]
     paths:
       - 'frontend/scripts/validate-reppurpose-delete-route.cjs'
-      - 'frontend/vercel.json'
+      - 'vercel.json'
       - 'frontend/public/reppurpose/delete-account.html'
   pull_request:
     paths:
       - 'frontend/scripts/validate-reppurpose-delete-route.cjs'
-      - 'frontend/vercel.json'
+      - 'vercel.json'
       - 'frontend/public/reppurpose/delete-account.html'
 
 permissions:
