@@ -20,9 +20,9 @@ if (fs.existsSync(generatorPath)) {
 if (fs.existsSync(applyPath)) {
   const source = fs.readFileSync(applyPath, 'utf8');
   const required = [
-    'FRONT_X = 0.72',
-    'FRONT_Y = 0.24',
-    'FRONT_SCALE = 0.28',
+    'FRONT_X = 0.86',
+    'FRONT_Y = 0.21',
+    'FRONT_SCALE = 0.22',
     'TEE_BACK_X = 0.50',
     'TEE_BACK_Y = 0.43',
     'TEE_BACK_SCALE = 0.88',
@@ -31,7 +31,7 @@ if (fs.existsSync(applyPath)) {
     'HOODIE_BACK_SCALE = 0.96',
     'position": "front"',
     'position": "back"',
-    'small left chest mark + large clean back graphic',
+    'true wearer-left chest mark + large clean back graphic',
   ];
   for (const token of required) {
     if (!source.includes(token)) failures.push(`Missing final placement token: ${token}`);
@@ -44,4 +44,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Approved Rules streetwear layout contract passed: small wearer-left chest mark, large clean back graphic, tight transparent art.');
+console.log('Approved Rules streetwear layout contract passed: true wearer-left chest mark, large clean back graphic, tight transparent art.');
