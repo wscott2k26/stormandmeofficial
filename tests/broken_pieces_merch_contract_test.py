@@ -33,7 +33,7 @@ class BrokenPiecesMerchContractTests(unittest.TestCase):
         for product in module.PRODUCTS:
             front, back = module.build_art(product)
             for side_name, art in (("front", front), ("back", back)):
-                crop = art.crop((650, 450, 3850, 4700)).convert("RGBA")
+                crop = art.crop((650, 450, 3850, 4700)).resize((320, 425), resample=0).convert("RGBA")
                 fully_opaque_rgb = {
                     (r, g, b)
                     for r, g, b, a in crop.getdata()
