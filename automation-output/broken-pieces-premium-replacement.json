@@ -1,0 +1,76 @@
+{
+  "replacements": [
+    {
+      "slug": "cracked-heart",
+      "old_id": "6a8748a22ca30d29770c609d",
+      "new_id": "6a8768c94c5ccb17760a17a2",
+      "action": "reused",
+      "mockup": "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98445/broken-pieces-cracked-heart-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143636",
+      "visible": true
+    },
+    {
+      "slug": "kintsugi-heart",
+      "old_id": "6a8748b22ba83235c9030589",
+      "new_id": "6a876921765de48d610d9a0c",
+      "action": "reused",
+      "mockup": "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98445/broken-pieces-kintsugi-heart-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143661",
+      "visible": true
+    },
+    {
+      "slug": "broken-cross",
+      "old_id": "6a8748c3affe644160009855",
+      "new_id": "6a87697334e6b74a81056e4b",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98445/broken-pieces-broken-cross-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143726",
+      "visible": true
+    },
+    {
+      "slug": "streetwear",
+      "old_id": "6a8748d42ca30d29770c60cf",
+      "new_id": "6a876990aa9cea471b08e022",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98445/broken-pieces-still-breathing-streetwear-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143739",
+      "visible": true
+    },
+    {
+      "slug": "puzzle-piece",
+      "old_id": "6a8748e6cc388d717f01e40d",
+      "new_id": "6a8769c22a86ae766007bbaa",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98445/broken-pieces-still-becoming-puzzle-piece-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143769",
+      "visible": true
+    }
+  ],
+  "legacy_cleanup": [
+    {
+      "slug": "cracked-heart",
+      "old_id": "6a8748a22ca30d29770c609d",
+      "status": "deleted"
+    },
+    {
+      "slug": "kintsugi-heart",
+      "old_id": "6a8748b22ba83235c9030589",
+      "status": "deleted"
+    },
+    {
+      "slug": "broken-cross",
+      "old_id": "6a8748c3affe644160009855",
+      "status": "deleted"
+    },
+    {
+      "slug": "streetwear",
+      "old_id": "6a8748d42ca30d29770c60cf",
+      "status": "deleted"
+    },
+    {
+      "slug": "puzzle-piece",
+      "old_id": "6a8748e6cc388d717f01e40d",
+      "status": "deleted"
+    }
+  ]
+}

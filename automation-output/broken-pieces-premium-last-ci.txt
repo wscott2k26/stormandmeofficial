@@ -1,0 +1,99 @@
+launched replacement: cracked-heart -> 6a8768c94c5ccb17760a17a2 (reused)
+launched replacement: kintsugi-heart -> 6a876921765de48d610d9a0c (reused)
+launched replacement: broken-cross -> 6a87697334e6b74a81056e4b (created)
+launched replacement: streetwear -> 6a876990aa9cea471b08e022 (created)
+launched replacement: puzzle-piece -> 6a8769c22a86ae766007bbaa (created)
+storefront ready: cracked-heart -> 6a8768c94c5ccb17760a17a2
+storefront ready: kintsugi-heart -> 6a876921765de48d610d9a0c
+storefront ready: broken-cross -> 6a87697334e6b74a81056e4b
+storefront ready: streetwear -> 6a876990aa9cea471b08e022
+storefront ready: puzzle-piece -> 6a8769c22a86ae766007bbaa
+{
+  "replacements": [
+    {
+      "slug": "cracked-heart",
+      "old_id": "6a8748a22ca30d29770c609d",
+      "new_id": "6a8768c94c5ccb17760a17a2",
+      "action": "reused",
+      "mockup": "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98445/broken-pieces-cracked-heart-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143636",
+      "visible": true
+    },
+    {
+      "slug": "kintsugi-heart",
+      "old_id": "6a8748b22ba83235c9030589",
+      "new_id": "6a876921765de48d610d9a0c",
+      "action": "reused",
+      "mockup": "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98445/broken-pieces-kintsugi-heart-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143661",
+      "visible": true
+    },
+    {
+      "slug": "broken-cross",
+      "old_id": "6a8748c3affe644160009855",
+      "new_id": "6a87697334e6b74a81056e4b",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98445/broken-pieces-broken-cross-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143726",
+      "visible": true
+    },
+    {
+      "slug": "streetwear",
+      "old_id": "6a8748d42ca30d29770c60cf",
+      "new_id": "6a876990aa9cea471b08e022",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98445/broken-pieces-still-breathing-streetwear-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143739",
+      "visible": true
+    },
+    {
+      "slug": "puzzle-piece",
+      "old_id": "6a8748e6cc388d717f01e40d",
+      "new_id": "6a8769c22a86ae766007bbaa",
+      "action": "created",
+      "mockup": "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98445/broken-pieces-still-becoming-puzzle-piece-tee.jpg?camera_label=front",
+      "url": "https://storm-and-me-official.printify.me/product/31143769",
+      "visible": true
+    }
+  ],
+  "legacy_cleanup": [
+    {
+      "slug": "cracked-heart",
+      "old_id": "6a8748a22ca30d29770c609d",
+      "status": "deleted"
+    },
+    {
+      "slug": "kintsugi-heart",
+      "old_id": "6a8748b22ba83235c9030589",
+      "status": "deleted"
+    },
+    {
+      "slug": "broken-cross",
+      "old_id": "6a8748c3affe644160009855",
+      "status": "deleted"
+    },
+    {
+      "slug": "streetwear",
+      "old_id": "6a8748d42ca30d29770c60cf",
+      "status": "deleted"
+    },
+    {
+      "slug": "puzzle-piece",
+      "old_id": "6a8748e6cc388d717f01e40d",
+      "status": "deleted"
+    }
+  ]
+}
+replacement_exit=0
+test_five_products_and_exact_back_messages (tests.broken_pieces_merch_contract_test.BrokenPiecesMerchContractTests.test_five_products_and_exact_back_messages) ... ok
+test_obama_products_are_explicitly_removed (tests.broken_pieces_merch_contract_test.BrokenPiecesMerchContractTests.test_obama_products_are_explicitly_removed) ... ok
+test_portal_features_broken_pieces_before_rules (tests.broken_pieces_merch_contract_test.BrokenPiecesMerchContractTests.test_portal_features_broken_pieces_before_rules) ... ok
+test_print_art_is_textured_not_flat_placeholder_art (tests.broken_pieces_merch_contract_test.BrokenPiecesMerchContractTests.test_print_art_is_textured_not_flat_placeholder_art) ... /home/runner/work/stormandmeofficial/stormandmeofficial/tests/broken_pieces_merch_contract_test.py:39: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for r, g, b, a in crop.getdata()
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 17.773s
+
+OK
+tests_exit=0
