@@ -5,7 +5,7 @@
       "root": "frontend/",
       "framework": "create-react-app",
       "installCommand": "yarn install",
-      "buildCommand": "node scripts/validate-rules-collection.cjs && yarn build",
+      "buildCommand": "node scripts/validate-rules-collection.cjs && node scripts/validate-rules-live-products.cjs && yarn build",
       "outputDirectory": "build"
     },
     "backend": {
