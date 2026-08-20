@@ -5,13 +5,13 @@ on:
     branches:
       - feature/rules-live-products
     paths:
-      - 'automation/printify/publish_rules_collection.py'
+      - 'automation/printify/publish_rules_collection_v2.py'
       - '.github/workflows/publish-rules-collection.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'automation/printify/publish_rules_collection.py'
+      - 'automation/printify/publish_rules_collection_v2.py'
       - '.github/workflows/publish-rules-collection.yml'
   workflow_dispatch:
 
@@ -36,7 +36,7 @@ jobs:
       - name: Install image tooling
         run: python -m pip install --disable-pip-version-check pillow
       - name: Publish exact approved products
-        run: python automation/printify/publish_rules_collection.py
+        run: python automation/printify/publish_rules_collection_v2.py
       - name: Verify generated site data
         run: |
           test -s frontend/src/data/rules-products.generated.json
@@ -49,7 +49,7 @@ jobs:
               assert p['price_cents'] == expected[p['id']]
               assert p['image'].startswith('https://')
               assert p['url'].startswith('https://')
-          print('Generated 3 live product records with real HTTPS mockups and links.')
+          print('Generated 3 live product records with real HTTPS mockups and direct links.')
           PY
       - name: Commit generated Printify data
         run: |
