@@ -2,32 +2,40 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..', '..');
-const scriptPath = path.join(root, 'automation', 'printify', 'finalize_rules_collection_layout.py');
+const generatorPath = path.join(root, 'automation', 'printify', 'finalize_rules_collection_layout.py');
+const applyPath = path.join(root, 'automation', 'printify', 'apply_rules_approved_layout.py');
 const failures = [];
 
-if (!fs.existsSync(scriptPath)) {
-  failures.push('Missing finalize_rules_collection_layout.py');
-} else {
-  const source = fs.readFileSync(scriptPath, 'utf8');
+if (!fs.existsSync(generatorPath)) failures.push('Missing finalize_rules_collection_layout.py');
+if (!fs.existsSync(applyPath)) failures.push('Missing apply_rules_approved_layout.py');
+
+if (fs.existsSync(generatorPath)) {
+  const source = fs.readFileSync(generatorPath, 'utf8');
+  for (const token of ['tight_back_art', 'crop_transparent', 'official_logo_rgba', 'OBAMA', '2028', "RULES DON'T", 'EXIST ANYMORE']) {
+    if (!source.includes(token)) failures.push(`Missing tight-art token: ${token}`);
+  }
+  if (source.includes('BACK_LOGO')) failures.push('Back artwork must not contain an extra Storm And Me logo');
+}
+
+if (fs.existsSync(applyPath)) {
+  const source = fs.readFileSync(applyPath, 'utf8');
   const required = [
-    'FRONT_X = 0.30',
-    'FRONT_Y = 0.28',
-    'BACK_X = 0.50',
-    'RULES DON’T EXIST ANYMORE',
-    'tight_back_art',
-    'official_logo_rgba',
-    'OBAMA',
-    '2028',
-    "RULES DON'T",
-    'EXIST ANYMORE',
+    'FRONT_X = 0.72',
+    'FRONT_Y = 0.24',
+    'FRONT_SCALE = 0.28',
+    'TEE_BACK_X = 0.50',
+    'TEE_BACK_Y = 0.43',
+    'TEE_BACK_SCALE = 0.88',
+    'HOODIE_BACK_X = 0.50',
+    'HOODIE_BACK_Y = 0.56',
+    'HOODIE_BACK_SCALE = 0.96',
     'position": "front"',
     'position": "back"',
+    'small left chest mark + large clean back graphic',
   ];
   for (const token of required) {
-    if (!source.includes(token)) failures.push(`Missing approved-layout token: ${token}`);
+    if (!source.includes(token)) failures.push(`Missing final placement token: ${token}`);
   }
-  if (source.includes('BACK_LOGO')) failures.push('Back must not contain an extra Storm And Me logo');
-  if (!source.includes('crop_transparent')) failures.push('Back artwork must be tightly cropped to avoid a giant square print area');
 }
 
 if (failures.length) {
@@ -36,4 +44,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Approved Rules streetwear layout contract passed.');
+console.log('Approved Rules streetwear layout contract passed: small wearer-left chest mark, large clean back graphic, tight transparent art.');
