@@ -18,6 +18,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: rules-live-products-publish
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -43,13 +47,16 @@ jobs:
           python - <<'PY'
           import json
           data=json.load(open('frontend/src/data/rules-products.generated.json'))
+          assert str(data['shop_id']) == '28312107', data['shop_id']
           assert len(data['products']) == 3
           expected={'rules-black-tee':3200,'rules-hoodie':6200,'rules-white-tee':2800}
           for p in data['products']:
               assert p['price_cents'] == expected[p['id']]
+              assert p['printify_product_id']
               assert p['image'].startswith('https://')
-              assert p['url'].startswith('https://')
-          print('Generated 3 live product records with real HTTPS mockups and direct links.')
+              assert p['url'].startswith('https://storm-and-me-official.printify.me/product/')
+              assert p['visible'] is True
+          print('Verified official StormAndMe storefront: 3 live products, real back-view mockups, exact prices, direct product links.')
           PY
       - name: Commit generated Printify data
         run: |
