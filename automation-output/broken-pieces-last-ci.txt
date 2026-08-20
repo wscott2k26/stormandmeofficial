@@ -1,0 +1,18 @@
+BROKEN PIECES DIAGNOSTIC PUBLISH
+commit=5421410c1addf18263563377b45ccad197be74f3
+started=2026-08-20T19:42:21Z
+=== GATE 1: compile/import/render ===
+compile_exit=0
+products= ['cracked-heart', 'kintsugi-heart', 'broken-cross', 'streetwear', 'puzzle-piece']
+cracked-heart render_seconds= 1.0
+kintsugi-heart render_seconds= 7.93
+broken-cross render_seconds= 5.83
+streetwear render_seconds= 0.26
+puzzle-piece render_seconds= 6.92
+render_exit=0
+=== GATE 2: Printify upload/update/publish ===
+ERROR: Printify API 400 on /shops/28312107/products/6a8748a22ca30d29770c609d.json: {"status":"error","code":8251,"message":"Validation failed.","errors":{"reason":"Variants do not match selected blueprint and print provider. Please make sure that all product variants are present in the `print_areas.*.variant_ids` field","code":8251}}
+publish_exit=1
+tests_exit=99
+finished=2026-08-20T19:43:43Z
+overall=FAIL
