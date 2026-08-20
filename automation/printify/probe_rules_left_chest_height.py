@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
 from pathlib import Path
-from PIL import Image
 
 from finalize_rules_collection_layout import (
     SHOP_ID,
@@ -20,27 +19,21 @@ from finalize_rules_collection_layout import (
 OUT = Path('automation-output/rules-left-chest-height-probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
+# Small classic chest-hit candidates: keep the full official mark intact while
+# fitting inside Printify's top print boundary.
 CANDIDATES = [
-    {'name': 'pad-50', 'x': 0.86, 'y': 0.05, 'scale': 0.22, 'pad': 0.50},
-    {'name': 'pad-100', 'x': 0.86, 'y': 0.05, 'scale': 0.22, 'pad': 1.00},
-    {'name': 'pad-150', 'x': 0.86, 'y': 0.05, 'scale': 0.22, 'pad': 1.50},
+    {'name': 'tiny-a', 'x': 0.86, 'y': 0.02, 'scale': 0.10},
+    {'name': 'tiny-b', 'x': 0.86, 'y': 0.02, 'scale': 0.12},
+    {'name': 'tiny-c', 'x': 0.86, 'y': 0.02, 'scale': 0.14},
 ]
-
-
-def bottom_padded_logo(extra_ratio):
-    logo = official_logo_rgba()
-    extra = max(1, round(logo.height * extra_ratio))
-    canvas = Image.new('RGBA', (logo.width, logo.height + extra), (0, 0, 0, 0))
-    canvas.alpha_composite(logo, (0, 0))
-    return canvas
 
 
 def create_canary(source, spec, candidate, logo_id, back_id):
     variants = enabled_variants(source)
     ids = [row['id'] for row in source.get('variants', []) if row.get('id') is not None]
     payload = {
-        'title': f"QA PAD HIGH {spec['title']} — {candidate['name']}",
-        'description': 'Unpublished transparent-bottom-padding left-chest calibration canary.',
+        'title': f"QA TINY HIGH {spec['title']} — {candidate['name']}",
+        'description': 'Unpublished tiny classic left-chest placement canary.',
         'tags': ['Storm And Me', 'QA', 'Rules Don\'t Exist Anymore'],
         'blueprint_id': int(source['blueprint_id']),
         'print_provider_id': int(source['print_provider_id']),
@@ -60,12 +53,12 @@ def main():
     spec = PRODUCTS[0]
     source = get_product(spec['id'])
     verify_product(source, spec)
-    back_id = upload('rules-pad-high-back.png', tight_back_art(spec['palette']))
+    logo_id = upload('storm-and-me-tiny-high-logo.png', official_logo_rgba())
+    back_id = upload('rules-tiny-high-back.png', tight_back_art(spec['palette']))
     created = []
     report = []
     try:
         for candidate in CANDIDATES:
-            logo_id = upload(f"storm-and-me-{candidate['name']}.png", bottom_padded_logo(candidate['pad']))
             canary = create_canary(source, spec, candidate, logo_id, back_id)
             created.append(canary['id'])
             latest = wait_for_images(canary['id'])
@@ -79,10 +72,8 @@ def main():
                     front = src
             if not folded or not front:
                 raise RuntimeError(f"{candidate['name']}: missing front/folded mockup")
-            front_path = OUT / f"{candidate['name']}-front.jpg"
-            folded_path = OUT / f"{candidate['name']}-folded.jpg"
-            front_path.write_bytes(fetch_bytes(front))
-            folded_path.write_bytes(fetch_bytes(folded))
+            (OUT / f"{candidate['name']}-front.jpg").write_bytes(fetch_bytes(front))
+            (OUT / f"{candidate['name']}-folded.jpg").write_bytes(fetch_bytes(folded))
             report.append({'candidate': candidate, 'front': front, 'folded': folded})
             print(f"CAPTURED {candidate['name']}")
     finally:
@@ -92,7 +83,7 @@ def main():
             except Exception as exc:
                 print(f'warning: canary cleanup failed {product_id}: {exc}')
     (OUT / 'report.json').write_text(json.dumps({'candidates': report}, indent=2) + '\n', encoding='utf-8')
-    print('LEFT_CHEST_PADDED_CALIBRATION_COMPLETE')
+    print('LEFT_CHEST_TINY_HIGH_CALIBRATION_COMPLETE')
 
 
 if __name__ == '__main__':
