@@ -54,7 +54,19 @@ if (!fs.existsSync(publisherPath)) {
   failures.push('Missing Printify publisher v2 script');
 } else {
   const publisher = fs.readFileSync(publisherPath, 'utf8');
-  for (const needle of ['3200', '6200', '2800', '"position": "back"', '"position": "front"', 'RULES DON’T EXIST ANYMORE', 'OFFICIAL_SHOP_ID', '28312107']) {
+  for (const needle of [
+    '3200',
+    '6200',
+    '2800',
+    '"position": "back"',
+    '"position": "front"',
+    '"x": 0.5',
+    '"y": 0.38',
+    '"scale": 3.0',
+    'RULES DON’T EXIST ANYMORE',
+    'OFFICIAL_SHOP_ID',
+    '28312107',
+  ]) {
     requireContains(publisher, needle, `publisher contract token ${needle}`);
   }
 }
@@ -65,4 +77,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Rules live product contract passed: 3 real Printify products, exact prices, real back-view mockups, direct storefront links, no cartoon garment SVGs.');
+console.log('Rules live product contract passed: 3 real Printify products, exact prices, real back-view site mockups, direct storefront links, and a visible centered 3x Storm And Me front treatment for Printify store cards.');
