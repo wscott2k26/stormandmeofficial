@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/replace-broken-pieces-premium-diagnostic.yml"
+      - "automation/printify/replace_broken_pieces_premium.py"
   workflow_dispatch:
 
 permissions:
