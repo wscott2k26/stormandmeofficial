@@ -1,0 +1,120 @@
+name: Diagnose and publish Broken Pieces
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-broken-pieces-publish.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: broken-pieces-collection-publish
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Run diagnostic publish and capture every boundary
+        id: diagnose
+        shell: bash
+        run: |
+          set +e
+          mkdir -p automation-output
+          LOG=automation-output/broken-pieces-last-ci.txt
+          : > "$LOG"
+          echo "BROKEN PIECES DIAGNOSTIC PUBLISH" >> "$LOG"
+          echo "commit=$GITHUB_SHA" >> "$LOG"
+          echo "started=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$LOG"
+
+          echo "=== GATE 1: compile/import/render ===" >> "$LOG"
+          python -m py_compile automation/printify/publish_broken_pieces_collection.py automation/printify/broken_pieces_core.py automation/printify/broken_pieces_premium_art.py >> "$LOG" 2>&1
+          COMPILE=$?
+          echo "compile_exit=$COMPILE" >> "$LOG"
+
+          RENDER=99
+          if [ "$COMPILE" -eq 0 ]; then
+            python - <<'PY' >> "$LOG" 2>&1
+          import importlib.util, time
+          p='automation/printify/publish_broken_pieces_collection.py'
+          spec=importlib.util.spec_from_file_location('bp',p)
+          bp=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(bp)
+          print('products=', [x['slug'] for x in bp.PRODUCTS])
+          for product in bp.PRODUCTS:
+              started=time.time()
+              front, back=bp.build_art(product)
+              assert front.size==(4500,5400) and back.size==(4500,5400)
+              assert front.mode=='RGBA' and back.mode=='RGBA'
+              assert front.getbbox() and back.getbbox()
+              print(product['slug'], 'render_seconds=', round(time.time()-started,2))
+          PY
+            RENDER=$?
+          fi
+          echo "render_exit=$RENDER" >> "$LOG"
+
+          PUBLISH=99
+          if [ "$COMPILE" -eq 0 ] && [ "$RENDER" -eq 0 ]; then
+            echo "=== GATE 2: Printify upload/update/publish ===" >> "$LOG"
+            python automation/printify/publish_broken_pieces_collection.py >> "$LOG" 2>&1
+            PUBLISH=$?
+          fi
+          echo "publish_exit=$PUBLISH" >> "$LOG"
+
+          TESTS=99
+          if [ "$PUBLISH" -eq 0 ]; then
+            echo "=== GATE 3: merch contract ===" >> "$LOG"
+            python -m unittest tests/broken_pieces_merch_contract_test.py -v >> "$LOG" 2>&1
+            TESTS=$?
+          fi
+          echo "tests_exit=$TESTS" >> "$LOG"
+          echo "finished=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$LOG"
+
+          if [ "$COMPILE" -eq 0 ] && [ "$RENDER" -eq 0 ] && [ "$PUBLISH" -eq 0 ] && [ "$TESTS" -eq 0 ]; then
+            echo "overall=PASS" >> "$LOG"
+            echo "exit_code=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "overall=FAIL" >> "$LOG"
+            echo "exit_code=1" >> "$GITHUB_OUTPUT"
+          fi
+          cat "$LOG"
+          exit 0
+
+      - name: Commit diagnostic evidence and refreshed storefront data
+        shell: bash
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/broken-pieces-last-ci.txt
+          [ -f frontend/src/data/broken-pieces-products.generated.json ] && git add frontend/src/data/broken-pieces-products.generated.json
+          [ -f frontend/src/components/FeaturedMerchPortal.js ] && git add frontend/src/components/FeaturedMerchPortal.js
+          if git diff --cached --quiet; then
+            echo "No diagnostic/storefront changes to commit."
+          else
+            git commit -m "chore: record Broken Pieces publish verification"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Fail job if diagnostic publish failed
+        if: steps.diagnose.outputs.exit_code != '0'
+        run: exit 1
