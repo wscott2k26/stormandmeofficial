@@ -59,12 +59,26 @@ class RepairJesusCoffeeLogoPlacementTests(unittest.TestCase):
         self.assertEqual(front[0]['scale'], 0.38)
         self.assertEqual(front[1], before[0]['placeholders'][0]['images'][1])
         self.assertEqual(back, before[0]['placeholders'][1]['images'])
+        self.assertEqual(mod.non_logo_transform_signature(before), mod.non_logo_transform_signature(repaired))
 
     def test_artwork_and_variant_signatures_do_not_change(self):
         before = self.sample_areas()
         repaired, _ = mod.repair_print_areas(before)
         self.assertEqual(mod.artwork_signature(before), mod.artwork_signature(repaired))
         self.assertEqual(mod.variant_signature(before), mod.variant_signature(repaired))
+
+    def test_writable_print_areas_drop_only_empty_placeholders(self):
+        before = self.sample_areas()
+        before[0]['placeholders'].extend([
+            {'position': 'left_sleeve', 'decoration_method': 'dtg'},
+            {'position': 'right_sleeve', 'decoration_method': 'dtg', 'images': []},
+        ])
+        writable = mod.writable_print_areas(before)
+        positions = [p['position'] for p in writable[0]['placeholders']]
+        self.assertEqual(positions, ['front', 'back'])
+        self.assertEqual(mod.variant_signature(before), mod.variant_signature(writable))
+        self.assertEqual(mod.artwork_signature(before), mod.artwork_signature(writable))
+        self.assertEqual(mod.non_logo_transform_signature(before), mod.non_logo_transform_signature(writable))
 
     def test_already_correct_logo_is_idempotent(self):
         areas = self.sample_areas()
