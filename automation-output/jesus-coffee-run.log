@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 208, in <module>
+    main()
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 105, in main
+    preflight = jcr.preflight_targets(blueprints)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 711, in preflight_targets
+    provider = choose_provider(int(bp["id"]), spec["kind"])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 396, in choose_provider
+    raise RuntimeError(f"No usable provider for blueprint {blueprint_id}: {'; '.join(errors[-3:])}")
+RuntimeError: No usable provider for blueprint 2001: 
