@@ -71,7 +71,7 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual([row['id'] for row in variants], [101, 102])
         self.assertEqual({row['position'] for row in placeholders}, {'front', 'back'})
 
-    def test_fit_images_compat_sends_integer_angle(self):
+    def test_fit_images_compat_preserves_apparel_coordinates_and_integer_angle(self):
         fitted = mod.fit_images_compat(
             [{'id': 'approved-art', 'x': 0.4, 'y': 0.6, 'scale': 1.2, 'angle': 0.0}],
             'hoodie',
@@ -79,9 +79,18 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(len(fitted), 1)
         self.assertIsInstance(fitted[0]['angle'], int)
         self.assertEqual(fitted[0]['angle'], 0)
+        self.assertEqual(fitted[0]['x'], 0.4)
+        self.assertEqual(fitted[0]['y'], 0.6)
+        self.assertLessEqual(fitted[0]['scale'], 0.86)
+
+    def test_fit_images_compat_keeps_phone_art_centered(self):
+        fitted = mod.fit_images_compat(
+            [{'id': 'case-art', 'x': 0.3, 'y': 0.7, 'scale': 0.9, 'angle': 0.0}],
+            'phone-case',
+        )
         self.assertEqual(fitted[0]['x'], 0.5)
         self.assertEqual(fitted[0]['y'], 0.5)
-        self.assertLessEqual(fitted[0]['scale'], 0.86)
+        self.assertLessEqual(fitted[0]['scale'], 0.72)
 
     def test_limit_variants_caps_apparel_and_balances_phone_families(self):
         apparel = []
