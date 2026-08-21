@@ -82,6 +82,7 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
             {'kind': 'long-sleeve', 'terms': [['unisex', 'long', 'sleeve', 'tee']]},
             {'kind': 'fitted-tee', 'terms': [['unisex', 'jersey', 'short', 'sleeve', 'tee']]},
         ]
+        mod.jcr.PHONE_FAMILIES = ('Samsung', 'Google Pixel', 'Motorola', 'iPhone')
         calls = []
 
         def choose_provider(bp_id, kind):
