@@ -54,6 +54,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from collections import defaultdict
           from pathlib import Path
           p=Path('automation-output/jesus-coffee-source-inspection.json')
           data=json.loads(p.read_text())
@@ -61,6 +62,18 @@ jobs:
           assert data['safety'].startswith('No products created')
           assert isinstance(data['recent_candidates'], list)
           def compact(row):
+              usage=defaultdict(lambda: {'positions': set(), 'variant_count': 0})
+              for area in row.get('print_areas', []) or []:
+                  count=len(area.get('variant_ids', []) or [])
+                  for placeholder in area.get('placeholders', []) or []:
+                      position=placeholder.get('position')
+                      for image in placeholder.get('images', []) or []:
+                          image_id=image.get('id')
+                          if not image_id:
+                              continue
+                          if position:
+                              usage[image_id]['positions'].add(position)
+                          usage[image_id]['variant_count'] += count
               return {
                   'id': row.get('id'),
                   'title': row.get('title'),
@@ -73,6 +86,13 @@ jobs:
                   'artwork_ids': [u.get('id') for u in row.get('uploads', []) if u.get('id')],
                   'artwork_files': [u.get('file_name') for u in row.get('uploads', []) if u.get('file_name')],
                   'artwork_previews': [u.get('preview_url') for u in row.get('uploads', []) if u.get('preview_url')],
+                  'artwork_usage': {
+                      image_id: {
+                          'positions': sorted(meta['positions']),
+                          'variant_count': meta['variant_count'],
+                      }
+                      for image_id, meta in usage.items()
+                  },
                   'mockups': [m.get('src') for m in row.get('mockups', []) if m.get('src')][:3],
               }
           summary={
