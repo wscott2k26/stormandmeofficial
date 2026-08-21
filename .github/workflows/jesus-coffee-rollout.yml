@@ -50,7 +50,7 @@ jobs:
       - name: Gate 3 — read-only Jesus & Coffee source inspection
         run: python automation/printify/jesus_coffee_rollout.py
 
-      - name: Gate 4 — inspection report contract
+      - name: Gate 4 — inspection report contract and compact summary
         run: |
           python - <<'PY'
           import json
@@ -60,6 +60,28 @@ jobs:
           assert data['mode'] == 'read-only'
           assert data['safety'].startswith('No products created')
           assert isinstance(data['recent_candidates'], list)
+          def compact(row):
+              return {
+                  'id': row.get('id'),
+                  'title': row.get('title'),
+                  'description': row.get('description'),
+                  'keyword_score': row.get('keyword_score'),
+                  'updated_at': row.get('updated_at'),
+                  'visible': row.get('visible'),
+                  'blueprint_id': row.get('blueprint_id'),
+                  'print_provider_id': row.get('print_provider_id'),
+                  'artwork_ids': [u.get('id') for u in row.get('uploads', []) if u.get('id')],
+                  'artwork_files': [u.get('file_name') for u in row.get('uploads', []) if u.get('file_name')],
+                  'artwork_previews': [u.get('preview_url') for u in row.get('uploads', []) if u.get('preview_url')],
+                  'mockups': [m.get('src') for m in row.get('mockups', []) if m.get('src')][:3],
+              }
+          summary={
+              'shop_id': data['shop_id'],
+              'total_products': data['total_products'],
+              'keyword_candidates': [compact(row) for row in data['keyword_candidates']],
+              'recent_candidates': [compact(row) for row in data['recent_candidates']],
+          }
+          Path('automation-output/jesus-coffee-source-summary.json').write_text(json.dumps(summary, indent=2))
           print('Inspection PASS:', len(data['keyword_candidates']), 'keyword candidates;', len(data['recent_candidates']), 'recent candidates')
           PY
 
@@ -68,7 +90,7 @@ jobs:
         run: |
           git config user.name "stormandme-bot"
           git config user.email "stormandme-bot@users.noreply.github.com"
-          git add automation-output/jesus-coffee-source-inspection.json
+          git add automation-output/jesus-coffee-source-inspection.json automation-output/jesus-coffee-source-summary.json
           if git diff --cached --quiet; then
             echo "Inspection report already current."
           else
@@ -81,6 +103,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jesus-coffee-source-inspection
-          path: automation-output/jesus-coffee-source-inspection.json
+          path: |
+            automation-output/jesus-coffee-source-inspection.json
+            automation-output/jesus-coffee-source-summary.json
           if-no-files-found: error
           retention-days: 14
