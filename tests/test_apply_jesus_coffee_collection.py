@@ -47,6 +47,25 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(placeholders[0]['position'], 'front')
         self.assertEqual([x['id'] for x in placeholders[0]['images']], ['large-back'])
 
+    def test_choose_usable_target_skips_matching_blueprint_without_provider(self):
+        blueprints = [
+            {'id': 2001, 'title': 'Unisex Jersey Long Sleeve Tee'},
+            {'id': 49, 'title': 'Unisex Long Sleeve Tee'},
+        ]
+        calls = []
+
+        def choose_provider(bp_id, kind):
+            calls.append(bp_id)
+            if bp_id == 2001:
+                raise RuntimeError('no provider')
+            return {'provider_id': 99, 'variants': [{'id': 1}], 'placeholders': [{'position': 'front'}]}
+
+        mod.jcr.choose_provider = choose_provider
+        spec = {'kind': 'long-sleeve', 'terms': [['unisex', 'long', 'sleeve', 'tee'], ['long', 'sleeve']]}
+        row = mod.choose_usable_target(blueprints, spec)
+        self.assertEqual(row['blueprint']['id'], 49)
+        self.assertEqual(calls, [2001, 49])
+
 
 if __name__ == '__main__':
     unittest.main()
