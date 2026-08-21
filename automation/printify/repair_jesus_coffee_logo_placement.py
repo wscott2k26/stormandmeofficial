@@ -2,10 +2,11 @@
 """Repair only the Jesus & Coffee apparel front-logo placement in Printify.
 
 This intentionally does not recreate products and does not send variants in the
-update payload. It reuses each live product's complete print_areas document,
+update payload. It reuses each live product's printed artwork, removes only the
+blank placeholder records that Printify returns but refuses to accept on PUT,
 moves only the approved shared front logo to the established left-chest
-position, and verifies that artwork IDs, variant coverage, prices, titles, and
-back artwork remain unchanged.
+position, and verifies that artwork IDs, variant coverage, prices, titles,
+non-logo transforms, and back artwork remain unchanged.
 """
 
 from __future__ import annotations
@@ -24,16 +25,39 @@ APPAREL_KINDS = {"hoodie", "long-sleeve", "fitted-tee"}
 
 
 def artwork_signature(print_areas):
-    """Artwork identity by print-area/placeholder, ignoring placement transforms."""
+    """Artwork identity by print-area/placeholder, ignoring blank placeholders and transforms."""
     rows = []
     for area_index, area in enumerate(print_areas or []):
-        for placeholder_index, placeholder in enumerate(area.get("placeholders", []) or []):
+        for placeholder in area.get("placeholders", []) or []:
+            images = placeholder.get("images", []) or []
+            if not images:
+                continue
             rows.append((
                 area_index,
-                placeholder_index,
                 placeholder.get("position"),
-                tuple(image.get("id") for image in (placeholder.get("images", []) or [])),
+                tuple(image.get("id") for image in images),
             ))
+    return tuple(rows)
+
+
+def non_logo_transform_signature(print_areas):
+    """Protect every printed image except the one logo whose x/y we intentionally change."""
+    rows = []
+    for area_index, area in enumerate(print_areas or []):
+        for placeholder in area.get("placeholders", []) or []:
+            position = placeholder.get("position")
+            for image in placeholder.get("images", []) or []:
+                if image.get("id") == app.APPAREL_LOGO_ID and position == "front":
+                    continue
+                rows.append((
+                    area_index,
+                    position,
+                    image.get("id"),
+                    round(float(image.get("x", 0.5)), 6),
+                    round(float(image.get("y", 0.5)), 6),
+                    round(float(image.get("scale", 1.0)), 6),
+                    int(round(float(image.get("angle", 0) or 0))),
+                ))
     return tuple(rows)
 
 
@@ -53,6 +77,32 @@ def product_variant_signature(product):
         )
         for variant in (product.get("variants", []) or [])
     )
+
+
+def writable_print_areas(print_areas):
+    """Build the exact artwork payload Printify accepts, omitting only empty print placeholders."""
+    writable = []
+    for area in copy.deepcopy(print_areas or []):
+        placeholders = []
+        for placeholder in area.get("placeholders", []) or []:
+            images = placeholder.get("images", []) or []
+            if not images:
+                continue
+            # Printify's product validator expects integer image rotation. Existing
+            # 0.0 and 0 are visually identical; normalize only the JSON type.
+            for image in images:
+                image["angle"] = int(round(float(image.get("angle", 0) or 0)))
+            placeholder["images"] = images
+            placeholders.append(placeholder)
+        if not placeholders:
+            raise RuntimeError(
+                f"Print area for variants {area.get('variant_ids')} has no printed artwork; refusing repair."
+            )
+        area["placeholders"] = placeholders
+        writable.append(area)
+    if not writable:
+        raise RuntimeError("Product has no writable print areas; refusing repair.")
+    return writable
 
 
 def front_logo_positions(print_areas):
@@ -92,8 +142,6 @@ def repair_print_areas(print_areas, require_logo=True):
                     image["x"] = app.LEFT_CHEST_X
                     image["y"] = app.LEFT_CHEST_Y
                     changed += 1
-                # Printify requires integer rotation in product payloads. Keep the
-                # same visual rotation while normalizing the JSON type.
                 image["angle"] = int(round(float(image.get("angle", 0) or 0)))
 
     if require_logo and not found:
@@ -150,6 +198,11 @@ def selective_publish(product_id):
 
 def verify_live_product(product_id, before, attempts=18, delay=4):
     last = None
+    before_areas = before.get("print_areas", []) or []
+    before_art = artwork_signature(before_areas)
+    before_non_logo = non_logo_transform_signature(before_areas)
+    before_coverage = variant_signature(before_areas)
+
     for _ in range(attempts):
         last = jcr.get_product(product_id)
         if last:
@@ -166,9 +219,11 @@ def verify_live_product(product_id, before, attempts=18, delay=4):
         raise RuntimeError(f"Could not re-read product {product_id} after repair.")
 
     after_areas = last.get("print_areas", []) or []
-    if artwork_signature(before["print_areas"]) != artwork_signature(after_areas):
+    if before_art != artwork_signature(after_areas):
         raise RuntimeError(f"Artwork IDs changed for {before['title']}; refusing success.")
-    if variant_signature(before["print_areas"]) != variant_signature(after_areas):
+    if before_non_logo != non_logo_transform_signature(after_areas):
+        raise RuntimeError(f"Non-logo artwork placement changed for {before['title']}; refusing success.")
+    if before_coverage != variant_signature(after_areas):
         raise RuntimeError(f"Print-area variant coverage changed for {before['title']}; refusing success.")
     if product_variant_signature(before) != product_variant_signature(last):
         raise RuntimeError(f"Product variants/prices changed for {before['title']}; refusing success.")
@@ -207,15 +262,26 @@ def main():
 
         before_areas = before.get("print_areas", []) or []
         before_art = artwork_signature(before_areas)
+        before_non_logo = non_logo_transform_signature(before_areas)
         before_coverage = variant_signature(before_areas)
         before_variants = product_variant_signature(before)
         before_positions = front_logo_positions(before_areas)
-        repaired_areas, changed = repair_print_areas(before_areas, require_logo=True)
 
+        writable_areas = writable_print_areas(before_areas)
+        if variant_signature(writable_areas) != before_coverage:
+            raise RuntimeError(f"Writable normalization changed variant coverage for {title}; aborted.")
+        if artwork_signature(writable_areas) != before_art:
+            raise RuntimeError(f"Writable normalization changed artwork IDs for {title}; aborted.")
+        if non_logo_transform_signature(writable_areas) != before_non_logo:
+            raise RuntimeError(f"Writable normalization changed non-logo placement for {title}; aborted.")
+
+        repaired_areas, changed = repair_print_areas(writable_areas, require_logo=True)
         if artwork_signature(repaired_areas) != before_art:
             raise RuntimeError(f"Repair would change artwork IDs for {title}; aborted.")
         if variant_signature(repaired_areas) != before_coverage:
             raise RuntimeError(f"Repair would change print-area variant coverage for {title}; aborted.")
+        if non_logo_transform_signature(repaired_areas) != before_non_logo:
+            raise RuntimeError(f"Repair would change non-logo placement for {title}; aborted.")
 
         action = "already_correct"
         if changed:
@@ -233,6 +299,7 @@ def main():
         if product_variant_signature(latest) != before_variants:
             raise RuntimeError(f"Variant contract drifted after verification for {title}.")
 
+        latest_areas = latest.get("print_areas", []) or []
         results.append({
             "title": title,
             "product_id": product_id,
@@ -240,8 +307,9 @@ def main():
             "changed_logo_instances": changed,
             "before_logo_positions": before_positions,
             "after_logo_positions": after_positions,
-            "artwork_signature_unchanged": artwork_signature(latest.get("print_areas", [])) == before_art,
-            "variant_coverage_unchanged": variant_signature(latest.get("print_areas", [])) == before_coverage,
+            "artwork_signature_unchanged": artwork_signature(latest_areas) == before_art,
+            "non_logo_transforms_unchanged": non_logo_transform_signature(latest_areas) == before_non_logo,
+            "variant_coverage_unchanged": variant_signature(latest_areas) == before_coverage,
             "product_variants_unchanged": product_variant_signature(latest) == before_variants,
             "visible": latest.get("visible"),
             "front_mockup_count": len(front_mockups),
@@ -252,8 +320,8 @@ def main():
 
     if len(results) != 15 or not all(row["verified"] for row in results):
         raise RuntimeError("Logo repair did not verify exactly 15 apparel products.")
-    if not all(row["artwork_signature_unchanged"] for row in results):
-        raise RuntimeError("Artwork identity drift detected after repair.")
+    if not all(row["artwork_signature_unchanged"] and row["non_logo_transforms_unchanged"] for row in results):
+        raise RuntimeError("Artwork identity or non-logo placement drift detected after repair.")
     if not all(row["variant_coverage_unchanged"] and row["product_variants_unchanged"] for row in results):
         raise RuntimeError("Variant drift detected after repair.")
 
