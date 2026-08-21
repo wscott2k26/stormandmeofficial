@@ -66,6 +66,58 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(row['blueprint']['id'], 49)
         self.assertEqual(calls, [2001, 49])
 
+    def test_safe_preflight_uses_only_locked_apparel_and_phone_blueprints(self):
+        blueprints = [
+            {'id': 900, 'title': 'Unisex Heavy Blend Hooded Sweatshirt'},
+            {'id': 77, 'title': 'Unisex Heavy Blend Hooded Sweatshirt'},
+            {'id': 901, 'title': 'Unisex Long Sleeve Tee'},
+            {'id': 80, 'title': 'Unisex Ultra Cotton Long Sleeve Tee'},
+            {'id': 902, 'title': 'Unisex Jersey Short Sleeve Tee'},
+            {'id': 12, 'title': 'Unisex Jersey Short Sleeve Tee'},
+            {'id': 999, 'title': 'Generic Tough Phone Case'},
+            {'id': 421, 'title': 'Protective Phone Cases'},
+        ]
+        mod.jcr.TARGETS = [
+            {'kind': 'hoodie', 'terms': [['unisex', 'heavy', 'hooded', 'sweatshirt']]},
+            {'kind': 'long-sleeve', 'terms': [['unisex', 'long', 'sleeve', 'tee']]},
+            {'kind': 'fitted-tee', 'terms': [['unisex', 'jersey', 'short', 'sleeve', 'tee']]},
+        ]
+        calls = []
+
+        def choose_provider(bp_id, kind):
+            calls.append((bp_id, kind))
+            variants = [{'id': 1, 'title': 'Black M', 'is_available': True}]
+            if kind == 'phone-case':
+                variants = [
+                    {'id': 11, 'title': 'iPhone 17 Pro', 'is_available': True},
+                    {'id': 12, 'title': 'Samsung Galaxy S25', 'is_available': True},
+                    {'id': 13, 'title': 'Google Pixel 10', 'is_available': True},
+                ]
+            return {
+                'provider_id': 99,
+                'provider_title': 'Provider',
+                'variants': variants,
+                'placeholders': [{'position': 'front'}, {'position': 'back'}],
+                'families': {'iPhone': 1, 'Samsung': 1, 'Google Pixel': 1} if kind == 'phone-case' else {},
+            }
+
+        generic_phone_scan_calls = []
+        mod.jcr.choose_provider = choose_provider
+        mod.jcr.discover_phone_targets = lambda _bps: generic_phone_scan_calls.append(True) or [
+            {
+                'blueprint': {'id': 999, 'title': 'Generic Tough Phone Case'},
+                'provider': choose_provider(999, 'phone-case'),
+                'covered': {'iPhone', 'Samsung', 'Google Pixel'},
+            }
+        ]
+
+        result = mod.safe_preflight(blueprints)
+
+        self.assertEqual([row['blueprint']['id'] for row in result['apparel']], [77, 80, 12])
+        self.assertEqual([row['blueprint']['id'] for row in result['phone']], [421])
+        self.assertEqual(generic_phone_scan_calls, [])
+        self.assertEqual([bp_id for bp_id, _kind in calls], [77, 80, 12, 421])
+
 
 if __name__ == '__main__':
     unittest.main()
