@@ -1,0 +1,86 @@
+name: Jesus & Coffee rollout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/jesus-coffee-rollout.yml"
+      - "automation/printify/jesus_coffee_rollout.py"
+      - "tests/test_jesus_coffee_rollout.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jesus-coffee-rollout
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+      ROLLOUT_MODE: inspect
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Gate 1 — source and safety contracts
+        run: |
+          python -m py_compile automation/printify/jesus_coffee_rollout.py
+          python -m unittest tests/test_jesus_coffee_rollout.py -v
+
+      - name: Gate 2 — verify Printify token is configured
+        shell: bash
+        run: |
+          test -n "$PRINTIFY_API_TOKEN" || {
+            echo "Missing repository secret: PRINTIFY_API_TOKEN"
+            exit 1
+          }
+
+      - name: Gate 3 — read-only Jesus & Coffee source inspection
+        run: python automation/printify/jesus_coffee_rollout.py
+
+      - name: Gate 4 — inspection report contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('automation-output/jesus-coffee-source-inspection.json')
+          data=json.loads(p.read_text())
+          assert data['mode'] == 'read-only'
+          assert data['safety'].startswith('No products created')
+          assert isinstance(data['recent_candidates'], list)
+          print('Inspection PASS:', len(data['keyword_candidates']), 'keyword candidates;', len(data['recent_candidates']), 'recent candidates')
+          PY
+
+      - name: Persist inspection for review
+        shell: bash
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/jesus-coffee-source-inspection.json
+          if git diff --cached --quiet; then
+            echo "Inspection report already current."
+          else
+            git commit -m "chore: record Jesus Coffee source inspection"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Upload inspection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jesus-coffee-source-inspection
+          path: automation-output/jesus-coffee-source-inspection.json
+          if-no-files-found: error
+          retention-days: 14
