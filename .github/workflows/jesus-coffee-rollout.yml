@@ -6,7 +6,9 @@ on:
     paths:
       - ".github/workflows/jesus-coffee-rollout.yml"
       - "automation/printify/jesus_coffee_rollout.py"
+      - "automation/printify/apply_jesus_coffee_collection.py"
       - "tests/test_jesus_coffee_rollout.py"
+      - "tests/test_apply_jesus_coffee_collection.py"
   workflow_dispatch:
 
 permissions:
@@ -17,13 +19,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  inspect:
+  rollout:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     env:
       PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
       PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
-      ROLLOUT_MODE: inspect
 
     steps:
       - uses: actions/checkout@v4
@@ -34,12 +35,12 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Gate 1 — source and safety contracts
+      - name: Gate 1 — code and safety tests
         run: |
-          python -m py_compile automation/printify/jesus_coffee_rollout.py
-          python -m unittest tests/test_jesus_coffee_rollout.py -v
+          python -m py_compile automation/printify/jesus_coffee_rollout.py automation/printify/apply_jesus_coffee_collection.py
+          python -m unittest tests/test_jesus_coffee_rollout.py tests/test_apply_jesus_coffee_collection.py -v
 
-      - name: Gate 2 — verify Printify token is configured
+      - name: Gate 2 — verify Printify connection secret
         shell: bash
         run: |
           test -n "$PRINTIFY_API_TOKEN" || {
@@ -47,84 +48,62 @@ jobs:
             exit 1
           }
 
-      - name: Gate 3 — read-only Jesus & Coffee source inspection
-        run: python automation/printify/jesus_coffee_rollout.py
+      - name: Gate 3 — exact-source contract
+        run: |
+          PYTHONPATH=automation/printify python - <<'PY'
+          import apply_jesus_coffee_collection as app
+          assert len(app.SOURCES) == 5, app.SOURCES
+          assert len({spec['back'] for spec in app.SOURCES.values()}) == 5
+          assert len({spec['front'] for spec in app.SOURCES.values()}) == 1
+          banned = {'6a87698f2721da308b42721e', '6a87698ce4442f828bd56ed4'}
+          approved = {value for spec in app.SOURCES.values() for value in (spec['front'], spec['back'])}
+          assert not (approved & banned), approved & banned
+          print('Gate 3 PASS: five exact Coffee designs locked; legacy Broken Pieces image IDs excluded.')
+          PY
 
-      - name: Gate 4 — inspection report contract and compact summary
+      - name: Gate 4 — preflight, create, publish, and verify collection
+        run: PYTHONPATH=automation/printify python automation/printify/apply_jesus_coffee_collection.py
+
+      - name: Gate 5 — final rollout and homepage contract
         run: |
           python - <<'PY'
           import json
-          from collections import defaultdict
           from pathlib import Path
-          p=Path('automation-output/jesus-coffee-source-inspection.json')
-          data=json.loads(p.read_text())
-          assert data['mode'] == 'read-only'
-          assert data['safety'].startswith('No products created')
-          assert isinstance(data['recent_candidates'], list)
-          def compact(row):
-              usage=defaultdict(lambda: {'positions': set(), 'variant_count': 0})
-              for area in row.get('print_areas', []) or []:
-                  count=len(area.get('variant_ids', []) or [])
-                  for placeholder in area.get('placeholders', []) or []:
-                      position=placeholder.get('position')
-                      for image in placeholder.get('images', []) or []:
-                          image_id=image.get('id')
-                          if not image_id:
-                              continue
-                          if position:
-                              usage[image_id]['positions'].add(position)
-                          usage[image_id]['variant_count'] += count
-              return {
-                  'id': row.get('id'),
-                  'title': row.get('title'),
-                  'description': row.get('description'),
-                  'keyword_score': row.get('keyword_score'),
-                  'updated_at': row.get('updated_at'),
-                  'visible': row.get('visible'),
-                  'blueprint_id': row.get('blueprint_id'),
-                  'print_provider_id': row.get('print_provider_id'),
-                  'artwork_ids': [u.get('id') for u in row.get('uploads', []) if u.get('id')],
-                  'artwork_files': [u.get('file_name') for u in row.get('uploads', []) if u.get('file_name')],
-                  'artwork_previews': [u.get('preview_url') for u in row.get('uploads', []) if u.get('preview_url')],
-                  'artwork_usage': {
-                      image_id: {
-                          'positions': sorted(meta['positions']),
-                          'variant_count': meta['variant_count'],
-                      }
-                      for image_id, meta in usage.items()
-                  },
-                  'mockups': [m.get('src') for m in row.get('mockups', []) if m.get('src')][:3],
-              }
-          summary={
-              'shop_id': data['shop_id'],
-              'total_products': data['total_products'],
-              'keyword_candidates': [compact(row) for row in data['keyword_candidates']],
-              'recent_candidates': [compact(row) for row in data['recent_candidates']],
-          }
-          Path('automation-output/jesus-coffee-source-summary.json').write_text(json.dumps(summary, indent=2))
-          print('Inspection PASS:', len(data['keyword_candidates']), 'keyword candidates;', len(data['recent_candidates']), 'recent candidates')
+          report=json.loads(Path('automation-output/jesus-coffee-rollout.json').read_text())
+          assert report['mode'] == 'apply-approved-art-only'
+          assert report['no_generated_art'] is True
+          assert report['source_count'] == 5
+          assert len(report['results']) >= 20, len(report['results'])
+          assert report['verification'] and all(row['verified'] for row in report['verification'])
+          families=set(report['phone_device_families'])
+          assert families - {'iPhone'}, families
+          home=Path('frontend/src/pages/Home.js').read_text()
+          assert 'data-testid="jesus-coffee-featured-section"' in home
+          assert 'Jesus &amp; Coffee Collection' in home
+          assert 'Faith for the soul. Coffee for the morning.' in home
+          feature=home.split('data-testid="jesus-coffee-featured-section"',1)[1].split('data-testid="home-merch-section"',1)[0]
+          assert '<img' not in feature
+          print('Gate 5 PASS:', len(report['verification']), 'verified products; phone families:', sorted(families))
           PY
 
-      - name: Persist inspection for review
+      - name: Commit verified homepage and rollout report
         shell: bash
         run: |
           git config user.name "stormandme-bot"
           git config user.email "stormandme-bot@users.noreply.github.com"
-          git add automation-output/jesus-coffee-source-inspection.json automation-output/jesus-coffee-source-summary.json
+          git add frontend/src/pages/Home.js automation-output/jesus-coffee-rollout.json
           if git diff --cached --quiet; then
-            echo "Inspection report already current."
+            echo "Verified rollout data already current."
           else
-            git commit -m "chore: record Jesus Coffee source inspection"
+            git commit -m "feat: launch Jesus Coffee collection"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
 
-      - name: Upload inspection artifact
+      - name: Upload verification artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jesus-coffee-source-inspection
-          path: |
-            automation-output/jesus-coffee-source-inspection.json
-            automation-output/jesus-coffee-source-summary.json
+          name: jesus-coffee-rollout-verification
+          path: automation-output/jesus-coffee-rollout.json
           if-no-files-found: error
           retention-days: 14
