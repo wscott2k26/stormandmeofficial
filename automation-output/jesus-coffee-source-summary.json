@@ -29,6 +29,32 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/9cec7879-ba0a-4fc6-944b-ce6f56d02d5e",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/e5a58f6e-e0ea-430b-a711-3999d842007a"
       ],
+      "artwork_usage": {
+        "6a8882e7e28ead6037a77cc2": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 416
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 416
+        },
+        "6a87698f2721da308b42721e": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 7
+        },
+        "6a87698ce4442f828bd56ed4": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 7
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98445/i-run-on-coffee-jesus-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98446/i-run-on-coffee-jesus-t-shirt.jpg?camera_label=back",
@@ -56,6 +82,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/15ba4029-6cc9-423b-89fa-8542d06f984f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a88869ef543190f0b061da0": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98445/jesus-saves-coffee-t-shirt-jesus-saves-coffee-helps-me-act-saved-christian-graphic-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98446/jesus-saves-coffee-t-shirt-jesus-saves-coffee-helps-me-act-saved-christian-graphic-tee.jpg?camera_label=back",
@@ -83,6 +123,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/c07713df-0d3b-458c-944f-1628a820b972",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a888584c6724f17ec5a2b2a": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98445/coffee-jesus-t-shirt-coffee-jesus-minding-my-business-christian-graphic-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98446/coffee-jesus-t-shirt-coffee-jesus-minding-my-business-christian-graphic-tee.jpg?camera_label=back",
@@ -110,6 +164,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/0dd0e8e5-a5cd-4bff-84f1-f488afb1860f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a888446e4c22e733848d26b": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98445/coffee-first-jesus-always-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98446/coffee-first-jesus-always-t-shirt.jpg?camera_label=back",
@@ -137,6 +205,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/78ab8096-6339-45fb-97a0-e96006b17a08",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a8881561ff8c0de07471495": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98445/jesus-saves-coffee-keeps-me-going-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98446/jesus-saves-coffee-keeps-me-going-t-shirt.jpg?camera_label=back",
@@ -164,6 +246,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cfb8023b-d532-460a-82f7-a972a1c63bbe",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/332da12f-54cb-4a99-bbb9-3effb530201f"
       ],
+      "artwork_usage": {
+        "6a7bdd6781f61c2138a6fbcd": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a7bcbdd9ea561923f2b870d": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/78993/98445/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/78993/98446/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=back",
@@ -191,6 +287,32 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ee5d504e-4144-453b-8b92-79943197661f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/d4d5cbf7-98e4-480f-aa53-39396da78b5e"
       ],
+      "artwork_usage": {
+        "6a870b68277f1772b36b5746": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 302
+        },
+        "69bb59346f8638fdbab8495b": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 302
+        },
+        "94ac4547-3437-cda4-835c-2a21fcc0ffb0": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 302
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 302
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef41df01211db74090040/32912/98424/the-storm-hoodie-making-it-thru-edition-motivational-streetwear.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef41df01211db74090040/32912/98425/the-storm-hoodie-making-it-thru-edition-motivational-streetwear.jpg?camera_label=back",
@@ -218,6 +340,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cd5fe8cd-fe06-4e71-8924-955e7952af13",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/332da12f-54cb-4a99-bbb9-3effb530201f"
       ],
+      "artwork_usage": {
+        "6a7bcc49bb92c3736b9aaca0": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a7bcbdd9ea561923f2b870d": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78993/98445/broken-pieces-t-shirt-god-still-makes-masterpieces-from-broken-pieces-inspirational-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78993/98446/broken-pieces-t-shirt-god-still-makes-masterpieces-from-broken-pieces-inspirational-tee.jpg?camera_label=back",
@@ -251,10 +387,74 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/62020ead-fd26-470d-a842-5f700c35010a",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/dbb32a49-1f11-4dfd-b7ae-30eca7238b3c"
       ],
+      "artwork_usage": {
+        "69c72e0cadac085860892ed3": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 439
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 439
+        },
+        "69c8471ced10e1821e4ce3bc": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 439
+        },
+        "69c84810779c231b5ea8f9e1": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 439
+        },
+        "69c83e45719fc3f8aead00aa": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 439
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/97992/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/97993/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=back",
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/100617/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=person-1-back"
+      ]
+    },
+    {
+      "id": "6a5ef3fcf01211db74090039",
+      "title": "Faith Over Fear Phone Case \u2013 Cross & Storm Design, Tough Protective Case",
+      "description": "<p>When the storm comes, your faith stands stronger.</p><p><br></p><p>This \u201cFaith Over Fear\u201d phone case is more than protection\u2014it\u2019s a reminder. Featuring a powerful cross breaking through the storm, this design represents strength, belief, and unshakable faith no matter what life throws your way.</p><p><br></p><p>Built for both style and durability, this tough case protects your phone while carrying a message that speaks without saying a word.</p><p><br></p><p>\u2022 Dual-layer protection for maximum durability &nbsp;</p><p>\u2022 Shock-resistant and impact-ready &nbsp;</p><p>\u2022 Glossy or matte finish options &nbsp;</p><p>\u2022 Slim fit with a bold, high-quality print &nbsp;</p><p><br></p><p>Walk by faith. Stand through the storm. Never fold.</p><p>New iPhone 17 series models now available!<br>&nbsp;</p><br><p>.: Custom protective phone cases made with 100% polycarbonate (shell), 100% TPU (lining)<br>.: Dual layer case for extra durability and protection<br>.: Supports wireless charging (not including MagSafe)<br>.: All custom protective phone cases come in a glossy or matte finish<br>.: Clear, open ports for connectivity<br>.: Blank product sourced from South Korea<br>.: New iPhone 17 series models now available!<br>.: New Samsung S26 series models now available! </p>",
+      "keyword_score": 5,
+      "updated_at": "2026-08-11 20:27:22+00:00",
+      "visible": true,
+      "blueprint_id": 421,
+      "print_provider_id": 23,
+      "artwork_ids": [
+        "69cc8661bd314cbac1ed98e9"
+      ],
+      "artwork_files": [
+        "bold-christian-streetwear-design-glowing"
+      ],
+      "artwork_previews": [
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/432c7e34-a75c-465a-a7bf-615c1d947070"
+      ],
+      "artwork_usage": {
+        "69cc8661bd314cbac1ed98e9": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 160
+        }
+      },
+      "mockups": [
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105690/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=front",
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105731/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=close-up",
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105706/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=layers"
       ]
     },
     {
@@ -284,34 +484,42 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/572c8bae-c059-434b-8138-d8e018e3afd0",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/a298875b-17b9-4685-a60b-e9be008bc015"
       ],
+      "artwork_usage": {
+        "69c718e027fb046395725288": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69c712c736f71e93e8844874": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69c71850c0f7346f245190a4": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69c7109986a8f73d80e84201": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102044/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102045/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=back-2",
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102046/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=folded"
-      ]
-    },
-    {
-      "id": "6a5ef3fcf01211db74090039",
-      "title": "Faith Over Fear Phone Case \u2013 Cross & Storm Design, Tough Protective Case",
-      "description": "<p>When the storm comes, your faith stands stronger.</p><p><br></p><p>This \u201cFaith Over Fear\u201d phone case is more than protection\u2014it\u2019s a reminder. Featuring a powerful cross breaking through the storm, this design represents strength, belief, and unshakable faith no matter what life throws your way.</p><p><br></p><p>Built for both style and durability, this tough case protects your phone while carrying a message that speaks without saying a word.</p><p><br></p><p>\u2022 Dual-layer protection for maximum durability &nbsp;</p><p>\u2022 Shock-resistant and impact-ready &nbsp;</p><p>\u2022 Glossy or matte finish options &nbsp;</p><p>\u2022 Slim fit with a bold, high-quality print &nbsp;</p><p><br></p><p>Walk by faith. Stand through the storm. Never fold.</p><p>New iPhone 17 series models now available!<br>&nbsp;</p><br><p>.: Custom protective phone cases made with 100% polycarbonate (shell), 100% TPU (lining)<br>.: Dual layer case for extra durability and protection<br>.: Supports wireless charging (not including MagSafe)<br>.: All custom protective phone cases come in a glossy or matte finish<br>.: Clear, open ports for connectivity<br>.: Blank product sourced from South Korea<br>.: New iPhone 17 series models now available!<br>.: New Samsung S26 series models now available! </p>",
-      "keyword_score": 5,
-      "updated_at": "2026-08-11 20:27:22+00:00",
-      "visible": true,
-      "blueprint_id": 421,
-      "print_provider_id": 23,
-      "artwork_ids": [
-        "69cc8661bd314cbac1ed98e9"
-      ],
-      "artwork_files": [
-        "bold-christian-streetwear-design-glowing"
-      ],
-      "artwork_previews": [
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/432c7e34-a75c-465a-a7bf-615c1d947070"
-      ],
-      "mockups": [
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105690/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=front",
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105731/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=close-up",
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105706/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=layers"
       ]
     },
     {
@@ -341,6 +549,38 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cf399240-231d-4271-9f28-9f5a7205c6df",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/351a982f-0c79-4857-9b51-23ce52ec8ad2"
       ],
+      "artwork_usage": {
+        "69d5a01d9bf8ba10dabd5e32": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69d59d4725ca15e8ca6bc221": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69d5a06c9bf8ba10dabd5e38": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69d5a5d1be0bf4dc95d78e5b": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3ebf01211db74090037/18542/102044/tshirt-it-aint-worth-it-suicide-prevention-heartbeat-tee.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef3ebf01211db74090037/18542/102045/tshirt-it-aint-worth-it-suicide-prevention-heartbeat-tee.jpg?camera_label=back-2",
@@ -370,6 +610,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/d3f45f23-921e-468e-9e7f-d2cf53b17b15",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/12402303-42eb-4940-bf70-2b7e4654d9bb"
       ],
+      "artwork_usage": {
+        "6a593fdf010b950f5650e2c0": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 35
+        },
+        "6a889349ffb3aae968d39fa7": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 35
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3e8db62f997aa0c7bff/123046/111882/pain-built-hoodie-retro-crusher-house-graphic-pullover.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef3e8db62f997aa0c7bff/123046/111883/pain-built-hoodie-retro-crusher-house-graphic-pullover.jpg?camera_label=back",
@@ -403,6 +657,32 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/9cec7879-ba0a-4fc6-944b-ce6f56d02d5e",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/e5a58f6e-e0ea-430b-a711-3999d842007a"
       ],
+      "artwork_usage": {
+        "6a8882e7e28ead6037a77cc2": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 416
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 416
+        },
+        "6a87698f2721da308b42721e": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 7
+        },
+        "6a87698ce4442f828bd56ed4": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 7
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98445/i-run-on-coffee-jesus-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a876990aa9cea471b08e022/79048/98446/i-run-on-coffee-jesus-t-shirt.jpg?camera_label=back",
@@ -430,6 +710,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/15ba4029-6cc9-423b-89fa-8542d06f984f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a88869ef543190f0b061da0": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98445/jesus-saves-coffee-t-shirt-jesus-saves-coffee-helps-me-act-saved-christian-graphic-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a8768c94c5ccb17760a17a2/79048/98446/jesus-saves-coffee-t-shirt-jesus-saves-coffee-helps-me-act-saved-christian-graphic-tee.jpg?camera_label=back",
@@ -457,6 +751,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/c07713df-0d3b-458c-944f-1628a820b972",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a888584c6724f17ec5a2b2a": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98445/coffee-jesus-t-shirt-coffee-jesus-minding-my-business-christian-graphic-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a876921765de48d610d9a0c/79048/98446/coffee-jesus-t-shirt-coffee-jesus-minding-my-business-christian-graphic-tee.jpg?camera_label=back",
@@ -484,6 +792,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/0dd0e8e5-a5cd-4bff-84f1-f488afb1860f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a888446e4c22e733848d26b": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98445/coffee-first-jesus-always-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a87697334e6b74a81056e4b/79048/98446/coffee-first-jesus-always-t-shirt.jpg?camera_label=back",
@@ -511,6 +833,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/78ab8096-6339-45fb-97a0-e96006b17a08",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/5232ebea-57d1-4311-8ac8-382a3d8ffa9e"
       ],
+      "artwork_usage": {
+        "6a8881561ff8c0de07471495": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a888132e4c22e733848d0b1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98445/jesus-saves-coffee-keeps-me-going-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a8769c22a86ae766007bbaa/79048/98446/jesus-saves-coffee-keeps-me-going-t-shirt.jpg?camera_label=back",
@@ -538,6 +874,32 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ee5d504e-4144-453b-8b92-79943197661f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/d4d5cbf7-98e4-480f-aa53-39396da78b5e"
       ],
+      "artwork_usage": {
+        "6a870b68277f1772b36b5746": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 302
+        },
+        "69bb59346f8638fdbab8495b": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 302
+        },
+        "94ac4547-3437-cda4-835c-2a21fcc0ffb0": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 302
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 302
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef41df01211db74090040/32912/98424/the-storm-hoodie-making-it-thru-edition-motivational-streetwear.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef41df01211db74090040/32912/98425/the-storm-hoodie-making-it-thru-edition-motivational-streetwear.jpg?camera_label=back",
@@ -565,6 +927,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ee5d504e-4144-453b-8b92-79943197661f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ce674440-b5d8-41e9-a2c2-db49c933834d"
       ],
+      "artwork_usage": {
+        "6a870b68277f1772b36b5746": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        },
+        "6a870b6a197bed8a39c9af49": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a869680606e476ad103a016/79048/98445/tshirt-obama-2028-since-rules-dont-exist-anymore-political-statement-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a869680606e476ad103a016/79048/98446/tshirt-obama-2028-since-rules-dont-exist-anymore-political-statement-tee.jpg?camera_label=back",
@@ -592,6 +968,22 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ee5d504e-4144-453b-8b92-79943197661f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/30dd5a06-584d-4ac2-b05e-6b99be7207b9"
       ],
+      "artwork_usage": {
+        "6a870b68277f1772b36b5746": {
+          "positions": [
+            "front",
+            "left_wrist_dtf",
+            "right_sleeve"
+          ],
+          "variant_count": 813
+        },
+        "6a870b6dafd7243200a75e11": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 271
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a86968a6ad239171c07ee5b/42166/98424/hoodie-obama-2028-rules-dont-exist-anymore-political-campaign-sweatshirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a86968a6ad239171c07ee5b/42166/98425/hoodie-obama-2028-rules-dont-exist-anymore-political-campaign-sweatshirt.jpg?camera_label=back",
@@ -619,6 +1011,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/ee5d504e-4144-453b-8b92-79943197661f",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/30dd5a06-584d-4ac2-b05e-6b99be7207b9"
       ],
+      "artwork_usage": {
+        "6a870b68277f1772b36b5746": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        },
+        "6a870b6dafd7243200a75e11": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a86969021939a43b002c79c/73207/98445/t-shirt-obama-2028-since-rules-dont-exist-anymore-political-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a86969021939a43b002c79c/73207/98446/t-shirt-obama-2028-since-rules-dont-exist-anymore-political-tee.jpg?camera_label=back",
@@ -646,6 +1052,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cd5fe8cd-fe06-4e71-8924-955e7952af13",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/332da12f-54cb-4a99-bbb9-3effb530201f"
       ],
+      "artwork_usage": {
+        "6a7bcc49bb92c3736b9aaca0": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a7bcbdd9ea561923f2b870d": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78993/98445/broken-pieces-t-shirt-god-still-makes-masterpieces-from-broken-pieces-inspirational-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a7bd33e44cf7ff645047bd3/78993/98446/broken-pieces-t-shirt-god-still-makes-masterpieces-from-broken-pieces-inspirational-tee.jpg?camera_label=back",
@@ -673,6 +1093,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cfb8023b-d532-460a-82f7-a972a1c63bbe",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/332da12f-54cb-4a99-bbb9-3effb530201f"
       ],
+      "artwork_usage": {
+        "6a7bdd6781f61c2138a6fbcd": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "6a7bcbdd9ea561923f2b870d": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/78993/98445/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a7bd78b62d856b0f700a290/78993/98446/god-builds-masterpieces-out-of-broken-pieces-cracked-heart-tee.jpg?camera_label=back",
@@ -706,10 +1140,74 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/62020ead-fd26-470d-a842-5f700c35010a",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/dbb32a49-1f11-4dfd-b7ae-30eca7238b3c"
       ],
+      "artwork_usage": {
+        "69c72e0cadac085860892ed3": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 439
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 439
+        },
+        "69c8471ced10e1821e4ce3bc": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 439
+        },
+        "69c84810779c231b5ea8f9e1": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 439
+        },
+        "69c83e45719fc3f8aead00aa": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 439
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/97992/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/97993/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=back",
         "https://images-api.printify.com/mockup/6a5ef3fff01211db7409003b/38191/100617/to-the-person-behind-me-tee-you-are-strong.jpg?camera_label=person-1-back"
+      ]
+    },
+    {
+      "id": "6a5ef3fcf01211db74090039",
+      "title": "Faith Over Fear Phone Case \u2013 Cross & Storm Design, Tough Protective Case",
+      "description": "<p>When the storm comes, your faith stands stronger.</p><p><br></p><p>This \u201cFaith Over Fear\u201d phone case is more than protection\u2014it\u2019s a reminder. Featuring a powerful cross breaking through the storm, this design represents strength, belief, and unshakable faith no matter what life throws your way.</p><p><br></p><p>Built for both style and durability, this tough case protects your phone while carrying a message that speaks without saying a word.</p><p><br></p><p>\u2022 Dual-layer protection for maximum durability &nbsp;</p><p>\u2022 Shock-resistant and impact-ready &nbsp;</p><p>\u2022 Glossy or matte finish options &nbsp;</p><p>\u2022 Slim fit with a bold, high-quality print &nbsp;</p><p><br></p><p>Walk by faith. Stand through the storm. Never fold.</p><p>New iPhone 17 series models now available!<br>&nbsp;</p><br><p>.: Custom protective phone cases made with 100% polycarbonate (shell), 100% TPU (lining)<br>.: Dual layer case for extra durability and protection<br>.: Supports wireless charging (not including MagSafe)<br>.: All custom protective phone cases come in a glossy or matte finish<br>.: Clear, open ports for connectivity<br>.: Blank product sourced from South Korea<br>.: New iPhone 17 series models now available!<br>.: New Samsung S26 series models now available! </p>",
+      "keyword_score": 5,
+      "updated_at": "2026-08-11 20:27:22+00:00",
+      "visible": true,
+      "blueprint_id": 421,
+      "print_provider_id": 23,
+      "artwork_ids": [
+        "69cc8661bd314cbac1ed98e9"
+      ],
+      "artwork_files": [
+        "bold-christian-streetwear-design-glowing"
+      ],
+      "artwork_previews": [
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/432c7e34-a75c-465a-a7bf-615c1d947070"
+      ],
+      "artwork_usage": {
+        "69cc8661bd314cbac1ed98e9": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 160
+        }
+      },
+      "mockups": [
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105690/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=front",
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105731/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=close-up",
+        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105706/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=layers"
       ]
     },
     {
@@ -739,34 +1237,42 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/572c8bae-c059-434b-8138-d8e018e3afd0",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/a298875b-17b9-4685-a60b-e9be008bc015"
       ],
+      "artwork_usage": {
+        "69c718e027fb046395725288": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69c712c736f71e93e8844874": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69c71850c0f7346f245190a4": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69c7109986a8f73d80e84201": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102044/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102045/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=back-2",
         "https://images-api.printify.com/mockup/6a5ef416f01211db7409003f/18542/102046/the-storm-tee-built-through-it-premium-streetwear-t-shirt.jpg?camera_label=folded"
-      ]
-    },
-    {
-      "id": "6a5ef3fcf01211db74090039",
-      "title": "Faith Over Fear Phone Case \u2013 Cross & Storm Design, Tough Protective Case",
-      "description": "<p>When the storm comes, your faith stands stronger.</p><p><br></p><p>This \u201cFaith Over Fear\u201d phone case is more than protection\u2014it\u2019s a reminder. Featuring a powerful cross breaking through the storm, this design represents strength, belief, and unshakable faith no matter what life throws your way.</p><p><br></p><p>Built for both style and durability, this tough case protects your phone while carrying a message that speaks without saying a word.</p><p><br></p><p>\u2022 Dual-layer protection for maximum durability &nbsp;</p><p>\u2022 Shock-resistant and impact-ready &nbsp;</p><p>\u2022 Glossy or matte finish options &nbsp;</p><p>\u2022 Slim fit with a bold, high-quality print &nbsp;</p><p><br></p><p>Walk by faith. Stand through the storm. Never fold.</p><p>New iPhone 17 series models now available!<br>&nbsp;</p><br><p>.: Custom protective phone cases made with 100% polycarbonate (shell), 100% TPU (lining)<br>.: Dual layer case for extra durability and protection<br>.: Supports wireless charging (not including MagSafe)<br>.: All custom protective phone cases come in a glossy or matte finish<br>.: Clear, open ports for connectivity<br>.: Blank product sourced from South Korea<br>.: New iPhone 17 series models now available!<br>.: New Samsung S26 series models now available! </p>",
-      "keyword_score": 5,
-      "updated_at": "2026-08-11 20:27:22+00:00",
-      "visible": true,
-      "blueprint_id": 421,
-      "print_provider_id": 23,
-      "artwork_ids": [
-        "69cc8661bd314cbac1ed98e9"
-      ],
-      "artwork_files": [
-        "bold-christian-streetwear-design-glowing"
-      ],
-      "artwork_previews": [
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/432c7e34-a75c-465a-a7bf-615c1d947070"
-      ],
-      "mockups": [
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105690/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=front",
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105731/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=close-up",
-        "https://images-api.printify.com/mockup/6a5ef3fcf01211db74090039/112191/105706/faith-over-fear-phone-case-cross-storm-design-tough-protective-case.jpg?camera_label=layers"
       ]
     },
     {
@@ -796,10 +1302,160 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cf399240-231d-4271-9f28-9f5a7205c6df",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/351a982f-0c79-4857-9b51-23ce52ec8ad2"
       ],
+      "artwork_usage": {
+        "69d5a01d9bf8ba10dabd5e32": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69d59d4725ca15e8ca6bc221": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69d5a06c9bf8ba10dabd5e38": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69d5a5d1be0bf4dc95d78e5b": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3ebf01211db74090037/18542/102044/tshirt-it-aint-worth-it-suicide-prevention-heartbeat-tee.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef3ebf01211db74090037/18542/102045/tshirt-it-aint-worth-it-suicide-prevention-heartbeat-tee.jpg?camera_label=back-2",
         "https://images-api.printify.com/mockup/6a5ef3ebf01211db74090037/18542/102046/tshirt-it-aint-worth-it-suicide-prevention-heartbeat-tee.jpg?camera_label=folded"
+      ]
+    },
+    {
+      "id": "6a69819635a158239e0df691",
+      "title": "Storm & Me T-Shirt \u2014 \"The House That Pain Built\" Graphic Tee",
+      "description": "This soft, classic-fit tee carries a quiet, resilient energy. The front\u2019s simple \u201cStorm & Me\u201d emblem reads like a personal badge \u2014 small, steady, familiar \u2014 while the back shows a glowing house framed by dark skies and the bold line: \u201cThe house that pain built \u2014 built through the storm.\u201d Wear it when you want clothing that feels like a companion after hard days: it holds a memory of weathered nights and upright mornings. The light fabric drapes easily under a jacket or on its own. It speaks to people who honor survival, hard-won shelter, and the warmth found inside after everything outside has raged. Throw it on for evening walks, casual meetups with kindred spirits, or any moment when you want to carry a quiet, stubborn warmth with you.<br/><br/>Product features<br/>- 60% combed ring-spun cotton / 40% polyester for a soft, smooth hand<br/>- Lightweight fabric (4.3 oz / 146 g/m\u00b2) for comfortable layering<br/>- Classic fit with 1x1 ribbed collar that retains shape<br/>- Self-fabric shoulder tape and tear-away label for clean lines<br/>- DTF inner neck labels with DTG-printed graphics for detailed, durable prints<br/><br/>Care instructions<br/>- Machine wash: cold (max 30C or 90F)<br/>- Do not bleach<br/>- Tumble dry: low heat<br/>- Iron, steam or dry: low heat<br/>- Do not dryclean<br/>",
+      "keyword_score": 0,
+      "updated_at": "2026-08-11 20:27:22+00:00",
+      "visible": true,
+      "blueprint_id": 1317,
+      "print_provider_id": 99,
+      "artwork_ids": [
+        "6a6980b5f5b56b9235594a60",
+        "6a69816044e804e39668a628",
+        "6a593fdf010b950f5650e2c0"
+      ],
+      "artwork_files": [
+        "ChatGPT Image Jul 29, 2026, 12_21_04 AM.png",
+        "ChatGPT Image Jul 29, 2026, 12_18_11 AM 4.png",
+        "stormandme_front_chest_logo_dark.png"
+      ],
+      "artwork_previews": [
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/17fc6f3f-2104-437b-870a-eb77b5d4a23a",
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cc5487a3-55f2-4c3d-a3dc-3890ee070adc",
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/d3f45f23-921e-468e-9e7f-d2cf53b17b15"
+      ],
+      "artwork_usage": {
+        "6a6980b5f5b56b9235594a60": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 293
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 293
+        },
+        "6a69816044e804e39668a628": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 293
+        },
+        "6a593fdf010b950f5650e2c0": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 293
+        }
+      },
+      "mockups": [
+        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95837/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=front",
+        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95838/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=back",
+        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95839/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=person-1-front"
+      ]
+    },
+    {
+      "id": "6a5ef4d6f01211db74090049",
+      "title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "description": "<p>The Gildan Heavy Blend\u2122 hoodie, made from a soft cotton-poly blend, provides warmth and durability. Its unisex fit offers everyday versatility, with ribbed cuffs and hem to keep the shape intact. A large front pocket adds convenience, while the double-lined hood with matching drawcord gives it a clean, cohesive look. Trusted for custom printing and casual wear, the Gildan 18500 is a reliable choice that balances comfort and longevity.<br><br><strong>Disclaimer</strong>:<br>- Due to the fabric properties, the White color variant may appear off-white rather than bright white.</p><br/><p>.: The Gildan 18500 is made from a medium-heavy fabric (8.0 oz/yd\u00b2 (271 g/m\u00b2)) made of 50% cotton and 50% polyester. This blend delivers cozy warmth and a soft feel that makes it perfect for chilly days.<br/>.: The classic fit along with the pouch pocket and the tear-away label make for a highly comfortable, scratch-free wearing experience. <br/>.: The color-matched drawcord and the double-lined hood add a stylish flair and durability that tie everything together.<br/>.: Made using 100% ethically grown US cotton. Gildan is also a proud member of the US Cotton Trust Protocol ensuring ethical and sustainable means of production. The blank tee's dyes are OEKO-TEX-certified dyes with low environmental impact.<br/>.: Fabric blends: Heather Sport colors - 60% polyester, 40% cotton<br/>.: Embroidery decoration method available on either left chest, center chest, or large center chest, as well as right + left wrists</p>",
+      "keyword_score": 0,
+      "updated_at": "2026-08-11 20:27:22+00:00",
+      "visible": true,
+      "blueprint_id": 77,
+      "print_provider_id": 99,
+      "artwork_ids": [],
+      "artwork_files": [],
+      "artwork_previews": [],
+      "artwork_usage": {
+        "29d5723b-a3a4-e095-3c9a-42de50051118": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 302
+        },
+        "e7a37ab0-1868-27ff-0d83-84be29f74e45": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 302
+        },
+        "b69d1c3d-05b6-647e-3b41-ffee27907ee1": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 302
+        },
+        "3dea3282-f4e6-0c82-1a86-43dceb15265d": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 302
+        },
+        "656a4b70-0c23-7dc8-1159-10e74f6a7488": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 302
+        },
+        "92849982-da8c-bb98-45d3-7f5efd10b8d4": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 302
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 302
+        }
+      },
+      "mockups": [
+        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98424/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=front",
+        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98425/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=back",
+        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98426/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=back-2"
       ]
     },
     {
@@ -826,6 +1482,26 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/13619e07-7f2f-4db6-9d96-5b2b60db9774",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/62500dc0-91b4-401b-94cc-200bddfc6593"
       ],
+      "artwork_usage": {
+        "69d68451109a246cf2ceeedd": {
+          "positions": [
+            "right_wrist"
+          ],
+          "variant_count": 12
+        },
+        "69d6825a7500ddbe434559f0": {
+          "positions": [
+            "front_left_chest"
+          ],
+          "variant_count": 12
+        },
+        "69d68bf429aa609d0df7f56f": {
+          "positions": [
+            "large_back_embroidery"
+          ],
+          "variant_count": 12
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3eaf01211db74090036/118978/110600/embroidered-half-zip-pullover-some-things-arent-worth-it-but-you-are.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef3eaf01211db74090036/118978/110601/embroidered-half-zip-pullover-some-things-arent-worth-it-but-you-are.jpg?camera_label=back",
@@ -850,40 +1526,18 @@
       "artwork_previews": [
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/be32ccd1-ca1d-451f-9dcb-eb6cde6003ae"
       ],
+      "artwork_usage": {
+        "69cc811aef28122e168cd2a7": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 160
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3fef01211db7409003a/112191/105690/stand-tall-iphone-case-motivational-storm-design-tough-protective-phone-case.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef3fef01211db7409003a/112191/105731/stand-tall-iphone-case-motivational-storm-design-tough-protective-phone-case.jpg?camera_label=close-up",
         "https://images-api.printify.com/mockup/6a5ef3fef01211db7409003a/112191/105706/stand-tall-iphone-case-motivational-storm-design-tough-protective-phone-case.jpg?camera_label=layers"
-      ]
-    },
-    {
-      "id": "6a5ef407f01211db7409003d",
-      "title": "Resilient Storm Graphic Tee \u2014 \"The Storm Made Me\" Motivational T-Shirt",
-      "description": "This lightweight tee speaks quietly but boldly. A vintage-inspired front seal shows a lone figure standing tall against waves and lightning \u2014 a small, resolute emblem of endurance. The back carries a bold storm-cloud with three yellow lightning bolts and the word \u201cRESILIENT\u201d beneath it, a straightforward reminder to keep moving when weather turns rough. Soft Airlume cotton feels breathable against the skin and layers easily under a jacket for cool mornings. It\u2019s the sort of shirt you reach for when you want clothing that reflects steady courage rather than loud slogans \u2014 worn on morning runs after a night of rain, at low-key meetups with friends who\u2019ve been through a lot, or when you need a subtle nudge to carry on.<br/><br/>Product features<br/>- 100% Airlume combed ring-spun cotton \u2014 lightweight and breathable (Bella+Canvas 3001).<br/>- Side seams and ribbed knit collar with seam for shape retention and a neat crew neckline.<br/>- Shoulder tape and tear-away label for comfort and reduced irritation.<br/>- Prints use crisp DTF or vibrant DTG methods depending on provider; sleeve and label printing variations noted.<br/>- REACH certified; blank sourced from Honduras; ethical manufacturing (Fair Labor Association, Platinum WRAP).<br/><br/>Care instructions<br/>- Machine wash: cold (max 30C or 90F)<br/>- Non-chlorine: bleach as needed<br/>- Tumble dry: low heat<br/>- Iron, steam or dry: medium heat<br/>- Do not dryclean<br/>",
-      "keyword_score": 0,
-      "updated_at": "2026-08-11 20:27:22+00:00",
-      "visible": true,
-      "blueprint_id": 12,
-      "print_provider_id": 99,
-      "artwork_ids": [
-        "69c71850c0f7346f245190a4",
-        "69c724e76e7d45405beb5c70",
-        "69c718e027fb046395725288"
-      ],
-      "artwork_files": [
-        "the-storm--me-built",
-        "minimal-streetwear-graphic-powerful-storm",
-        "the-storm--me-official"
-      ],
-      "artwork_previews": [
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/572c8bae-c059-434b-8138-d8e018e3afd0",
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/71399b25-4a1e-4d84-9da8-1a898bc2e9b4",
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/670df01c-4cfd-4e2e-b3fd-487bba864450"
-      ],
-      "mockups": [
-        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102044/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=front-2",
-        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102045/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=back-2",
-        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102046/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=folded"
       ]
     },
     {
@@ -913,10 +1567,99 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/35f137da-0632-401b-af04-a4add5d819d9",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/780036d7-0a17-42c9-ad42-490188de787c"
       ],
+      "artwork_usage": {
+        "69cd7ae7ab4cefeef5ff2fb8": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69cd78e3febbd8515fe04472": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69cd7ab68b3bb91e95d5de7a": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69cd7defc749268d8f31b880": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef3f4f01211db74090038/18542/102045/society-of-misfits-drip-tee-streetwear-graphic-t-shirt.jpg?camera_label=back-2",
         "https://images-api.printify.com/mockup/6a5ef3f4f01211db74090038/18542/102044/society-of-misfits-drip-tee-streetwear-graphic-t-shirt.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef3f4f01211db74090038/18542/102049/society-of-misfits-drip-tee-streetwear-graphic-t-shirt.jpg?camera_label=hanging-3"
+      ]
+    },
+    {
+      "id": "6a5ef407f01211db7409003d",
+      "title": "Resilient Storm Graphic Tee \u2014 \"The Storm Made Me\" Motivational T-Shirt",
+      "description": "This lightweight tee speaks quietly but boldly. A vintage-inspired front seal shows a lone figure standing tall against waves and lightning \u2014 a small, resolute emblem of endurance. The back carries a bold storm-cloud with three yellow lightning bolts and the word \u201cRESILIENT\u201d beneath it, a straightforward reminder to keep moving when weather turns rough. Soft Airlume cotton feels breathable against the skin and layers easily under a jacket for cool mornings. It\u2019s the sort of shirt you reach for when you want clothing that reflects steady courage rather than loud slogans \u2014 worn on morning runs after a night of rain, at low-key meetups with friends who\u2019ve been through a lot, or when you need a subtle nudge to carry on.<br/><br/>Product features<br/>- 100% Airlume combed ring-spun cotton \u2014 lightweight and breathable (Bella+Canvas 3001).<br/>- Side seams and ribbed knit collar with seam for shape retention and a neat crew neckline.<br/>- Shoulder tape and tear-away label for comfort and reduced irritation.<br/>- Prints use crisp DTF or vibrant DTG methods depending on provider; sleeve and label printing variations noted.<br/>- REACH certified; blank sourced from Honduras; ethical manufacturing (Fair Labor Association, Platinum WRAP).<br/><br/>Care instructions<br/>- Machine wash: cold (max 30C or 90F)<br/>- Non-chlorine: bleach as needed<br/>- Tumble dry: low heat<br/>- Iron, steam or dry: medium heat<br/>- Do not dryclean<br/>",
+      "keyword_score": 0,
+      "updated_at": "2026-08-11 20:27:22+00:00",
+      "visible": true,
+      "blueprint_id": 12,
+      "print_provider_id": 99,
+      "artwork_ids": [
+        "69c71850c0f7346f245190a4",
+        "69c724e76e7d45405beb5c70",
+        "69c718e027fb046395725288"
+      ],
+      "artwork_files": [
+        "the-storm--me-built",
+        "minimal-streetwear-graphic-powerful-storm",
+        "the-storm--me-official"
+      ],
+      "artwork_previews": [
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/572c8bae-c059-434b-8138-d8e018e3afd0",
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/71399b25-4a1e-4d84-9da8-1a898bc2e9b4",
+        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/670df01c-4cfd-4e2e-b3fd-487bba864450"
+      ],
+      "artwork_usage": {
+        "69c71850c0f7346f245190a4": {
+          "positions": [
+            "front",
+            "neck"
+          ],
+          "variant_count": 2026
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69c724e76e7d45405beb5c70": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69c718e027fb046395725288": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        }
+      },
+      "mockups": [
+        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102044/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=front-2",
+        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102045/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=back-2",
+        "https://images-api.printify.com/mockup/6a5ef407f01211db7409003d/18542/102046/resilient-storm-graphic-tee-the-storm-made-me-motivational-t-shirt.jpg?camera_label=folded"
       ]
     },
     {
@@ -940,6 +1683,20 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/2ba387ca-f4a2-4951-9d16-11c098de8f30",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/a5ac8295-0d20-4d09-a9b3-9d8f7d903576"
       ],
+      "artwork_usage": {
+        "69c72ed4adac085860892ee5": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 423
+        },
+        "69c72e0cadac085860892ed3": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 423
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef403f01211db7409003c/73207/98445/the-storm-logo-tee-minimal-streetwear-premium-chest-logo-t-shirt.jpg?camera_label=front",
         "https://images-api.printify.com/mockup/6a5ef403f01211db7409003c/73207/98446/the-storm-logo-tee-minimal-streetwear-premium-chest-logo-t-shirt.jpg?camera_label=back",
@@ -973,58 +1730,42 @@
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/670df01c-4cfd-4e2e-b3fd-487bba864450",
         "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/e9a08188-b762-4e9c-bdfc-7babe94a4310"
       ],
+      "artwork_usage": {
+        "69c71850c0f7346f245190a4": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "5941187eb8e7e37b3f0e62e5": {
+          "positions": [
+            "neck"
+          ],
+          "variant_count": 1013
+        },
+        "69c720b36e7d45405beb5c24": {
+          "positions": [
+            "back"
+          ],
+          "variant_count": 1013
+        },
+        "69c718e027fb046395725288": {
+          "positions": [
+            "left_sleeve"
+          ],
+          "variant_count": 1013
+        },
+        "69c71f896e7d45405beb5c16": {
+          "positions": [
+            "front"
+          ],
+          "variant_count": 1013
+        }
+      },
       "mockups": [
         "https://images-api.printify.com/mockup/6a5ef40ef01211db7409003e/18542/102044/cant-break-me-tee-bold-resilience-streetwear-motivational-graphic-t-shirt.jpg?camera_label=front-2",
         "https://images-api.printify.com/mockup/6a5ef40ef01211db7409003e/18542/102045/cant-break-me-tee-bold-resilience-streetwear-motivational-graphic-t-shirt.jpg?camera_label=back-2",
         "https://images-api.printify.com/mockup/6a5ef40ef01211db7409003e/18542/102046/cant-break-me-tee-bold-resilience-streetwear-motivational-graphic-t-shirt.jpg?camera_label=folded"
-      ]
-    },
-    {
-      "id": "6a69819635a158239e0df691",
-      "title": "Storm & Me T-Shirt \u2014 \"The House That Pain Built\" Graphic Tee",
-      "description": "This soft, classic-fit tee carries a quiet, resilient energy. The front\u2019s simple \u201cStorm & Me\u201d emblem reads like a personal badge \u2014 small, steady, familiar \u2014 while the back shows a glowing house framed by dark skies and the bold line: \u201cThe house that pain built \u2014 built through the storm.\u201d Wear it when you want clothing that feels like a companion after hard days: it holds a memory of weathered nights and upright mornings. The light fabric drapes easily under a jacket or on its own. It speaks to people who honor survival, hard-won shelter, and the warmth found inside after everything outside has raged. Throw it on for evening walks, casual meetups with kindred spirits, or any moment when you want to carry a quiet, stubborn warmth with you.<br/><br/>Product features<br/>- 60% combed ring-spun cotton / 40% polyester for a soft, smooth hand<br/>- Lightweight fabric (4.3 oz / 146 g/m\u00b2) for comfortable layering<br/>- Classic fit with 1x1 ribbed collar that retains shape<br/>- Self-fabric shoulder tape and tear-away label for clean lines<br/>- DTF inner neck labels with DTG-printed graphics for detailed, durable prints<br/><br/>Care instructions<br/>- Machine wash: cold (max 30C or 90F)<br/>- Do not bleach<br/>- Tumble dry: low heat<br/>- Iron, steam or dry: low heat<br/>- Do not dryclean<br/>",
-      "keyword_score": 0,
-      "updated_at": "2026-08-11 20:27:22+00:00",
-      "visible": true,
-      "blueprint_id": 1317,
-      "print_provider_id": 99,
-      "artwork_ids": [
-        "6a6980b5f5b56b9235594a60",
-        "6a69816044e804e39668a628",
-        "6a593fdf010b950f5650e2c0"
-      ],
-      "artwork_files": [
-        "ChatGPT Image Jul 29, 2026, 12_21_04 AM.png",
-        "ChatGPT Image Jul 29, 2026, 12_18_11 AM 4.png",
-        "stormandme_front_chest_logo_dark.png"
-      ],
-      "artwork_previews": [
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/17fc6f3f-2104-437b-870a-eb77b5d4a23a",
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/cc5487a3-55f2-4c3d-a3dc-3890ee070adc",
-        "https://pfy-prod-image-storage.s3.us-east-2.amazonaws.com/26676544/d3f45f23-921e-468e-9e7f-d2cf53b17b15"
-      ],
-      "mockups": [
-        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95837/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=front",
-        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95838/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=back",
-        "https://images-api.printify.com/mockup/6a69819635a158239e0df691/100280/95839/storm-me-t-shirt-the-house-that-pain-built-graphic-tee.jpg?camera_label=person-1-front"
-      ]
-    },
-    {
-      "id": "6a5ef4d6f01211db74090049",
-      "title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
-      "description": "<p>The Gildan Heavy Blend\u2122 hoodie, made from a soft cotton-poly blend, provides warmth and durability. Its unisex fit offers everyday versatility, with ribbed cuffs and hem to keep the shape intact. A large front pocket adds convenience, while the double-lined hood with matching drawcord gives it a clean, cohesive look. Trusted for custom printing and casual wear, the Gildan 18500 is a reliable choice that balances comfort and longevity.<br><br><strong>Disclaimer</strong>:<br>- Due to the fabric properties, the White color variant may appear off-white rather than bright white.</p><br/><p>.: The Gildan 18500 is made from a medium-heavy fabric (8.0 oz/yd\u00b2 (271 g/m\u00b2)) made of 50% cotton and 50% polyester. This blend delivers cozy warmth and a soft feel that makes it perfect for chilly days.<br/>.: The classic fit along with the pouch pocket and the tear-away label make for a highly comfortable, scratch-free wearing experience. <br/>.: The color-matched drawcord and the double-lined hood add a stylish flair and durability that tie everything together.<br/>.: Made using 100% ethically grown US cotton. Gildan is also a proud member of the US Cotton Trust Protocol ensuring ethical and sustainable means of production. The blank tee's dyes are OEKO-TEX-certified dyes with low environmental impact.<br/>.: Fabric blends: Heather Sport colors - 60% polyester, 40% cotton<br/>.: Embroidery decoration method available on either left chest, center chest, or large center chest, as well as right + left wrists</p>",
-      "keyword_score": 0,
-      "updated_at": "2026-08-11 20:27:22+00:00",
-      "visible": true,
-      "blueprint_id": 77,
-      "print_provider_id": 99,
-      "artwork_ids": [],
-      "artwork_files": [],
-      "artwork_previews": [],
-      "mockups": [
-        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98424/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=front",
-        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98425/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=back",
-        "https://images-api.printify.com/mockup/6a5ef4d6f01211db74090049/32912/98426/unisex-heavy-blend-hooded-sweatshirt.jpg?camera_label=back-2"
       ]
     }
   ]
