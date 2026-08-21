@@ -1,0 +1,63 @@
+name: Jesus Coffee rollout progress
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/jesus-coffee-progress.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only inventory probe
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          from pathlib import Path
+          token=os.environ['PRINTIFY_API_TOKEN'].strip()
+          shop=os.environ.get('PRINTIFY_SHOP_ID','').strip() or '28312107'
+          def get(path):
+              r=urllib.request.Request('https://api.printify.com/v1'+path, headers={'Authorization':f'Bearer {token}','Accept':'application/json','User-Agent':'StormAndMe-Progress/1.0'})
+              with urllib.request.urlopen(r,timeout=60) as resp:
+                  return json.loads(resp.read().decode())
+          products=[]; page=1
+          while True:
+              data=get(f'/shops/{shop}/products.json?limit=50&page={page}')
+              batch=data.get('data',[]); products.extend(batch)
+              if not batch or page >= int(data.get('last_page',page)): break
+              page += 1
+          bases=('I Run on Coffee & Jesus','Jesus Saves, Coffee Helps Me Act Saved','Coffee, Jesus & Minding My Business','Coffee First, Jesus Always','Jesus Saves, Coffee Keeps Me Going')
+          suffixes=('Heavyweight Hoodie','Long Sleeve Tee','Retail Fit Tee','Phone Case')
+          targets=[]
+          for p in products:
+              title=str(p.get('title',''))
+              if any(base in title for base in bases) and any(suffix in title for suffix in suffixes):
+                  targets.append({'id':p.get('id'),'title':title,'visible':p.get('visible'),'is_locked':p.get('is_locked'),'updated_at':p.get('updated_at')})
+          report={'shop_id':shop,'total_products':len(products),'target_count':len(targets),'targets':targets,'mode':'read-only'}
+          Path('automation-output').mkdir(exist_ok=True)
+          Path('automation-output/jesus-coffee-progress.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Persist read-only progress snapshot
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/jesus-coffee-progress.json
+          git commit -m "chore: snapshot Jesus Coffee rollout progress" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
