@@ -1,0 +1,125 @@
+name: Repair Jesus & Coffee logo placement
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/repair-jesus-coffee-logo-placement.yml"
+      - "automation/printify/repair_jesus_coffee_logo_placement.py"
+      - "tests/test_repair_jesus_coffee_logo_placement.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jesus-coffee-logo-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Gate 1 — surgical repair tests
+        run: |
+          python -m py_compile automation/printify/repair_jesus_coffee_logo_placement.py
+          python -m unittest tests/test_repair_jesus_coffee_logo_placement.py -v
+
+      - name: Gate 2 — verify Printify secret
+        shell: bash
+        run: |
+          test -n "$PRINTIFY_API_TOKEN" || {
+            echo "Missing repository secret: PRINTIFY_API_TOKEN"
+            exit 1
+          }
+
+      - name: Gate 3 — repair only the 15 apparel placements
+        shell: bash
+        run: |
+          mkdir -p automation-output
+          set +e
+          PYTHONPATH=automation/printify python automation/printify/repair_jesus_coffee_logo_placement.py > automation-output/jesus-coffee-logo-repair.log 2>&1
+          status=$?
+          set -e
+          cat automation-output/jesus-coffee-logo-repair.log
+          echo "$status" > automation-output/jesus-coffee-logo-repair.status
+
+      - name: Gate 4 — prove nothing except logo coordinates changed
+        shell: bash
+        run: |
+          status="$(cat automation-output/jesus-coffee-logo-repair.status)"
+          if [ "$status" != "0" ]; then
+            echo "Repair failed with status $status; preserving diagnostics."
+            exit 0
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('automation-output/jesus-coffee-logo-repair.json').read_text())
+          assert report['mode'] == 'surgical-left-chest-logo-repair'
+          assert report['product_count'] == 15
+          assert report['phone_cases_touched'] is False
+          assert report['artwork_generated'] is False
+          assert report['left_chest'] == {'x': 0.30, 'y': 0.28}
+          assert len(report['results']) == 15
+          for row in report['results']:
+              assert row['verified'] is True, row
+              assert row['artwork_signature_unchanged'] is True, row
+              assert row['variant_coverage_unchanged'] is True, row
+              assert row['product_variants_unchanged'] is True, row
+              assert row['after_logo_positions'], row
+              assert all(abs(pos['x'] - 0.30) <= 0.0001 and abs(pos['y'] - 0.28) <= 0.0001 for pos in row['after_logo_positions']), row
+          print('Gate 4 PASS: 15 apparel products verified at left chest; artwork and variants unchanged.')
+          PY
+
+      - name: Persist verification or diagnostics
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/jesus-coffee-logo-repair.log automation-output/jesus-coffee-logo-repair.status
+          if [ -f automation-output/jesus-coffee-logo-repair.json ]; then
+            git add automation-output/jesus-coffee-logo-repair.json
+          fi
+          if git diff --cached --quiet; then
+            echo "No repair result changes to persist."
+          else
+            status="$(cat automation-output/jesus-coffee-logo-repair.status 2>/dev/null || echo unknown)"
+            if [ "$status" = "0" ]; then msg="fix: verify Jesus Coffee left-chest logos"; else msg="chore: record Jesus Coffee logo repair diagnostics"; fi
+            git commit -m "$msg"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Final status
+        if: always()
+        shell: bash
+        run: |
+          status="$(cat automation-output/jesus-coffee-logo-repair.status 2>/dev/null || echo 1)"
+          test "$status" = "0"
+
+      - name: Upload verification artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jesus-coffee-left-chest-logo-repair
+          path: |
+            automation-output/jesus-coffee-logo-repair.json
+            automation-output/jesus-coffee-logo-repair.log
+            automation-output/jesus-coffee-logo-repair.status
+          if-no-files-found: warn
+          retention-days: 14
