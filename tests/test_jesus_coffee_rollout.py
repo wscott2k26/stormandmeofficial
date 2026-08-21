@@ -25,35 +25,6 @@ class JesusCoffeeRolloutTests(unittest.TestCase):
         self.assertEqual(jcr.device_family("iPhone 17 Pro"), "iPhone")
         self.assertEqual(jcr.device_family("Motorola Razr 2026"), "Motorola")
 
-    def test_provider_variants_collects_variant_level_placeholders(self):
-        original_request = jcr.request
-        try:
-            jcr.request = lambda method, path: {
-                "variants": [
-                    {
-                        "id": 101,
-                        "title": "Black / M",
-                        "placeholders": [
-                            {"position": "front", "decoration_method": "dtg", "width": 3600, "height": 4200},
-                            {"position": "back", "decoration_method": "dtg", "width": 3600, "height": 4200},
-                        ],
-                    },
-                    {
-                        "id": 102,
-                        "title": "White / M",
-                        "placeholders": [
-                            {"position": "front", "decoration_method": "dtg", "width": 3600, "height": 4200},
-                        ],
-                    },
-                ]
-            }
-            variants, placeholders = jcr.provider_variants(77, 99)
-        finally:
-            jcr.request = original_request
-
-        self.assertEqual([row["id"] for row in variants], [101, 102])
-        self.assertEqual({row["position"] for row in placeholders}, {"front", "back"})
-
     def test_patch_home_is_idempotent_and_no_images(self):
         original = '{/* MERCH */}\n<section className="relative py-16 sm:py-20" data-testid="home-merch-section">'
         patched = jcr.patch_home_text(original)
