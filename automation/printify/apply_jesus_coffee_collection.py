@@ -82,6 +82,30 @@ def phone_source(source, artwork, clean_title):
     return clean
 
 
+def choose_usable_target(blueprints, spec):
+    errors = []
+    for terms in spec["terms"]:
+        matches = [
+            bp for bp in blueprints
+            if all(term in str(bp.get("title", "")).lower() for term in terms)
+        ]
+        for bp in matches:
+            try:
+                provider = jcr.choose_provider(int(bp["id"]), spec["kind"])
+                return {"spec": spec, "blueprint": bp, "provider": provider}
+            except Exception as exc:
+                errors.append(f"{bp.get('id')} {bp.get('title')}: {exc}")
+    raise RuntimeError(
+        f"No usable catalog target for {spec['kind']}. Tried: {' | '.join(errors[-8:])}"
+    )
+
+
+def safe_preflight(blueprints):
+    apparel = [choose_usable_target(blueprints, spec) for spec in jcr.TARGETS]
+    phone = jcr.discover_phone_targets(blueprints)
+    return {"apparel": apparel, "phone": phone}
+
+
 def source_rows():
     rows = []
     for product_id, spec in SOURCES.items():
@@ -102,7 +126,7 @@ def source_rows():
 def main():
     sources = source_rows()
     blueprints = jcr.catalog_blueprints()
-    preflight = jcr.preflight_targets(blueprints)
+    preflight = safe_preflight(blueprints)
 
     phone_families = set()
     for row in preflight["phone"]:
@@ -188,6 +212,26 @@ def main():
             for raw, spec in sources
         ],
         "phone_device_families": sorted(phone_families),
+        "apparel_preflight": [
+            {
+                "kind": row["spec"]["kind"],
+                "blueprint_id": row["blueprint"].get("id"),
+                "blueprint_title": row["blueprint"].get("title"),
+                "provider_id": row["provider"].get("provider_id"),
+                "provider_title": row["provider"].get("provider_title"),
+            }
+            for row in preflight["apparel"]
+        ],
+        "phone_preflight": [
+            {
+                "blueprint_id": row["blueprint"].get("id"),
+                "blueprint_title": row["blueprint"].get("title"),
+                "provider_id": row["provider"].get("provider_id"),
+                "provider_title": row["provider"].get("provider_title"),
+                "device_families": sorted(row["covered"]),
+            }
+            for row in preflight["phone"]
+        ],
         "results": results,
         "verification": verification,
         "homepage_feature_changed": homepage_changed,
