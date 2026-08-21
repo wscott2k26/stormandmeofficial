@@ -1,0 +1,58 @@
+name: Homepage Jesus & Coffee feature
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/home-jesus-coffee-feature.yml"
+      - "frontend/src/pages/Home.js"
+      - "tests/test_home_jesus_coffee_featured_products.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-home-feature:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Contract test — real merch only
+        run: python -m unittest tests/test_home_jesus_coffee_featured_products.py -v
+
+      - name: Verify Printify mockup URLs resolve
+        shell: bash
+        run: |
+          python - <<'PY' > /tmp/jesus-coffee-mockups.txt
+          import re
+          from pathlib import Path
+          home = Path('frontend/src/pages/Home.js').read_text(encoding='utf-8')
+          feature = home.split('data-testid="jesus-coffee-featured-section"', 1)[1].split('data-testid="home-merch-section"', 1)[0]
+          for url in re.findall(r'https://images-api\.printify\.com/mockup/[^"}]+', feature):
+              print(url)
+          PY
+          test "$(wc -l < /tmp/jesus-coffee-mockups.txt)" -eq 2
+          while IFS= read -r url; do
+            echo "Checking $url"
+            curl -fL --retry 3 --retry-delay 2 --max-time 30 -o /dev/null "$url"
+          done < /tmp/jesus-coffee-mockups.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Build homepage
+        working-directory: frontend
+        env:
+          CI: 'false'
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
