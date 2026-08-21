@@ -47,6 +47,9 @@ LOCKED_APPAREL_BLUEPRINT_IDS = {
 }
 LOCKED_PHONE_BLUEPRINT_IDS = (421,)  # Protective cases: iPhone + Samsung + Pixel
 MAX_PRODUCT_VARIANTS = 100
+APPAREL_LOGO_ID = next(iter(SOURCES.values()))["front"]
+LEFT_CHEST_X = 0.30
+LEFT_CHEST_Y = 0.28
 
 
 def sanitize_source(source, artwork, clean_title):
@@ -264,12 +267,25 @@ def choose_provider_compat(blueprint_id, kind):
 
 
 def fit_images_compat(images, kind):
-    """Keep original approved artwork transforms but satisfy Printify integer angles."""
+    """Preserve apparel placement, keep cases centered, and satisfy Printify integer angles."""
     fitted = []
     for image in images:
         row = copy.deepcopy(image)
-        row["x"] = 0.5
-        row["y"] = 0.5
+        if kind == "phone-case":
+            row["x"] = 0.5
+            row["y"] = 0.5
+        else:
+            source_x = 0.5 if row.get("x") is None else float(row.get("x"))
+            source_y = 0.5 if row.get("y") is None else float(row.get("y"))
+            # The shared brand mark belongs on the left chest. Preserve any valid
+            # source placement, but never allow a centered source/default to move
+            # this logo back into the middle of the garment.
+            if row.get("id") == APPAREL_LOGO_ID and abs(source_x - 0.5) < 0.0001 and abs(source_y - 0.5) < 0.0001:
+                row["x"] = LEFT_CHEST_X
+                row["y"] = LEFT_CHEST_Y
+            else:
+                row["x"] = source_x
+                row["y"] = source_y
         row["angle"] = int(round(float(row.get("angle", 0) or 0)))
         current = float(row.get("scale", 0.85) or 0.85)
         row["scale"] = min(current, 0.72 if kind == "phone-case" else 0.86)
