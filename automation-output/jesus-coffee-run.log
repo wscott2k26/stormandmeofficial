@@ -1,12 +1,12 @@
 Traceback (most recent call last):
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 208, in <module>
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 252, in <module>
     main()
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 105, in main
-    preflight = jcr.preflight_targets(blueprints)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 711, in preflight_targets
-    provider = choose_provider(int(bp["id"]), spec["kind"])
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 396, in choose_provider
-    raise RuntimeError(f"No usable provider for blueprint {blueprint_id}: {'; '.join(errors[-3:])}")
-RuntimeError: No usable provider for blueprint 2001: 
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 129, in main
+    preflight = safe_preflight(blueprints)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 104, in safe_preflight
+    apparel = [choose_usable_target(blueprints, spec) for spec in jcr.TARGETS]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 98, in choose_usable_target
+    raise RuntimeError(
+RuntimeError: No usable catalog target for hoodie. Tried: 6357 Unisex ReFlex Fleece Full-Zip Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/6357/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336465@39fd46ad-bded-4b6f-82f3-c74be393c04d"} | 6358 Unisex ReFlex Fleece Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/6358/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336466@8f7d71f5-ddfe-43cb-b09e-6b007d679c71"} | 6387 Unisex Sponge Fleece DTM Full-Zip Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/6387/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336466@92b56698-2eb0-4c63-ae67-080c2ce00a76"} | 6391 Unisex 10 oz Full-Zip Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/6391/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336466@40eca46a-1f31-46df-acbc-eebd22c39c20"} | 7142 Unisex Elevated Fleece Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/7142/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336466@a90a4398-5635-44d0-bb29-b1dfe05da58c"} | 7268 Unisex Malibu Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/7268/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336467@b1198d1a-47ad-43c7-8cb9-0ece8a08041c"} | 7269 Women's Laguna Sueded Raw Edge Crop Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/7269/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336467@195d28e7-5351-42f1-b77a-c967265f1ec6"} | 8074 Unisex Sponge Fleece Drop Shoulder Hoodie Sweatshirt: Printify API 429 on /catalog/blueprints/8074/print_providers.json: {"error":"Too Many Attempts.","request_id":"1787336467@3c1e6c83-2ca6-4d8a-8314-db76629c4026"}
