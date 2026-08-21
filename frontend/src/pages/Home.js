@@ -340,6 +340,7 @@ export default function Home() {
               </div>
             </div>
           </Reveal>
+        </div>
       </section>
 
       {/* MERCH */}
