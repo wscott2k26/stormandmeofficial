@@ -323,15 +323,65 @@ export default function Home() {
       <section className="relative py-14 sm:py-18" data-testid="jesus-coffee-featured-section">
         <div className="max-w-6xl mx-auto px-6">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-storm-gold/25 bg-[radial-gradient(circle_at_15%_10%,rgba(215,180,97,0.16),transparent_34%),linear-gradient(135deg,rgba(37,28,20,0.88),rgba(10,10,12,0.96))] px-7 py-10 sm:px-12 sm:py-14 text-center shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl border border-storm-gold/25 bg-[radial-gradient(circle_at_15%_10%,rgba(215,180,97,0.16),transparent_34%),linear-gradient(135deg,rgba(37,28,20,0.88),rgba(10,10,12,0.96))] px-7 py-10 sm:px-12 sm:py-14 shadow-2xl">
               <div className="pointer-events-none absolute inset-0 opacity-30 bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.05),transparent)]" />
               <div className="relative">
-                <Overline className="mb-4">Featured Faith Collection</Overline>
-                <h2 className="font-display text-4xl sm:text-5xl font-black text-white leading-tight">Jesus &amp; Coffee Collection</h2>
-                <p className="mt-4 font-display italic text-xl sm:text-2xl text-storm-gold">Faith for the soul. Coffee for the morning.</p>
-                <p className="mx-auto mt-5 max-w-2xl text-storm-silver/75 leading-relaxed font-light">
-                  The same Jesus &amp; Coffee artwork you love, now expanding across tees, long sleeves, hoodies, and phone cases—kept consistent with the original designs.
-                </p>
+                <div className="text-center">
+                  <Overline className="mb-4">Featured Faith Collection</Overline>
+                  <h2 className="font-display text-4xl sm:text-5xl font-black text-white leading-tight">Jesus &amp; Coffee Collection</h2>
+                  <p className="mt-4 font-display italic text-xl sm:text-2xl text-storm-gold">Faith for the soul. Coffee for the morning.</p>
+                  <p className="mx-auto mt-5 max-w-2xl text-storm-silver/75 leading-relaxed font-light">
+                    Real Storm And Me apparel from the live collection—same artwork, same products, shown with the actual Printify mockups.
+                  </p>
+                </div>
+
+                <div className="mt-9 grid gap-5 md:grid-cols-2">
+                  <a
+                    href={BRAND.shop}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-testid="jesus-coffee-product-run-coffee-jesus"
+                    className="group overflow-hidden rounded-2xl border border-white/10 bg-black/25 text-left transition duration-300 hover:-translate-y-1 hover:border-storm-gold/45 focus:outline-none focus-visible:ring-2 focus-visible:ring-storm-gold"
+                  >
+                    <div className="aspect-square overflow-hidden bg-white/[0.035]">
+                      <img
+                        src="https://images-api.printify.com/mockup/6a88ab9048b9c45ed50c422e/32912/98424/i-run-on-coffee-jesus-heavyweight-hoodie.jpg?camera_label=front"
+                        alt="Real Printify mockup of the I Run on Coffee & Jesus heavyweight hoodie"
+                        className="h-full w-full object-contain transition duration-500 group-hover:scale-[1.02]"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-5 sm:p-6">
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-storm-gold/75">Heavyweight Hoodie · Live Product</p>
+                      <h3 className="mt-2 font-display text-xl sm:text-2xl font-bold text-white">I Run on Coffee & Jesus</h3>
+                      <p className="mt-3 text-sm text-storm-silver/65">View it in the official Storm And Me shop <ArrowRight className="ml-1 inline h-4 w-4" /></p>
+                    </div>
+                  </a>
+
+                  <a
+                    href={BRAND.shop}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-testid="jesus-coffee-product-act-saved"
+                    className="group overflow-hidden rounded-2xl border border-white/10 bg-black/25 text-left transition duration-300 hover:-translate-y-1 hover:border-storm-gold/45 focus:outline-none focus-visible:ring-2 focus-visible:ring-storm-gold"
+                  >
+                    <div className="aspect-square overflow-hidden bg-white/[0.035]">
+                      <img
+                        src="https://images-api.printify.com/mockup/6a88aba60581e90e4c09fb9d/32912/98424/jesus-saves-coffee-helps-me-act-saved-heavyweight-hoodie.jpg?camera_label=front"
+                        alt="Real Printify mockup of the Jesus Saves, Coffee Helps Me Act Saved heavyweight hoodie"
+                        className="h-full w-full object-contain transition duration-500 group-hover:scale-[1.02]"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-5 sm:p-6">
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-storm-gold/75">Heavyweight Hoodie · Live Product</p>
+                      <h3 className="mt-2 font-display text-xl sm:text-2xl font-bold text-white">Jesus Saves, Coffee Helps Me Act Saved</h3>
+                      <p className="mt-3 text-sm text-storm-silver/65">View it in the official Storm And Me shop <ArrowRight className="ml-1 inline h-4 w-4" /></p>
+                    </div>
+                  </a>
+                </div>
+
+                <p className="mt-5 text-center text-xs text-storm-silver/55">Actual Printify product mockups from the live Jesus &amp; Coffee rollout.</p>
                 <div className="mt-8 flex justify-center">
                   <GlowButton href={BRAND.shop} variant="gold" data-testid="home-shop-jesus-coffee">
                     Shop Jesus &amp; Coffee <ArrowRight className="w-4 h-4" />
