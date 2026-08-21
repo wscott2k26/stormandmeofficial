@@ -46,6 +46,7 @@ LOCKED_APPAREL_BLUEPRINT_IDS = {
     "fitted-tee": 12,   # Bella+Canvas 3001 retail-fit tee
 }
 LOCKED_PHONE_BLUEPRINT_IDS = (421,)  # Protective cases: iPhone + Samsung + Pixel
+MAX_PRODUCT_VARIANTS = 100
 
 
 def sanitize_source(source, artwork, clean_title):
@@ -152,6 +153,79 @@ def provider_variants_compat(blueprint_id, provider_id):
     return variants, unique
 
 
+def _apparel_color(variant):
+    options = variant.get("options") or {}
+    color = str(options.get("color") or "").strip()
+    if color:
+        return color
+    title = str(variant.get("title") or "")
+    return title.split(" / ", 1)[0].strip() or "Other"
+
+
+def _apparel_size_rank(variant):
+    options = variant.get("options") or {}
+    size = str(options.get("size") or "").strip().lower().replace("xxxl", "3xl").replace("xxl", "2xl")
+    rank = {"m": 0, "l": 1, "xl": 2, "s": 3, "2xl": 4, "3xl": 5, "xs": 6, "4xl": 7, "5xl": 8}
+    return rank.get(size, 99)
+
+
+def _color_rank(color):
+    low = color.lower()
+    priority = [
+        "black", "white", "navy", "sand", "heather", "grey", "gray", "charcoal",
+        "brown", "maroon", "forest", "military", "natural", "red", "royal", "blue",
+        "pink", "purple", "green", "gold", "orange",
+    ]
+    for index, token in enumerate(priority):
+        if token in low:
+            return index
+    return len(priority)
+
+
+def limit_variants(variants, kind, max_enabled=MAX_PRODUCT_VARIANTS):
+    """Respect Printify's 100-enabled-variant limit without collapsing useful coverage."""
+    rows = []
+    seen_ids = set()
+    for variant in variants:
+        variant_id = variant.get("id")
+        if variant_id is None or variant_id in seen_ids:
+            continue
+        seen_ids.add(variant_id)
+        rows.append(variant)
+    if len(rows) <= max_enabled:
+        return rows
+
+    if kind == "phone-case":
+        family_order = ["iPhone", "Samsung", "Google Pixel", "Motorola"]
+        buckets = {family: [] for family in family_order}
+        for variant in rows:
+            family = jcr.device_family(variant.get("title", ""))
+            if family in buckets:
+                buckets[family].append(variant)
+        selected = []
+        while len(selected) < max_enabled and any(buckets.values()):
+            for family in family_order:
+                bucket = buckets[family]
+                if bucket and len(selected) < max_enabled:
+                    selected.append(bucket.pop(0))
+        if selected:
+            return selected[:max_enabled]
+        return rows[:max_enabled]
+
+    buckets = {}
+    for variant in rows:
+        buckets.setdefault(_apparel_color(variant), []).append(variant)
+    ordered_colors = sorted(buckets, key=lambda color: (_color_rank(color), color.lower()))
+    selected = []
+    for color in ordered_colors:
+        bucket = sorted(buckets[color], key=_apparel_size_rank)
+        remaining = max_enabled - len(selected)
+        if remaining <= 0:
+            break
+        selected.extend(bucket[:remaining])
+    return selected[:max_enabled]
+
+
 def choose_provider_compat(blueprint_id, kind):
     candidates = []
     errors = []
@@ -163,19 +237,24 @@ def choose_provider_compat(blueprint_id, kind):
             errors.append(str(exc))
             continue
         available = [variant for variant in variants if variant.get("is_available", True)]
+        curated = limit_variants(available, kind)
         positions = {row.get("position") for row in placeholders if row.get("position")}
-        if not available or not positions:
+        if not curated or not positions:
             continue
         if kind != "phone-case" and not ({"front", "back"} & positions):
             continue
-        families = Counter(jcr.device_family(variant.get("title", "")) for variant in available)
+        families = Counter(jcr.device_family(variant.get("title", "")) for variant in curated)
+        supported_family_count = len([
+            family for family, count in families.items()
+            if family in getattr(jcr, "PHONE_FAMILIES", ()) and count > 0
+        ])
         candidates.append({
             "provider_id": provider_id,
             "provider_title": provider.get("title"),
-            "variants": available,
+            "variants": curated,
             "placeholders": placeholders,
             "families": dict(families),
-            "score": len(available) + (20 if "front" in positions else 0),
+            "score": len(curated) + (20 if "front" in positions else 0) + (50 * supported_family_count if kind == "phone-case" else 0),
         })
     if not candidates:
         detail = "; ".join(errors[-3:]) if errors else "providers returned no printable variants"
@@ -345,6 +424,7 @@ def main():
                 "blueprint_title": row["blueprint"].get("title"),
                 "provider_id": row["provider"].get("provider_id"),
                 "provider_title": row["provider"].get("provider_title"),
+                "variant_count": len(row["provider"].get("variants", [])),
             }
             for row in preflight["apparel"]
         ],
@@ -355,6 +435,7 @@ def main():
                 "provider_id": row["provider"].get("provider_id"),
                 "provider_title": row["provider"].get("provider_title"),
                 "device_families": sorted(row["covered"]),
+                "variant_count": len(row["provider"].get("variants", [])),
             }
             for row in preflight["phone"]
         ],
