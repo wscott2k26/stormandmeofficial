@@ -83,6 +83,16 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(fitted[0]['y'], 0.6)
         self.assertLessEqual(fitted[0]['scale'], 0.86)
 
+    def test_fit_images_compat_moves_centered_brand_logo_to_left_chest(self):
+        logo_id = next(iter(mod.SOURCES.values()))['front']
+        fitted = mod.fit_images_compat(
+            [{'id': logo_id, 'x': 0.5, 'y': 0.5, 'scale': 0.38, 'angle': 0.0}],
+            'long-sleeve',
+        )
+        self.assertEqual(fitted[0]['x'], 0.30)
+        self.assertEqual(fitted[0]['y'], 0.28)
+        self.assertEqual(fitted[0]['scale'], 0.38)
+
     def test_fit_images_compat_keeps_phone_art_centered(self):
         fitted = mod.fit_images_compat(
             [{'id': 'case-art', 'x': 0.3, 'y': 0.7, 'scale': 0.9, 'angle': 0.0}],
