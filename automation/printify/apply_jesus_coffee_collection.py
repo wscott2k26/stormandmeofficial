@@ -184,6 +184,20 @@ def choose_provider_compat(blueprint_id, kind):
     return candidates[0]
 
 
+def fit_images_compat(images, kind):
+    """Keep original approved artwork transforms but satisfy Printify integer angles."""
+    fitted = []
+    for image in images:
+        row = copy.deepcopy(image)
+        row["x"] = 0.5
+        row["y"] = 0.5
+        row["angle"] = int(round(float(row.get("angle", 0) or 0)))
+        current = float(row.get("scale", 0.85) or 0.85)
+        row["scale"] = min(current, 0.72 if kind == "phone-case" else 0.86)
+        fitted.append(row)
+    return fitted
+
+
 def safe_preflight(blueprints):
     apparel = []
     for spec in jcr.TARGETS:
@@ -232,6 +246,10 @@ def source_rows():
 
 
 def main():
+    # Collection-scoped compatibility shim: the shared helper historically emitted
+    # float angles (0.0), while Printify's create-product endpoint requires integers.
+    jcr.fit_images = fit_images_compat
+
     sources = source_rows()
     blueprints = jcr.catalog_blueprints()
     preflight = safe_preflight(blueprints)
