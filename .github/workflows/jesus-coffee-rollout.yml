@@ -62,10 +62,24 @@ jobs:
           PY
 
       - name: Gate 4 — preflight, create, publish, and verify collection
-        run: PYTHONPATH=automation/printify python automation/printify/apply_jesus_coffee_collection.py
+        shell: bash
+        run: |
+          mkdir -p automation-output
+          set +e
+          PYTHONPATH=automation/printify python automation/printify/apply_jesus_coffee_collection.py > automation-output/jesus-coffee-run.log 2>&1
+          status=$?
+          set -e
+          cat automation-output/jesus-coffee-run.log
+          echo "$status" > automation-output/jesus-coffee-run.status
 
       - name: Gate 5 — final rollout and homepage contract
+        shell: bash
         run: |
+          status="$(cat automation-output/jesus-coffee-run.status)"
+          if [ "$status" != "0" ]; then
+            echo "Rollout command failed with status $status; preserving diagnostics before failing the job."
+            exit 0
+          fi
           python - <<'PY'
           import json
           from pathlib import Path
@@ -86,24 +100,44 @@ jobs:
           print('Gate 5 PASS:', len(report['verification']), 'verified products; phone families:', sorted(families))
           PY
 
-      - name: Commit verified homepage and rollout report
+      - name: Persist verified result or diagnostics
+        if: always()
         shell: bash
         run: |
           git config user.name "stormandme-bot"
           git config user.email "stormandme-bot@users.noreply.github.com"
-          git add frontend/src/pages/Home.js automation-output/jesus-coffee-rollout.json
+          git add automation-output/jesus-coffee-run.log automation-output/jesus-coffee-run.status
+          if [ -f automation-output/jesus-coffee-rollout.json ]; then
+            git add automation-output/jesus-coffee-rollout.json
+          fi
+          if git diff -- frontend/src/pages/Home.js | grep -q .; then
+            git add frontend/src/pages/Home.js
+          fi
           if git diff --cached --quiet; then
-            echo "Verified rollout data already current."
+            echo "No rollout/diagnostic changes to persist."
           else
-            git commit -m "feat: launch Jesus Coffee collection"
+            status="$(cat automation-output/jesus-coffee-run.status 2>/dev/null || echo unknown)"
+            if [ "$status" = "0" ]; then msg="feat: launch Jesus Coffee collection"; else msg="chore: record Jesus Coffee rollout diagnostics"; fi
+            git commit -m "$msg"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
 
+      - name: Final status
+        if: always()
+        shell: bash
+        run: |
+          status="$(cat automation-output/jesus-coffee-run.status 2>/dev/null || echo 1)"
+          test "$status" = "0"
+
       - name: Upload verification artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jesus-coffee-rollout-verification
-          path: automation-output/jesus-coffee-rollout.json
-          if-no-files-found: error
+          path: |
+            automation-output/jesus-coffee-rollout.json
+            automation-output/jesus-coffee-run.log
+            automation-output/jesus-coffee-run.status
+          if-no-files-found: warn
           retention-days: 14
