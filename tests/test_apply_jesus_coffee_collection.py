@@ -83,6 +83,42 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(fitted[0]['y'], 0.5)
         self.assertLessEqual(fitted[0]['scale'], 0.86)
 
+    def test_limit_variants_caps_apparel_and_balances_phone_families(self):
+        apparel = []
+        sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL']
+        colors = ['Black', 'White', 'Navy', 'Sand', 'Heather Grey', 'Maroon', 'Forest', 'Red',
+                  'Royal', 'Pink', 'Purple', 'Military Green', 'Charcoal', 'Brown', 'Natural',
+                  'Gold', 'Orange', 'Light Blue', 'Dark Chocolate', 'Ash']
+        variant_id = 1
+        for color in colors:
+            for size in sizes:
+                apparel.append({'id': variant_id, 'title': f'{color} / {size}', 'options': {'color': color, 'size': size}})
+                variant_id += 1
+        limited_apparel = mod.limit_variants(apparel, 'hoodie')
+        self.assertEqual(len(limited_apparel), 100)
+        apparel_colors = {row['options']['color'] for row in limited_apparel}
+        self.assertIn('Black', apparel_colors)
+        self.assertIn('White', apparel_colors)
+
+        mod.jcr.PHONE_FAMILIES = ('Samsung', 'Google Pixel', 'Motorola', 'iPhone')
+        mod.jcr.device_family = lambda title: (
+            'Samsung' if 'Samsung' in title else
+            'Google Pixel' if 'Pixel' in title else
+            'Motorola' if 'Motorola' in title else
+            'iPhone' if 'iPhone' in title else 'Other'
+        )
+        phone = []
+        for i in range(120):
+            phone.append({'id': 1000 + i, 'title': f'iPhone Model {i}'})
+        for i in range(40):
+            phone.append({'id': 2000 + i, 'title': f'Samsung Galaxy Model {i}'})
+        for i in range(20):
+            phone.append({'id': 3000 + i, 'title': f'Google Pixel Model {i}'})
+        limited_phone = mod.limit_variants(phone, 'phone-case')
+        self.assertEqual(len(limited_phone), 100)
+        families = {mod.jcr.device_family(row['title']) for row in limited_phone}
+        self.assertTrue({'iPhone', 'Samsung', 'Google Pixel'} <= families)
+
     def test_choose_usable_target_skips_matching_blueprint_without_provider(self):
         blueprints = [
             {'id': 2001, 'title': 'Unisex Jersey Long Sleeve Tee'},
