@@ -37,6 +37,15 @@ SOURCES = {
 
 OUT = Path("automation-output/jesus-coffee-rollout.json")
 
+# Proven Printify catalog targets. Keeping these explicit prevents broad catalog
+# scans from burning API rate limits or silently swapping in a different garment.
+LOCKED_APPAREL_BLUEPRINT_IDS = {
+    "hoodie": 77,       # Gildan 18500 Heavy Blend hoodie
+    "long-sleeve": 80,  # Gildan 2400 Ultra Cotton long sleeve
+    "fitted-tee": 12,   # Bella+Canvas 3001 retail-fit tee
+}
+LOCKED_PHONE_BLUEPRINT_IDS = (421,)  # Protective cases: iPhone + Samsung + Pixel
+
 
 def sanitize_source(source, artwork, clean_title):
     clean = copy.deepcopy(source)
@@ -100,9 +109,44 @@ def choose_usable_target(blueprints, spec):
     )
 
 
+def blueprint_by_id(blueprints, blueprint_id):
+    for bp in blueprints:
+        try:
+            current_id = int(bp.get("id"))
+        except (TypeError, ValueError):
+            continue
+        if current_id == int(blueprint_id):
+            return bp
+    raise RuntimeError(f"Locked Printify blueprint {blueprint_id} is not available in the catalog.")
+
+
 def safe_preflight(blueprints):
-    apparel = [choose_usable_target(blueprints, spec) for spec in jcr.TARGETS]
-    phone = jcr.discover_phone_targets(blueprints)
+    apparel = []
+    for spec in jcr.TARGETS:
+        kind = spec["kind"]
+        blueprint_id = LOCKED_APPAREL_BLUEPRINT_IDS.get(kind)
+        if not blueprint_id:
+            raise RuntimeError(f"No locked Printify blueprint configured for {kind}.")
+        bp = blueprint_by_id(blueprints, blueprint_id)
+        provider = jcr.choose_provider(blueprint_id, kind)
+        apparel.append({"spec": spec, "blueprint": bp, "provider": provider})
+
+    phone = []
+    for blueprint_id in LOCKED_PHONE_BLUEPRINT_IDS:
+        bp = blueprint_by_id(blueprints, blueprint_id)
+        provider = jcr.choose_provider(blueprint_id, "phone-case")
+        family_counts = provider.get("families") or {}
+        covered = {
+            family
+            for family, count in family_counts.items()
+            if family in jcr.PHONE_FAMILIES and count > 0
+        }
+        if not covered:
+            raise RuntimeError(
+                f"Locked phone-case blueprint {blueprint_id} has no supported phone families."
+            )
+        phone.append({"blueprint": bp, "provider": provider, "covered": covered})
+
     return {"apparel": apparel, "phone": phone}
 
 
