@@ -1,37 +1,11 @@
-Traceback (most recent call last):
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 107, in request
-    with urllib.request.urlopen(req, timeout=90) as response:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 215, in urlopen
-    return opener.open(url, data, timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 521, in open
-    response = meth(req, response)
-               ^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 630, in http_response
-    response = self.parent.error(
-               ^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 559, in error
-    return self._call_chain(*args)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 492, in _call_chain
-    result = func(*args)
-             ^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 639, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 400: Bad Request
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 378, in <module>
-    main()
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/apply_jesus_coffee_collection.py", line 270, in main
-    result = jcr.create_or_update_product(
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 663, in create_or_update_product
-    created = request("POST", f"/shops/{SHOP_ID}/products.json", payload)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/jesus_coffee_rollout.py", line 114, in request
-    raise RuntimeError(f"Printify API {exc.code} on {path}: {detail[:1200]}") from exc
-RuntimeError: Printify API 400 on /shops/28312107/products.json: {"status":"error","code":8251,"message":"Validation failed.","errors":{"reason":"Too many variants enabled. Maximum allowed: 100","code":8251}}
+{
+  "source_count": 5,
+  "created_or_updated": 20,
+  "phone_device_families": [
+    "Google Pixel",
+    "Samsung",
+    "iPhone"
+  ],
+  "homepage_feature_changed": true,
+  "report": "automation-output/jesus-coffee-rollout.json"
+}

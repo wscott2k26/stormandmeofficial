@@ -1,0 +1,568 @@
+{
+  "mode": "apply-approved-art-only",
+  "no_generated_art": true,
+  "source_count": 5,
+  "source_products": [
+    {
+      "id": "6a876990aa9cea471b08e022",
+      "original_title": "I Run on Coffee & Jesus T-Shirt",
+      "collection_title": "I Run on Coffee & Jesus",
+      "front_artwork_id": "6a888132e4c22e733848d0b1",
+      "back_artwork_id": "6a8882e7e28ead6037a77cc2"
+    },
+    {
+      "id": "6a8768c94c5ccb17760a17a2",
+      "original_title": "Jesus Saves Coffee T-Shirt \u2014 \"Jesus Saves, Coffee Helps Me Act Saved\" Christian Graphic Tee",
+      "collection_title": "Jesus Saves, Coffee Helps Me Act Saved",
+      "front_artwork_id": "6a888132e4c22e733848d0b1",
+      "back_artwork_id": "6a88869ef543190f0b061da0"
+    },
+    {
+      "id": "6a876921765de48d610d9a0c",
+      "original_title": "Coffee & Jesus T-Shirt \u2014 \"Coffee, Jesus, Minding My Business\" Christian Graphic Tee",
+      "collection_title": "Coffee, Jesus & Minding My Business",
+      "front_artwork_id": "6a888132e4c22e733848d0b1",
+      "back_artwork_id": "6a888584c6724f17ec5a2b2a"
+    },
+    {
+      "id": "6a87697334e6b74a81056e4b",
+      "original_title": "Coffee First, Jesus Always T-Shirt",
+      "collection_title": "Coffee First, Jesus Always",
+      "front_artwork_id": "6a888132e4c22e733848d0b1",
+      "back_artwork_id": "6a888446e4c22e733848d26b"
+    },
+    {
+      "id": "6a8769c22a86ae766007bbaa",
+      "original_title": "Jesus Saves, Coffee Keeps Me Going T-Shirt",
+      "collection_title": "Jesus Saves, Coffee Keeps Me Going",
+      "front_artwork_id": "6a888132e4c22e733848d0b1",
+      "back_artwork_id": "6a8881561ff8c0de07471495"
+    }
+  ],
+  "phone_device_families": [
+    "Google Pixel",
+    "Samsung",
+    "iPhone"
+  ],
+  "apparel_preflight": [
+    {
+      "kind": "hoodie",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 100
+    },
+    {
+      "kind": "long-sleeve",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 100
+    },
+    {
+      "kind": "fitted-tee",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100
+    }
+  ],
+  "phone_preflight": [
+    {
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "variant_count": 100
+    }
+  ],
+  "results": [
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Heavyweight Hoodie",
+      "product_id": "6a88ab9048b9c45ed50c422e",
+      "status": "created_publish_requested",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 89,
+      "device_families": [],
+      "source_product_id": "6a876990aa9cea471b08e022",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8882e7e28ead6037a77cc2"
+      ]
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Long Sleeve Tee",
+      "product_id": "6a88ab968fa6d8bef70ab07b",
+      "status": "created_publish_requested",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 93,
+      "device_families": [],
+      "source_product_id": "6a876990aa9cea471b08e022",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8882e7e28ead6037a77cc2"
+      ]
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Retail Fit Tee",
+      "product_id": "6a88ab9b0581e90e4c09fb80",
+      "status": "created_publish_requested",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100,
+      "device_families": [],
+      "source_product_id": "6a876990aa9cea471b08e022",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8882e7e28ead6037a77cc2"
+      ]
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Phone Case",
+      "product_id": "6a88aba00581e90e4c09fb85",
+      "status": "created_publish_requested",
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "variant_count": 100,
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "source_product_id": "6a876990aa9cea471b08e022",
+      "approved_artwork_ids": [
+        "6a8882e7e28ead6037a77cc2"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Heavyweight Hoodie",
+      "product_id": "6a88aba60581e90e4c09fb9d",
+      "status": "created_publish_requested",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 89,
+      "device_families": [],
+      "source_product_id": "6a8768c94c5ccb17760a17a2",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a88869ef543190f0b061da0"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Long Sleeve Tee",
+      "product_id": "6a88abac0581e90e4c09fba0",
+      "status": "created_publish_requested",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 93,
+      "device_families": [],
+      "source_product_id": "6a8768c94c5ccb17760a17a2",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a88869ef543190f0b061da0"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Retail Fit Tee",
+      "product_id": "6a88abb20581e90e4c09fba3",
+      "status": "created_publish_requested",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100,
+      "device_families": [],
+      "source_product_id": "6a8768c94c5ccb17760a17a2",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a88869ef543190f0b061da0"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Phone Case",
+      "product_id": "6a88abb70581e90e4c09fba8",
+      "status": "created_publish_requested",
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "variant_count": 100,
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "source_product_id": "6a8768c94c5ccb17760a17a2",
+      "approved_artwork_ids": [
+        "6a88869ef543190f0b061da0"
+      ]
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abbdf2c2450fa1064c30",
+      "status": "created_publish_requested",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 89,
+      "device_families": [],
+      "source_product_id": "6a876921765de48d610d9a0c",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888584c6724f17ec5a2b2a"
+      ]
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Long Sleeve Tee",
+      "product_id": "6a88abc348b9c45ed50c426b",
+      "status": "created_publish_requested",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 93,
+      "device_families": [],
+      "source_product_id": "6a876921765de48d610d9a0c",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888584c6724f17ec5a2b2a"
+      ]
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Retail Fit Tee",
+      "product_id": "6a88abc8f2c2450fa1064c45",
+      "status": "created_publish_requested",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100,
+      "device_families": [],
+      "source_product_id": "6a876921765de48d610d9a0c",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888584c6724f17ec5a2b2a"
+      ]
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Phone Case",
+      "product_id": "6a88abcd0581e90e4c09fbc6",
+      "status": "created_publish_requested",
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "variant_count": 100,
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "source_product_id": "6a876921765de48d610d9a0c",
+      "approved_artwork_ids": [
+        "6a888584c6724f17ec5a2b2a"
+      ]
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abd3f2c2450fa1064c54",
+      "status": "created_publish_requested",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 89,
+      "device_families": [],
+      "source_product_id": "6a87697334e6b74a81056e4b",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888446e4c22e733848d26b"
+      ]
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Long Sleeve Tee",
+      "product_id": "6a88abd9d0d27ba8d9055c07",
+      "status": "created_publish_requested",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 93,
+      "device_families": [],
+      "source_product_id": "6a87697334e6b74a81056e4b",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888446e4c22e733848d26b"
+      ]
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Retail Fit Tee",
+      "product_id": "6a88abdef2c2450fa1064c5d",
+      "status": "created_publish_requested",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100,
+      "device_families": [],
+      "source_product_id": "6a87697334e6b74a81056e4b",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a888446e4c22e733848d26b"
+      ]
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Phone Case",
+      "product_id": "6a88abe3375f611a7b0069da",
+      "status": "created_publish_requested",
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "variant_count": 100,
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "source_product_id": "6a87697334e6b74a81056e4b",
+      "approved_artwork_ids": [
+        "6a888446e4c22e733848d26b"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abe80581e90e4c09fbde",
+      "status": "created_publish_requested",
+      "blueprint_id": 77,
+      "blueprint_title": "Unisex Heavy Blend\u2122 Hooded Sweatshirt",
+      "provider_id": 217,
+      "provider_title": "Fulfill Engine",
+      "variant_count": 89,
+      "device_families": [],
+      "source_product_id": "6a8769c22a86ae766007bbaa",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8881561ff8c0de07471495"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Long Sleeve Tee",
+      "product_id": "6a88abf05780cb60c40988d2",
+      "status": "created_publish_requested",
+      "blueprint_id": 80,
+      "blueprint_title": "Unisex Ultra Cotton Long Sleeve Tee",
+      "provider_id": 30,
+      "provider_title": "OPT OnDemand",
+      "variant_count": 93,
+      "device_families": [],
+      "source_product_id": "6a8769c22a86ae766007bbaa",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8881561ff8c0de07471495"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Retail Fit Tee",
+      "product_id": "6a88abf548b9c45ed50c42b5",
+      "status": "created_publish_requested",
+      "blueprint_id": 12,
+      "blueprint_title": "Unisex Jersey Short Sleeve Tee",
+      "provider_id": 41,
+      "provider_title": "Duplium",
+      "variant_count": 100,
+      "device_families": [],
+      "source_product_id": "6a8769c22a86ae766007bbaa",
+      "approved_artwork_ids": [
+        "6a888132e4c22e733848d0b1",
+        "6a8881561ff8c0de07471495"
+      ]
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Phone Case",
+      "product_id": "6a88abfa0581e90e4c09fc3d",
+      "status": "created_publish_requested",
+      "blueprint_id": 421,
+      "blueprint_title": "Tough Cases",
+      "provider_id": 23,
+      "provider_title": "WOYC",
+      "variant_count": 100,
+      "device_families": [
+        "Google Pixel",
+        "Samsung",
+        "iPhone"
+      ],
+      "source_product_id": "6a8769c22a86ae766007bbaa",
+      "approved_artwork_ids": [
+        "6a8881561ff8c0de07471495"
+      ]
+    }
+  ],
+  "verification": [
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Heavyweight Hoodie",
+      "product_id": "6a88ab9048b9c45ed50c422e",
+      "visible": true,
+      "mockup_count": 56,
+      "verified": true
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Long Sleeve Tee",
+      "product_id": "6a88ab968fa6d8bef70ab07b",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Retail Fit Tee",
+      "product_id": "6a88ab9b0581e90e4c09fb80",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Phone Case",
+      "product_id": "6a88aba00581e90e4c09fb85",
+      "visible": true,
+      "mockup_count": 242,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Heavyweight Hoodie",
+      "product_id": "6a88aba60581e90e4c09fb9d",
+      "visible": true,
+      "mockup_count": 56,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Long Sleeve Tee",
+      "product_id": "6a88abac0581e90e4c09fba0",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Retail Fit Tee",
+      "product_id": "6a88abb20581e90e4c09fba3",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Phone Case",
+      "product_id": "6a88abb70581e90e4c09fba8",
+      "visible": true,
+      "mockup_count": 242,
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abbdf2c2450fa1064c30",
+      "visible": true,
+      "mockup_count": 56,
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Long Sleeve Tee",
+      "product_id": "6a88abc348b9c45ed50c426b",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Retail Fit Tee",
+      "product_id": "6a88abc8f2c2450fa1064c45",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Phone Case",
+      "product_id": "6a88abcd0581e90e4c09fbc6",
+      "visible": true,
+      "mockup_count": 242,
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abd3f2c2450fa1064c54",
+      "visible": true,
+      "mockup_count": 56,
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Long Sleeve Tee",
+      "product_id": "6a88abd9d0d27ba8d9055c07",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Retail Fit Tee",
+      "product_id": "6a88abdef2c2450fa1064c5d",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Phone Case",
+      "product_id": "6a88abe3375f611a7b0069da",
+      "visible": true,
+      "mockup_count": 242,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abe80581e90e4c09fbde",
+      "visible": true,
+      "mockup_count": 56,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Long Sleeve Tee",
+      "product_id": "6a88abf05780cb60c40988d2",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Retail Fit Tee",
+      "product_id": "6a88abf548b9c45ed50c42b5",
+      "visible": true,
+      "mockup_count": 68,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Phone Case",
+      "product_id": "6a88abfa0581e90e4c09fc3d",
+      "visible": true,
+      "mockup_count": 242,
+      "verified": true
+    }
+  ],
+  "homepage_feature_changed": true,
+  "completed_at": "2026-08-21T19:50:34.212958+00:00"
+}

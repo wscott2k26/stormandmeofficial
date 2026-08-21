@@ -319,6 +319,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* JESUS & COFFEE FEATURE */}
+      <section className="relative py-14 sm:py-18" data-testid="jesus-coffee-featured-section">
+        <div className="max-w-6xl mx-auto px-6">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl border border-storm-gold/25 bg-[radial-gradient(circle_at_15%_10%,rgba(215,180,97,0.16),transparent_34%),linear-gradient(135deg,rgba(37,28,20,0.88),rgba(10,10,12,0.96))] px-7 py-10 sm:px-12 sm:py-14 text-center shadow-2xl">
+              <div className="pointer-events-none absolute inset-0 opacity-30 bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.05),transparent)]" />
+              <div className="relative">
+                <Overline className="mb-4">Featured Faith Collection</Overline>
+                <h2 className="font-display text-4xl sm:text-5xl font-black text-white leading-tight">Jesus &amp; Coffee Collection</h2>
+                <p className="mt-4 font-display italic text-xl sm:text-2xl text-storm-gold">Faith for the soul. Coffee for the morning.</p>
+                <p className="mx-auto mt-5 max-w-2xl text-storm-silver/75 leading-relaxed font-light">
+                  The same Jesus &amp; Coffee artwork you love, now expanding across tees, long sleeves, hoodies, and phone cases—kept consistent with the original designs.
+                </p>
+                <div className="mt-8 flex justify-center">
+                  <GlowButton href={BRAND.shop} variant="gold" data-testid="home-shop-jesus-coffee">
+                    Shop Jesus &amp; Coffee <ArrowRight className="w-4 h-4" />
+                  </GlowButton>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+      </section>
+
       {/* MERCH */}
       <section className="relative py-16 sm:py-20" data-testid="home-merch-section">
         <div className="max-w-7xl mx-auto px-6">
