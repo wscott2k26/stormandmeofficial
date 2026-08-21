@@ -71,6 +71,18 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual([row['id'] for row in variants], [101, 102])
         self.assertEqual({row['position'] for row in placeholders}, {'front', 'back'})
 
+    def test_fit_images_compat_sends_integer_angle(self):
+        fitted = mod.fit_images_compat(
+            [{'id': 'approved-art', 'x': 0.4, 'y': 0.6, 'scale': 1.2, 'angle': 0.0}],
+            'hoodie',
+        )
+        self.assertEqual(len(fitted), 1)
+        self.assertIsInstance(fitted[0]['angle'], int)
+        self.assertEqual(fitted[0]['angle'], 0)
+        self.assertEqual(fitted[0]['x'], 0.5)
+        self.assertEqual(fitted[0]['y'], 0.5)
+        self.assertLessEqual(fitted[0]['scale'], 0.86)
+
     def test_choose_usable_target_skips_matching_blueprint_without_provider(self):
         blueprints = [
             {'id': 2001, 'title': 'Unisex Jersey Long Sleeve Tee'},
