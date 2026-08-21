@@ -1,0 +1,824 @@
+{
+  "mode": "surgical-left-chest-logo-repair",
+  "product_count": 15,
+  "logo_artwork_id": "6a888132e4c22e733848d0b1",
+  "left_chest": {
+    "x": 0.3,
+    "y": 0.28
+  },
+  "phone_cases_touched": false,
+  "artwork_generated": false,
+  "results": [
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Heavyweight Hoodie",
+      "product_id": "6a88ab9048b9c45ed50c422e",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 14,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88ab9048b9c45ed50c422e/32912/98424/i-run-on-coffee-jesus-heavyweight-hoodie.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Long Sleeve Tee",
+      "product_id": "6a88ab968fa6d8bef70ab07b",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 17,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88ab968fa6d8bef70ab07b/33793/105264/i-run-on-coffee-jesus-long-sleeve-tee.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "I Run on Coffee & Jesus \u2014 Retail Fit Tee",
+      "product_id": "6a88ab9b0581e90e4c09fb80",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.16183601126443709,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 0,
+      "front_mockup": null,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Heavyweight Hoodie",
+      "product_id": "6a88aba60581e90e4c09fb9d",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 14,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88aba60581e90e4c09fb9d/32912/98424/jesus-saves-coffee-helps-me-act-saved-heavyweight-hoodie.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Long Sleeve Tee",
+      "product_id": "6a88abac0581e90e4c09fba0",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 17,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abac0581e90e4c09fba0/33793/105264/jesus-saves-coffee-helps-me-act-saved-long-sleeve-tee.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Helps Me Act Saved \u2014 Retail Fit Tee",
+      "product_id": "6a88abb20581e90e4c09fba3",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1784739356434819,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 0,
+      "front_mockup": null,
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abbdf2c2450fa1064c30",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 14,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abbdf2c2450fa1064c30/32912/98424/coffee-jesus-minding-my-business-heavyweight-hoodie.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Long Sleeve Tee",
+      "product_id": "6a88abc348b9c45ed50c426b",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 17,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abc348b9c45ed50c426b/33793/105264/coffee-jesus-minding-my-business-long-sleeve-tee.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Coffee, Jesus & Minding My Business \u2014 Retail Fit Tee",
+      "product_id": "6a88abc8f2c2450fa1064c45",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.14534949526669005,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 0,
+      "front_mockup": null,
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abd3f2c2450fa1064c54",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 14,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abd3f2c2450fa1064c54/32912/98424/coffee-first-jesus-always-heavyweight-hoodie.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Long Sleeve Tee",
+      "product_id": "6a88abd9d0d27ba8d9055c07",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 17,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abd9d0d27ba8d9055c07/33793/105264/coffee-first-jesus-always-long-sleeve-tee.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Coffee First, Jesus Always \u2014 Retail Fit Tee",
+      "product_id": "6a88abdef2c2450fa1064c5d",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.1623848625754956,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 0,
+      "front_mockup": null,
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Heavyweight Hoodie",
+      "product_id": "6a88abe80581e90e4c09fbde",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 14,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abe80581e90e4c09fbde/32912/98424/jesus-saves-coffee-keeps-me-going-heavyweight-hoodie.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Long Sleeve Tee",
+      "product_id": "6a88abf05780cb60c40988d2",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 17,
+      "front_mockup": "https://images-api.printify.com/mockup/6a88abf05780cb60c40988d2/33793/105264/jesus-saves-coffee-keeps-me-going-long-sleeve-tee.jpg?camera_label=front",
+      "verified": true
+    },
+    {
+      "title": "Jesus Saves, Coffee Keeps Me Going \u2014 Retail Fit Tee",
+      "product_id": "6a88abf548b9c45ed50c42b5",
+      "action": "placement_updated",
+      "changed_logo_instances": 3,
+      "before_logo_positions": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "after_logo_positions": [
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        },
+        {
+          "x": 0.3,
+          "y": 0.28,
+          "scale": 0.27957918298334583,
+          "angle": 0
+        }
+      ],
+      "artwork_signature_unchanged": true,
+      "non_logo_transforms_unchanged": true,
+      "variant_coverage_unchanged": true,
+      "product_variants_unchanged": true,
+      "visible": true,
+      "front_mockup_count": 0,
+      "front_mockup": null,
+      "verified": true
+    }
+  ],
+  "completed_at": "2026-08-21T20:37:06.745702+00:00"
+}
