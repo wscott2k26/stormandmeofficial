@@ -47,6 +47,30 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
         self.assertEqual(placeholders[0]['position'], 'front')
         self.assertEqual([x['id'] for x in placeholders[0]['images']], ['large-back'])
 
+    def test_provider_variants_compat_collects_variant_level_placeholders(self):
+        mod.jcr.request = lambda method, path: {
+            'variants': [
+                {
+                    'id': 101,
+                    'title': 'Black / M',
+                    'placeholders': [
+                        {'position': 'front', 'decoration_method': 'dtg', 'width': 3600, 'height': 4200},
+                        {'position': 'back', 'decoration_method': 'dtg', 'width': 3600, 'height': 4200},
+                    ],
+                },
+                {
+                    'id': 102,
+                    'title': 'White / M',
+                    'placeholders': [
+                        {'position': 'front', 'decoration_method': 'dtg', 'width': 3600, 'height': 4200},
+                    ],
+                },
+            ]
+        }
+        variants, placeholders = mod.provider_variants_compat(77, 99)
+        self.assertEqual([row['id'] for row in variants], [101, 102])
+        self.assertEqual({row['position'] for row in placeholders}, {'front', 'back'})
+
     def test_choose_usable_target_skips_matching_blueprint_without_provider(self):
         blueprints = [
             {'id': 2001, 'title': 'Unisex Jersey Long Sleeve Tee'},
@@ -103,7 +127,7 @@ class ApplyJesusCoffeeTests(unittest.TestCase):
             }
 
         generic_phone_scan_calls = []
-        mod.jcr.choose_provider = choose_provider
+        mod.choose_provider_compat = choose_provider
         mod.jcr.discover_phone_targets = lambda _bps: generic_phone_scan_calls.append(True) or [
             {
                 'blueprint': {'id': 999, 'title': 'Generic Tough Phone Case'},
