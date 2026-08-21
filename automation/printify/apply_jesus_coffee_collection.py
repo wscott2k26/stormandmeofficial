@@ -2,6 +2,7 @@
 import copy
 import json
 import time
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -120,6 +121,69 @@ def blueprint_by_id(blueprints, blueprint_id):
     raise RuntimeError(f"Locked Printify blueprint {blueprint_id} is not available in the catalog.")
 
 
+def provider_variants_compat(blueprint_id, provider_id):
+    """Read Printify variants while supporting variant-level placeholder metadata."""
+    result = jcr.request(
+        "GET",
+        f"/catalog/blueprints/{blueprint_id}/print_providers/{provider_id}/variants.json",
+    )
+    variants = result.get("variants", []) or []
+    placeholders = result.get("placeholders", []) or []
+    if placeholders:
+        return variants, placeholders
+
+    # Current Printify V1 catalog responses expose printable placeholders on each
+    # variant. Collapse them to the unique placeholder shapes expected by the
+    # existing product builder.
+    unique = []
+    seen = set()
+    for variant in variants:
+        for placeholder in variant.get("placeholders", []) or []:
+            key = (
+                placeholder.get("position"),
+                placeholder.get("decoration_method"),
+                placeholder.get("width"),
+                placeholder.get("height"),
+            )
+            if not key[0] or key in seen:
+                continue
+            seen.add(key)
+            unique.append(copy.deepcopy(placeholder))
+    return variants, unique
+
+
+def choose_provider_compat(blueprint_id, kind):
+    candidates = []
+    errors = []
+    for provider in jcr.providers_for(blueprint_id):
+        provider_id = int(provider["id"])
+        try:
+            variants, placeholders = provider_variants_compat(blueprint_id, provider_id)
+        except Exception as exc:
+            errors.append(str(exc))
+            continue
+        available = [variant for variant in variants if variant.get("is_available", True)]
+        positions = {row.get("position") for row in placeholders if row.get("position")}
+        if not available or not positions:
+            continue
+        if kind != "phone-case" and not ({"front", "back"} & positions):
+            continue
+        families = Counter(jcr.device_family(variant.get("title", "")) for variant in available)
+        candidates.append({
+            "provider_id": provider_id,
+            "provider_title": provider.get("title"),
+            "variants": available,
+            "placeholders": placeholders,
+            "families": dict(families),
+            "score": len(available) + (20 if "front" in positions else 0),
+        })
+    if not candidates:
+        detail = "; ".join(errors[-3:]) if errors else "providers returned no printable variants"
+        raise RuntimeError(f"No usable provider for blueprint {blueprint_id}: {detail}")
+    candidates.sort(key=lambda row: row["score"], reverse=True)
+    return candidates[0]
+
+
 def safe_preflight(blueprints):
     apparel = []
     for spec in jcr.TARGETS:
@@ -128,13 +192,13 @@ def safe_preflight(blueprints):
         if not blueprint_id:
             raise RuntimeError(f"No locked Printify blueprint configured for {kind}.")
         bp = blueprint_by_id(blueprints, blueprint_id)
-        provider = jcr.choose_provider(blueprint_id, kind)
+        provider = choose_provider_compat(blueprint_id, kind)
         apparel.append({"spec": spec, "blueprint": bp, "provider": provider})
 
     phone = []
     for blueprint_id in LOCKED_PHONE_BLUEPRINT_IDS:
         bp = blueprint_by_id(blueprints, blueprint_id)
-        provider = jcr.choose_provider(blueprint_id, "phone-case")
+        provider = choose_provider_compat(blueprint_id, "phone-case")
         family_counts = provider.get("families") or {}
         covered = {
             family
