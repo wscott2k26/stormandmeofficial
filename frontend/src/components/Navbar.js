@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/music", label: "Music" },
   { to: "/videos", label: "Videos" },
   { to: "/shop", label: "Collection" },
+  { to: "/apps", label: "Apps" },
   { to: "/projects", label: "Projects" },
   { to: "/about", label: "About" },
   { to: "/news", label: "News" },
@@ -54,7 +55,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <nav className="hidden xl:flex items-center gap-6">
+          <nav className="hidden xl:flex items-center gap-5">
             {LINKS.map((link) => (
               <NavLink
                 key={link.to}
