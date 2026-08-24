@@ -18,6 +18,7 @@ import Videos from "./pages/Videos";
 import Store from "./pages/Store";
 import ProductDetail from "./pages/ProductDetail";
 import Projects from "./pages/Projects";
+import Apps from "./pages/Apps";
 import About from "./pages/About";
 import Story from "./pages/Story";
 import News from "./pages/News";
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/shop" element={<Store />} />
                 <Route path="/shop/:id" element={<ProductDetail />} />
                 <Route path="/projects" element={<Projects />} />
+                <Route path="/apps" element={<Apps />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/story" element={<Story />} />
                 <Route path="/news" element={<News />} />
