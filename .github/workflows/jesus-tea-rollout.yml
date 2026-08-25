@@ -87,7 +87,7 @@ jobs:
           assert report['front_logo_id'] == '6a888132e4c22e733848d0b1'
           assert report['front_logo_regenerated'] is False
           assert report['left_chest'] == {'x': 0.3, 'y': 0.28}
-          assert report['retail_price_cents'] == 3499
+          assert report['retail_price_cents'] == 3494
           assert report['design_count'] == 10
           assert report['existing_products_preserved'] is True
           rows = report['results']
@@ -104,7 +104,7 @@ jobs:
               assert row['back_mockup_count'] > 0, row
               assert row['front_mockup'], row
               assert row['back_mockup'], row
-          print('Gate 5 PASS: ten live products, exact existing front logo, ten unique backs, mockups generated.')
+          print('Gate 5 PASS: ten live products, exact existing front logo, current-store price, ten unique backs, mockups generated.')
           PY
 
       - name: Persist QA evidence
