@@ -1,14 +1,15 @@
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 import uuid
 
 from fastapi import APIRouter, FastAPI, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from starlette.middleware.cors import CORSMiddleware
 
 import seed_data
 import books_data
 import extra_books
+from holdwise_ai import HoldWiseCoachError, configuration_status, generate_coaching
 
 app = FastAPI(title="StormAndMeOfficial API")
 api_router = APIRouter(prefix="/api")
@@ -57,6 +58,14 @@ class CheckoutCreate(BaseModel):
     shipping: Optional[str] = "standard"
 
 
+class HoldWiseCoachRequest(BaseModel):
+    gameId: str = Field(min_length=1, max_length=80)
+    mode: str = Field(default="practice", max_length=40)
+    question: str = Field(min_length=1, max_length=600)
+    state: Dict[str, Any] = Field(default_factory=dict)
+    knownRule: Optional[str] = Field(default=None, max_length=160)
+
+
 @api_router.get("/")
 async def root():
     return {"message": "StormAndMeOfficial API", "status": "ready"}
@@ -65,6 +74,21 @@ async def root():
 @api_router.get("/health")
 async def health():
     return {"ok": True}
+
+
+@api_router.get("/holdwise/coach/health")
+async def holdwise_coach_health():
+    return configuration_status()
+
+
+@api_router.post("/holdwise/coach")
+async def holdwise_coach(payload: HoldWiseCoachRequest):
+    try:
+        return generate_coaching(payload.model_dump())
+    except HoldWiseCoachError as exc:
+        # Deliberately return a generic non-sensitive error. The client falls
+        # back to deterministic HoldWise guidance whenever this route fails.
+        raise HTTPException(status_code=503, detail="HoldWise AI Coach is temporarily unavailable") from exc
 
 
 @api_router.get("/books")
