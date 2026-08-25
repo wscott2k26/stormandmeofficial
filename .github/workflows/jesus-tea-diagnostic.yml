@@ -1,0 +1,54 @@
+name: Jesus & Tea Printify diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/jesus-tea-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+    steps:
+      - name: Inspect source vs live product variant maps
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          API='https://api.printify.com/v1'
+          token=os.environ['PRINTIFY_API_TOKEN'].strip()
+          shop='28312107'
+          ids={
+            'source':'6a8769c22a86ae766007bbaa',
+            'tea':'6a8dcf5516b5506add04a6b3',
+          }
+          def get(pid):
+              req=urllib.request.Request(f'{API}/shops/{shop}/products/{pid}.json',headers={'Authorization':f'Bearer {token}','User-Agent':'StormAndMe-TeaDiagnostic/1.0'})
+              with urllib.request.urlopen(req,timeout=60) as r: return json.load(r)
+          for label,pid in ids.items():
+              p=get(pid)
+              variants=p.get('variants',[]) or []
+              all_ids=[v.get('id') for v in variants]
+              enabled=[v.get('id') for v in variants if v.get('is_enabled')]
+              area_ids=[]
+              area_rows=[]
+              for i,a in enumerate(p.get('print_areas',[]) or []):
+                  ids2=a.get('variant_ids',[]) or []
+                  area_ids.extend(ids2)
+                  area_rows.append({'index':i,'count':len(ids2),'sample':ids2[:8],'positions':[x.get('position') for x in a.get('placeholders',[]) or []]})
+              print(json.dumps({
+                'label':label,'id':pid,'title':p.get('title'),'blueprint_id':p.get('blueprint_id'),'print_provider_id':p.get('print_provider_id'),
+                'variant_total':len(all_ids),'variant_enabled':len(enabled),'area_unique':len(set(area_ids)),
+                'all_variants_covered_by_areas':set(all_ids).issubset(set(area_ids)),
+                'enabled_variants_covered_by_areas':set(enabled).issubset(set(area_ids)),
+                'area_rows':area_rows,
+                'first_variants':[{'id':v.get('id'),'title':v.get('title'),'enabled':v.get('is_enabled'),'price':v.get('price')} for v in variants[:8]],
+              },indent=2))
+          PY
