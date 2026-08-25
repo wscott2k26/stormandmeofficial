@@ -1,0 +1,148 @@
+name: Jesus & Tea rollout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/jesus-tea-rollout.yml"
+      - "automation/printify/publish_jesus_tea_collection.py"
+      - "tests/test_publish_jesus_tea_collection.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jesus-tea-rollout
+  cancel-in-progress: false
+
+jobs:
+  rollout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+      PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install render dependency
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Gate 1 — code and exact-logo tests
+        run: |
+          python -m py_compile automation/printify/publish_jesus_tea_collection.py
+          python -m unittest tests/test_publish_jesus_tea_collection.py -v
+
+      - name: Gate 2 — render all ten backs before touching Printify
+        env:
+          JESUS_TEA_MODE: inspect
+        run: |
+          rm -rf automation-output/jesus-tea-art automation-output/jesus-tea-contact-sheet.jpg
+          python automation/printify/publish_jesus_tea_collection.py
+          test -f automation-output/jesus-tea-contact-sheet.jpg
+          test "$(find automation-output/jesus-tea-art -maxdepth 1 -name '*.png' | wc -l)" = "10"
+
+      - name: Gate 3 — verify Printify connection secret
+        shell: bash
+        run: |
+          test -n "$PRINTIFY_API_TOKEN" || {
+            echo "Missing repository secret: PRINTIFY_API_TOKEN"
+            exit 1
+          }
+
+      - name: Gate 4 — publish and API-verify ten products
+        shell: bash
+        env:
+          JESUS_TEA_MODE: apply
+        run: |
+          mkdir -p automation-output
+          set +e
+          python automation/printify/publish_jesus_tea_collection.py > automation-output/jesus-tea-run.log 2>&1
+          status=$?
+          set -e
+          cat automation-output/jesus-tea-run.log
+          echo "$status" > automation-output/jesus-tea-run.status
+
+      - name: Gate 5 — hard collection contract
+        shell: bash
+        run: |
+          status="$(cat automation-output/jesus-tea-run.status)"
+          if [ "$status" != "0" ]; then
+            echo "Printify rollout failed with status $status; preserving diagnostics."
+            exit 0
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('automation-output/jesus-tea-rollout.json').read_text())
+          assert report['mode'] == 'apply-exact-logo-ten-back-designs'
+          assert report['front_logo_id'] == '6a888132e4c22e733848d0b1'
+          assert report['front_logo_regenerated'] is False
+          assert report['left_chest'] == {'x': 0.3, 'y': 0.28}
+          assert report['retail_price_cents'] == 3499
+          assert report['design_count'] == 10
+          assert report['existing_products_preserved'] is True
+          rows = report['results']
+          assert len(rows) == 10
+          assert len({row['product_id'] for row in rows}) == 10
+          assert len({row['back_art_id'] for row in rows}) == 10
+          for row in rows:
+              assert row['verified'] is True, row
+              assert row['visible'] is True, row
+              assert row['front_logo_id'] == '6a888132e4c22e733848d0b1', row
+              assert row['left_chest'] == {'x': 0.3, 'y': 0.28}, row
+              assert row['enabled_variant_count'] > 0, row
+              assert row['front_mockup_count'] > 0, row
+              assert row['back_mockup_count'] > 0, row
+              assert row['front_mockup'], row
+              assert row['back_mockup'], row
+          print('Gate 5 PASS: ten live products, exact existing front logo, ten unique backs, mockups generated.')
+          PY
+
+      - name: Persist QA evidence
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "stormandme-bot"
+          git config user.email "stormandme-bot@users.noreply.github.com"
+          git add automation-output/jesus-tea-run.log automation-output/jesus-tea-run.status
+          if [ -f automation-output/jesus-tea-rollout.json ]; then
+            git add automation-output/jesus-tea-rollout.json
+          fi
+          if git diff --cached --quiet; then
+            echo "No rollout evidence changes to persist."
+          else
+            status="$(cat automation-output/jesus-tea-run.status 2>/dev/null || echo unknown)"
+            if [ "$status" = "0" ]; then msg="feat: publish verified Jesus Tea collection"; else msg="chore: record Jesus Tea rollout diagnostics"; fi
+            git commit -m "$msg"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Final status
+        if: always()
+        shell: bash
+        run: |
+          status="$(cat automation-output/jesus-tea-run.status 2>/dev/null || echo 1)"
+          test "$status" = "0"
+
+      - name: Upload QA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jesus-tea-rollout-verification
+          path: |
+            automation-output/jesus-tea-rollout.json
+            automation-output/jesus-tea-run.log
+            automation-output/jesus-tea-run.status
+            automation-output/jesus-tea-contact-sheet.jpg
+          if-no-files-found: warn
+          retention-days: 14
