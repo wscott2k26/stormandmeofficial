@@ -18,6 +18,9 @@ class JesusTeaCollectionTests(unittest.TestCase):
         self.assertEqual(10, len({d['title'] for d in jt.DESIGNS}))
         self.assertTrue(all(d['headline'] for d in jt.DESIGNS))
 
+    def test_retail_price_matches_current_live_storm_store(self):
+        self.assertEqual(3494, jt.RETAIL_PRICE_CENTS)
+
     def test_render_design_is_print_ready_rgba_with_safe_margin(self):
         image = jt.render_design(jt.DESIGNS[0])
         self.assertEqual('RGBA', image.mode)
