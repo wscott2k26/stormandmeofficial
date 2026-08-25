@@ -20,4 +20,6 @@ jobs:
           pip install -r backend/requirements.txt pytest pytest-xdist
       - name: Run HoldWise AI coach tests
         working-directory: backend
+        env:
+          PYTHONPATH: .
         run: pytest -n 0 tests/test_holdwise_ai.py -q
