@@ -1,5 +1,31 @@
-{
-  "published": 10,
-  "verified": 10,
-  "report": "automation-output/jesus-tea-rollout.json"
-}
+Traceback (most recent call last):
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 478, in request
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 521, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 630, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 559, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py", line 639, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 400: Bad Request
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 7, in <module>
+    exec(compile(zlib.decompress(base64.b64decode(_PAYLOAD)).decode("utf-8"), __file__, "exec"))
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 729, in <module>
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 703, in main
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 655, in create_or_update
+  File "/home/runner/work/stormandmeofficial/stormandmeofficial/automation/printify/publish_jesus_tea_collection.py", line 483, in request
+RuntimeError: Printify API 400 on /shops/28312107/products/6a8dcf5516b5506add04a6b3.json: {"status":"error","code":8251,"message":"Validation failed.","errors":{"reason":"Variants do not match selected blueprint and print provider. Please make sure that all product variants are present in the `print_areas.*.variant_ids` field","code":8251}}
