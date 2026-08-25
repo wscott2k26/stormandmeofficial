@@ -1,0 +1,92 @@
+name: Jesus & Tea live mockup QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/jesus-tea-live-mockup-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install QA dependency
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Download all live Printify front/back mockups and build contact sheet
+        run: |
+          python - <<'PY'
+          import io, json, urllib.request
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFont
+
+          report = json.loads(Path('automation-output/jesus-tea-rollout.json').read_text())
+          rows = report['results']
+          assert len(rows) == 10
+          out = Path('automation-output/jesus-tea-live-mockups')
+          out.mkdir(parents=True, exist_ok=True)
+
+          def fetch(url):
+              req = urllib.request.Request(url, headers={'User-Agent': 'StormAndMe-LiveMockupQA/1.0'})
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  return response.read()
+
+          def fit(im, size=(420, 500)):
+              im = im.convert('RGB')
+              im.thumbnail(size, Image.Resampling.LANCZOS)
+              canvas = Image.new('RGB', size, 'white')
+              canvas.paste(im, ((size[0]-im.width)//2, (size[1]-im.height)//2))
+              return canvas
+
+          cards = []
+          for idx, row in enumerate(rows, 1):
+              pair = []
+              for side in ('front', 'back'):
+                  url = row[f'{side}_mockup']
+                  raw = fetch(url)
+                  path = out / f'{idx:02d}-{row["slug"]}-{side}.jpg'
+                  path.write_bytes(raw)
+                  im = Image.open(io.BytesIO(raw))
+                  pair.append(fit(im))
+              cards.append((row['title'], pair[0], pair[1]))
+
+          font = ImageFont.load_default()
+          cell_w, cell_h = 420, 500
+          label_h = 60
+          gap = 20
+          sheet_w = cell_w * 2 + gap * 3
+          sheet_h = len(cards) * (cell_h + label_h + gap) + gap
+          sheet = Image.new('RGB', (sheet_w, sheet_h), (28, 28, 28))
+          draw = ImageDraw.Draw(sheet)
+          y = gap
+          for title, front, back in cards:
+              draw.text((gap, y), f'{title}  |  FRONT', font=font, fill='white')
+              draw.text((gap*2+cell_w, y), 'BACK', font=font, fill='white')
+              y += label_h
+              sheet.paste(front, (gap, y))
+              sheet.paste(back, (gap*2+cell_w, y))
+              y += cell_h + gap
+          sheet.save('automation-output/jesus-tea-live-mockup-contact-sheet.jpg', quality=92)
+          print('LIVE MOCKUP QA SHEET PASS:', len(cards), 'products /', len(cards)*2, 'mockups')
+          PY
+
+      - name: Upload live mockup QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jesus-tea-live-mockup-qa
+          path: |
+            automation-output/jesus-tea-live-mockups/*.jpg
+            automation-output/jesus-tea-live-mockup-contact-sheet.jpg
+          if-no-files-found: error
+          retention-days: 14
