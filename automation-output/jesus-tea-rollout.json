@@ -1,0 +1,198 @@
+{
+  "mode": "apply-exact-logo-ten-back-designs",
+  "shop_id": "28312107",
+  "source_product_id": "6a8769c22a86ae766007bbaa",
+  "front_logo_id": "6a888132e4c22e733848d0b1",
+  "front_logo_regenerated": false,
+  "left_chest": {
+    "x": 0.3,
+    "y": 0.28
+  },
+  "retail_price_cents": 3499,
+  "design_count": 10,
+  "existing_products_preserved": true,
+  "contact_sheet": "automation-output/jesus-tea-contact-sheet.jpg",
+  "results": [
+    {
+      "slug": "sip-rest-renewed",
+      "title": "Jesus & Tea \u2014 Sip, Rest, Be Renewed Tee",
+      "product_id": "6a8dcf5516b5506add04a6b3",
+      "back_art_id": "6a8dcf538a0342d124c177bc",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf5516b5506add04a6b3/73207/98445/jesus-tea-sip-rest-be-renewed-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf5516b5506add04a6b3/73207/98446/jesus-tea-sip-rest-be-renewed-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "start-jesus-end-tea",
+      "title": "Jesus & Tea \u2014 Start With Jesus, End With Tea Tee",
+      "product_id": "6a8dcf609042cb7feb03e80f",
+      "back_art_id": "6a8dcf5df894eb5bd43a982a",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf609042cb7feb03e80f/73207/98445/jesus-tea-start-with-jesus-end-with-tea-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf609042cb7feb03e80f/73207/98446/jesus-tea-start-with-jesus-end-with-tea-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "faith-fills-my-cup",
+      "title": "Jesus & Tea \u2014 Faith Fills My Cup Tee",
+      "product_id": "6a8dcf68f26098611c044f66",
+      "back_art_id": "6a8dcf6718311935c5ed1c6c",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf68f26098611c044f66/73207/98445/jesus-tea-faith-fills-my-cup-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf68f26098611c044f66/73207/98446/jesus-tea-faith-fills-my-cup-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "quiet-tea-loud-prayers",
+      "title": "Jesus & Tea \u2014 Quiet Tea, Loud Prayers Tee",
+      "product_id": "6a8dcf72f26098611c044f7a",
+      "back_art_id": "6a8dcf708a2a2e97ac203595",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf72f26098611c044f7a/73207/98445/jesus-tea-quiet-tea-loud-prayers-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf72f26098611c044f7a/73207/98446/jesus-tea-quiet-tea-loud-prayers-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "steeped-in-grace",
+      "title": "Jesus & Tea \u2014 Steeped in Grace Tee",
+      "product_id": "6a8dcf7c16b5506add04a6de",
+      "back_art_id": "6a8dcf7aa3850f31bc626e28",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf7c16b5506add04a6de/73207/98445/jesus-tea-steeped-in-grace-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf7c16b5506add04a6de/73207/98446/jesus-tea-steeped-in-grace-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "good-tea-better-jesus",
+      "title": "Jesus & Tea \u2014 Good Tea, Better Jesus Tee",
+      "product_id": "6a8dcf8546cce0df590c2771",
+      "back_art_id": "6a8dcf83b7a3428392a8137d",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf8546cce0df590c2771/73207/98445/jesus-tea-good-tea-better-jesus-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf8546cce0df590c2771/73207/98446/jesus-tea-good-tea-better-jesus-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "more-jesus-better-tea",
+      "title": "Jesus & Tea \u2014 More Jesus, Better Tea Tee",
+      "product_id": "6a8dcf8ff7b0355654053ebc",
+      "back_art_id": "6a8dcf8d0920f63b3600e091",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf8ff7b0355654053ebc/73207/98445/jesus-tea-more-jesus-better-tea-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf8ff7b0355654053ebc/73207/98446/jesus-tea-more-jesus-better-tea-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "jesus-tea-kinda-day",
+      "title": "Jesus & Tea \u2014 It's a Jesus and Tea Kinda Day Tee",
+      "product_id": "6a8dcf989042cb7feb03e839",
+      "back_art_id": "6a8dcf979f8e4dc32951ff00",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcf989042cb7feb03e839/73207/98445/jesus-tea-its-a-jesus-and-tea-kinda-day-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcf989042cb7feb03e839/73207/98446/jesus-tea-its-a-jesus-and-tea-kinda-day-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "be-still-sip-tea",
+      "title": "Jesus & Tea \u2014 Be Still, Sip Your Tea Tee",
+      "product_id": "6a8dcfa29042cb7feb03e83d",
+      "back_art_id": "6a8dcfa0b7a3428392a81385",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcfa29042cb7feb03e83d/73207/98445/jesus-tea-be-still-sip-your-tea-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcfa29042cb7feb03e83d/73207/98446/jesus-tea-be-still-sip-your-tea-tee.jpg?camera_label=back",
+      "verified": true
+    },
+    {
+      "slug": "filled-with-grace",
+      "title": "Jesus & Tea \u2014 Filled With Grace, Tea and Goodness Tee",
+      "product_id": "6a8dcfab484aa91dd40177b2",
+      "back_art_id": "6a8dcfa95430d18fbeaee4f5",
+      "front_logo_id": "6a888132e4c22e733848d0b1",
+      "left_chest": {
+        "x": 0.3,
+        "y": 0.28
+      },
+      "visible": true,
+      "enabled_variant_count": 60,
+      "front_mockup_count": 10,
+      "back_mockup_count": 10,
+      "front_mockup": "https://images-api.printify.com/mockup/6a8dcfab484aa91dd40177b2/73207/98445/jesus-tea-filled-with-grace-tea-and-goodness-tee.jpg?camera_label=front",
+      "back_mockup": "https://images-api.printify.com/mockup/6a8dcfab484aa91dd40177b2/73207/98446/jesus-tea-filled-with-grace-tea-and-goodness-tee.jpg?camera_label=back",
+      "verified": true
+    }
+  ],
+  "completed_at": "2026-08-25T17:24:02.618530+00:00"
+}
