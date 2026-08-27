@@ -33,6 +33,7 @@ import LegalPage from "./pages/LegalPage";
 import IamLegalPage from "./pages/IamLegalPage";
 import IamPrototype from "./pages/IamPrototype";
 import AfterStormLegalPage from "./pages/AfterStormLegalPage";
+import StillBreathingLanding from "./pages/StillBreathingLanding";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/videos" element={<Videos />} />
                 <Route path="/shop" element={<Store />} />
                 <Route path="/shop/:id" element={<ProductDetail />} />
+                <Route path="/still-breathing" element={<StillBreathingLanding />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/apps" element={<Apps />} />
                 <Route path="/about" element={<About />} />

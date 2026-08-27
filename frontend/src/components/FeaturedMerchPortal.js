@@ -7,7 +7,12 @@ import brokenPiecesProductData from "../data/broken-pieces-products.generated.js
 
 const SHOP_URL = "https://storm-and-me-official.printify.me";
 
-const BROKEN_PIECES_PRODUCTS = brokenPiecesProductData.products;
+const BROKEN_PIECES_PRODUCTS = [
+  ...brokenPiecesProductData.products.filter((item) => item.id === "broken-pieces-streetwear"),
+  ...brokenPiecesProductData.products.filter((item) => item.id !== "broken-pieces-streetwear"),
+];
+const STILL_BREATHING_LANDING =
+  "/still-breathing?utm_source=stormandmeofficial&utm_medium=referral&utm_campaign=broken_pieces_launch&utm_content=featured_collection";
 const RULES_DONT_EXIST_PRODUCTS = rulesProductData.products;
 
 function RulesCard({ item }) {
@@ -240,7 +245,7 @@ export default function FeaturedMerchPortal() {
 
         <div className="rules-footer">
           <p>The five featured cards use Printify’s real live product mockups — not the concept-board screenshot.</p>
-          <a className="rules-cta" href={SHOP_URL} target="_blank" rel="noreferrer">Shop Broken Pieces <ArrowUpRight size={16} aria-hidden="true" /></a>
+          <a className="rules-cta" href={STILL_BREATHING_LANDING}>Shop Still Breathing <ArrowUpRight size={16} aria-hidden="true" /></a>
         </div>
       </section>
 
