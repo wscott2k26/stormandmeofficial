@@ -3,7 +3,7 @@
   "services": {
     "builder": {
       "root": "./",
-      "framework": null,
+      "framework": "vite",
       "installCommand": "echo 'SRG Android builder: install handled by build script'",
       "buildCommand": "bash ci/vercel-srg-android-build.sh",
       "outputDirectory": "android-artifacts"
