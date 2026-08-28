@@ -1,0 +1,305 @@
+name: SRG 2 Android Release Gate
+
+on:
+  push:
+    branches:
+      - ci/srg-2-android-release
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    outputs:
+      source_sha: ${{ steps.source_hash.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reconstruct exact SRG mobile source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat ci/srg-source.part-* > /tmp/srg-source.b64
+          base64 --decode /tmp/srg-source.b64 > /tmp/srg-source.zip
+          echo 'a9e5c58d8a7aa2fe6c60110a47ff5de73164e1b89c89e8db7384226a16a12e00  /tmp/srg-source.zip' | sha256sum -c -
+          unzip -q /tmp/srg-source.zip -d .
+          test -f srg-mobile/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install Android SDK 36
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Hash exact SRG source
+        id: source_hash
+        working-directory: srg-mobile
+        shell: bash
+        run: |
+          find . -type f -not -path './node_modules/*' -not -path './android/*' -print0 | sort -z | xargs -0 sha256sum > ../srg-source-files.sha256
+          sha256sum ../srg-source-files.sha256 | tee ../srg-source-manifest.sha256
+          echo "sha=$(cut -d' ' -f1 ../srg-source-manifest.sha256)" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        working-directory: srg-mobile
+        run: npm install --no-audit --no-fund
+
+      - name: Quad Gate 1 - source audit and tests
+        working-directory: srg-mobile
+        run: npm run check
+
+      - name: Quad Gate 2 - live SRG AI health
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --fail --silent --show-error --retry 3 --retry-all-errors --max-time 20 https://stormandmeofficial.com/api/srg/recovery-coach/health)"
+          echo "$body" | tee srg-ai-health.json
+          node -e 'const x=JSON.parse(process.argv[1]); if(!x.ok||!x.configured||!x.guardrails?.no_false_disputes||!x.guardrails?.no_autonomous_money_movement) process.exit(1)' "$body"
+
+      - name: Quad Gate 2 - live SRG AI success contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          code="$(curl --silent --show-error --output srg-ai-success.json --write-out '%{http_code}'             --max-time 30 -X POST https://stormandmeofficial.com/api/srg/recovery-coach             -H 'Content-Type: application/json'             --data '{"message":"Help me prioritize my next three money steps.","state":{"stage":"recover","income":3200,"buffer":250,"goal":"Build breathing room","bills":[{"name":"Rent","amount":1200,"due":1,"paid":false}],"cards":[{"name":"Card A","balance":700,"limit":1000}],"hustles":[{"id":"fiverr","name":"Fiverr"}],"upcomingReminders":[]}}')"
+          cat srg-ai-success.json
+          test "$code" = "200"
+          node -e 'const x=require("fs").readFileSync("srg-ai-success.json","utf8"); const j=JSON.parse(x); if(!j.plan?.headline || !Array.isArray(j.plan?.actions) || j.plan.actions.length < 3) process.exit(1)'
+
+      - name: Quad Gate 2 - sensitive input rejected
+        shell: bash
+        run: |
+          set -euo pipefail
+          code="$(curl --silent --show-error --output srg-ai-sensitive.json --write-out '%{http_code}'             --max-time 20 -X POST https://stormandmeofficial.com/api/srg/recovery-coach             -H 'Content-Type: application/json'             --data '{"message":"My SSN is 123-45-6789. What should I do?","state":{}}')"
+          cat srg-ai-sensitive.json
+          test "$code" = "503"
+
+      - name: Build bundled web app
+        working-directory: srg-mobile
+        run: npm run build:web
+
+      - name: Generate Android project
+        working-directory: srg-mobile
+        run: |
+          npx cap add android
+          npx cap sync android
+          node scripts/prepare-android.mjs
+
+      - name: Verify release metadata before Gradle
+        working-directory: srg-mobile
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -R 'applicationId "com.base6a064c6681c3f6996519ab50.app"' android/app/build.gradle
+          grep -R 'versionCode 200' android/app/build.gradle
+          grep -R 'versionName "2.0.0"' android/app/build.gradle
+          grep -R 'targetSdkVersion = 36' android/variables.gradle
+          ! grep -RinE 'base44|@base44/sdk|base44\.app' android/app/src/main || exit 1
+
+      - name: Build debug APK and unsigned release AAB
+        working-directory: srg-mobile/android
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon clean assembleDebug bundleRelease lintRelease
+
+      - name: Verify build artifacts and package metadata
+        working-directory: srg-mobile
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEBUG_APK=android/app/build/outputs/apk/debug/app-debug.apk
+          RELEASE_AAB=android/app/build/outputs/bundle/release/app-release.aab
+          test -s "$DEBUG_APK"
+          test -s "$RELEASE_AAB"
+          unzip -t "$RELEASE_AAB" > ../aab-zip-test.txt
+          sha256sum "$DEBUG_APK" "$RELEASE_AAB" | tee ../android-artifact-sha256.txt
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$DEBUG_APK" | tee ../apk-badging.txt
+          grep "package: name='com.base6a064c6681c3f6996519ab50.app'" ../apk-badging.txt
+          grep "versionCode='200'" ../apk-badging.txt
+          grep "targetSdkVersion:'36'" ../apk-badging.txt
+
+      - name: Upload compile artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: srg-2-android-compile-candidate
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+            srg-mobile/android/app/build/outputs/bundle/release/app-release.aab
+            srg-mobile/android/app/build/reports/lint-results-release.html
+            srg-source-files.sha256
+            srg-source-manifest.sha256
+            android-artifact-sha256.txt
+            apk-badging.txt
+            aab-zip-test.txt
+            srg-ai-health.json
+            srg-ai-success.json
+            srg-ai-sensitive.json
+
+  runtime-api35:
+    needs: source-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct exact SRG mobile source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat ci/srg-source.part-* > /tmp/srg-source.b64
+          base64 --decode /tmp/srg-source.b64 > /tmp/srg-source.zip
+          echo 'a9e5c58d8a7aa2fe6c60110a47ff5de73164e1b89c89e8db7384226a16a12e00  /tmp/srg-source.zip' | sha256sum -c -
+          unzip -q /tmp/srg-source.zip -d .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install dependencies and build debug APK
+        working-directory: srg-mobile
+        shell: bash
+        run: |
+          npm install --no-audit --no-fund
+          npm run check
+          npm run build:web
+          npx cap add android
+          npx cap sync android
+          node scripts/prepare-android.mjs
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: API 35 runtime matrix
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+            PKG=com.base6a064c6681c3f6996519ab50.app
+            adb install -r "$APK"
+            adb logcat -c
+            for i in 1 2 3 4 5; do
+              adb shell am force-stop "$PKG"
+              adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+              sleep 2
+              adb shell pidof "$PKG" >/dev/null
+            done
+            adb shell uiautomator dump /sdcard/window.xml >/dev/null
+            adb pull /sdcard/window.xml api35-window.xml >/dev/null
+            grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api35-window.xml
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb shell am force-stop "$PKG"
+            adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+            sleep 3
+            adb shell pidof "$PKG" >/dev/null
+            adb shell settings put system font_scale 1.5
+            adb shell settings put system accelerometer_rotation 0
+            adb shell settings put system user_rotation 1
+            adb shell am force-stop "$PKG"
+            adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+            sleep 2
+            adb shell pidof "$PKG" >/dev/null
+            adb exec-out screencap -p > api35-screenshot.png
+            adb logcat -d > api35-logcat.txt
+            ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api35-logcat.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: srg-2-runtime-api35
+          retention-days: 7
+          path: |
+            api35-window.xml
+            api35-screenshot.png
+            api35-logcat.txt
+
+  runtime-api36:
+    needs: source-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct exact SRG mobile source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat ci/srg-source.part-* > /tmp/srg-source.b64
+          base64 --decode /tmp/srg-source.b64 > /tmp/srg-source.zip
+          echo 'a9e5c58d8a7aa2fe6c60110a47ff5de73164e1b89c89e8db7384226a16a12e00  /tmp/srg-source.zip' | sha256sum -c -
+          unzip -q /tmp/srg-source.zip -d .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install dependencies and build debug APK
+        working-directory: srg-mobile
+        shell: bash
+        run: |
+          npm install --no-audit --no-fund
+          npm run check
+          npm run build:web
+          npx cap add android
+          npx cap sync android
+          node scripts/prepare-android.mjs
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: API 36 runtime matrix
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+            PKG=com.base6a064c6681c3f6996519ab50.app
+            adb install -r "$APK"
+            adb logcat -c
+            for i in 1 2 3 4 5; do
+              adb shell am force-stop "$PKG"
+              adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+              sleep 2
+              adb shell pidof "$PKG" >/dev/null
+            done
+            adb shell uiautomator dump /sdcard/window.xml >/dev/null
+            adb pull /sdcard/window.xml api36-window.xml >/dev/null
+            grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api36-window.xml
+            adb shell input keyevent KEYCODE_BACK || true
+            adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+            sleep 2
+            adb shell pidof "$PKG" >/dev/null
+            adb exec-out screencap -p > api36-screenshot.png
+            adb logcat -d > api36-logcat.txt
+            ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api36-logcat.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: srg-2-runtime-api36
+          retention-days: 7
+          path: |
+            api36-window.xml
+            api36-screenshot.png
+            api36-logcat.txt
