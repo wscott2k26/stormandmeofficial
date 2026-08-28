@@ -12,9 +12,7 @@ permissions:
 jobs:
   source-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
-    outputs:
-      source_sha: ${{ steps.source_hash.outputs.sha }}
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -40,17 +38,17 @@ jobs:
       - name: Install Android SDK 36
         shell: bash
         run: |
+          set -euo pipefail
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools'
 
       - name: Hash exact SRG source
-        id: source_hash
         working-directory: srg-mobile
         shell: bash
         run: |
+          set -euo pipefail
           find . -type f -not -path './node_modules/*' -not -path './android/*' -print0 | sort -z | xargs -0 sha256sum > ../srg-source-files.sha256
           sha256sum ../srg-source-files.sha256 | tee ../srg-source-manifest.sha256
-          echo "sha=$(cut -d' ' -f1 ../srg-source-manifest.sha256)" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         working-directory: srg-mobile
@@ -72,16 +70,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          code="$(curl --silent --show-error --output srg-ai-success.json --write-out '%{http_code}'             --max-time 30 -X POST https://stormandmeofficial.com/api/srg/recovery-coach             -H 'Content-Type: application/json'             --data '{"message":"Help me prioritize my next three money steps.","state":{"stage":"recover","income":3200,"buffer":250,"goal":"Build breathing room","bills":[{"name":"Rent","amount":1200,"due":1,"paid":false}],"cards":[{"name":"Card A","balance":700,"limit":1000}],"hustles":[{"id":"fiverr","name":"Fiverr"}],"upcomingReminders":[]}}')"
+          code="$(curl --silent --show-error --output srg-ai-success.json --write-out '%{http_code}' --max-time 40 -X POST https://stormandmeofficial.com/api/srg/recovery-coach -H 'Content-Type: application/json' --data '{"message":"Help me prioritize my next three money steps.","state":{"stage":"recover","income":3200,"buffer":250,"goal":"Build breathing room","bills":[{"name":"Rent","amount":1200,"due":1,"paid":false}],"cards":[{"name":"Card A","balance":700,"limit":1000}],"hustles":[{"id":"fiverr","name":"Fiverr"}],"upcomingReminders":[]}}')"
           cat srg-ai-success.json
           test "$code" = "200"
-          node -e 'const x=require("fs").readFileSync("srg-ai-success.json","utf8"); const j=JSON.parse(x); if(!j.plan?.headline || !Array.isArray(j.plan?.actions) || j.plan.actions.length < 3) process.exit(1)'
+          node -e 'const j=JSON.parse(require("fs").readFileSync("srg-ai-success.json","utf8")); if(!j.plan?.headline || !Array.isArray(j.plan?.actions) || j.plan.actions.length < 3) process.exit(1)'
 
       - name: Quad Gate 2 - sensitive input rejected
         shell: bash
         run: |
           set -euo pipefail
-          code="$(curl --silent --show-error --output srg-ai-sensitive.json --write-out '%{http_code}'             --max-time 20 -X POST https://stormandmeofficial.com/api/srg/recovery-coach             -H 'Content-Type: application/json'             --data '{"message":"My SSN is 123-45-6789. What should I do?","state":{}}')"
+          code="$(curl --silent --show-error --output srg-ai-sensitive.json --write-out '%{http_code}' --max-time 20 -X POST https://stormandmeofficial.com/api/srg/recovery-coach -H 'Content-Type: application/json' --data '{"message":"My SSN is 123-45-6789. What should I do?","state":{}}')"
           cat srg-ai-sensitive.json
           test "$code" = "503"
 
@@ -105,12 +103,13 @@ jobs:
           grep -R 'versionCode 200' android/app/build.gradle
           grep -R 'versionName "2.0.0"' android/app/build.gradle
           grep -R 'targetSdkVersion = 36' android/variables.gradle
-          ! grep -RinE 'base44|@base44/sdk|base44\.app' android/app/src/main || exit 1
+          ! grep -RinE 'base44|@base44/sdk|base44\.app' android/app/src/main
 
       - name: Build debug APK and unsigned release AAB
         working-directory: srg-mobile/android
         shell: bash
         run: |
+          set -euo pipefail
           chmod +x gradlew
           ./gradlew --no-daemon clean assembleDebug bundleRelease lintRelease
 
@@ -152,7 +151,7 @@ jobs:
   runtime-api35:
     needs: source-and-build
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - name: Reconstruct exact SRG mobile source
@@ -170,10 +169,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - name: Install dependencies and build debug APK
+      - name: Build API 35 runtime candidate
         working-directory: srg-mobile
         shell: bash
         run: |
+          set -euo pipefail
           npm install --no-audit --no-fund
           npm run check
           npm run build:web
@@ -183,44 +183,53 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
+      - name: Install API 35 emulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platform-tools' 'emulator' 'system-images;android-35;google_apis;x86_64'
+          echo no | avdmanager create avd --force --name srg35 --package 'system-images;android-35;google_apis;x86_64'
       - name: API 35 runtime matrix
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          arch: x86_64
-          profile: pixel_6
-          disable-animations: true
-          script: |
-            set -euo pipefail
-            APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
-            PKG=com.base6a064c6681c3f6996519ab50.app
-            adb install -r "$APK"
-            adb logcat -c
-            for i in 1 2 3 4 5; do
-              adb shell am force-stop "$PKG"
-              adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
-              sleep 2
-              adb shell pidof "$PKG" >/dev/null
-            done
-            adb shell uiautomator dump /sdcard/window.xml >/dev/null
-            adb pull /sdcard/window.xml api35-window.xml >/dev/null
-            grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api35-window.xml
-            adb shell svc wifi disable || true
-            adb shell svc data disable || true
-            adb shell am force-stop "$PKG"
-            adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
-            sleep 3
-            adb shell pidof "$PKG" >/dev/null
-            adb shell settings put system font_scale 1.5
-            adb shell settings put system accelerometer_rotation 0
-            adb shell settings put system user_rotation 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          nohup "$ANDROID_HOME/emulator/emulator" -avd srg35 -no-window -no-audio -gpu swiftshader_indirect -no-snapshot -wipe-data > emulator35.log 2>&1 &
+          adb wait-for-device
+          for i in $(seq 1 120); do
+            [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && break
+            sleep 2
+          done
+          [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]
+          APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          PKG=com.base6a064c6681c3f6996519ab50.app
+          adb install -r "$APK"
+          adb logcat -c
+          for i in 1 2 3 4 5; do
             adb shell am force-stop "$PKG"
             adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
             sleep 2
             adb shell pidof "$PKG" >/dev/null
-            adb exec-out screencap -p > api35-screenshot.png
-            adb logcat -d > api35-logcat.txt
-            ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api35-logcat.txt
+          done
+          adb shell uiautomator dump /sdcard/window.xml >/dev/null
+          adb pull /sdcard/window.xml api35-window.xml >/dev/null
+          grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api35-window.xml
+          adb shell svc wifi disable || true
+          adb shell svc data disable || true
+          adb shell am force-stop "$PKG"
+          adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+          sleep 3
+          adb shell pidof "$PKG" >/dev/null
+          adb shell settings put system font_scale 1.5
+          adb shell settings put system accelerometer_rotation 0
+          adb shell settings put system user_rotation 1
+          adb shell am force-stop "$PKG"
+          adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+          sleep 2
+          adb shell pidof "$PKG" >/dev/null
+          adb exec-out screencap -p > api35-screenshot.png
+          adb logcat -d > api35-logcat.txt
+          ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api35-logcat.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -230,11 +239,12 @@ jobs:
             api35-window.xml
             api35-screenshot.png
             api35-logcat.txt
+            emulator35.log
 
   runtime-api36:
     needs: source-and-build
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - name: Reconstruct exact SRG mobile source
@@ -252,10 +262,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - name: Install dependencies and build debug APK
+      - name: Build API 36 runtime candidate
         working-directory: srg-mobile
         shell: bash
         run: |
+          set -euo pipefail
           npm install --no-audit --no-fund
           npm run check
           npm run build:web
@@ -265,35 +276,44 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
+      - name: Install API 36 emulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platform-tools' 'emulator' 'system-images;android-36;google_apis;x86_64'
+          echo no | avdmanager create avd --force --name srg36 --package 'system-images;android-36;google_apis;x86_64'
       - name: API 36 runtime matrix
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 36
-          arch: x86_64
-          profile: pixel_6
-          disable-animations: true
-          script: |
-            set -euo pipefail
-            APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
-            PKG=com.base6a064c6681c3f6996519ab50.app
-            adb install -r "$APK"
-            adb logcat -c
-            for i in 1 2 3 4 5; do
-              adb shell am force-stop "$PKG"
-              adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
-              sleep 2
-              adb shell pidof "$PKG" >/dev/null
-            done
-            adb shell uiautomator dump /sdcard/window.xml >/dev/null
-            adb pull /sdcard/window.xml api36-window.xml >/dev/null
-            grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api36-window.xml
-            adb shell input keyevent KEYCODE_BACK || true
+        shell: bash
+        run: |
+          set -euo pipefail
+          nohup "$ANDROID_HOME/emulator/emulator" -avd srg36 -no-window -no-audio -gpu swiftshader_indirect -no-snapshot -wipe-data > emulator36.log 2>&1 &
+          adb wait-for-device
+          for i in $(seq 1 120); do
+            [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && break
+            sleep 2
+          done
+          [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]
+          APK=srg-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          PKG=com.base6a064c6681c3f6996519ab50.app
+          adb install -r "$APK"
+          adb logcat -c
+          for i in 1 2 3 4 5; do
+            adb shell am force-stop "$PKG"
             adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
             sleep 2
             adb shell pidof "$PKG" >/dev/null
-            adb exec-out screencap -p > api36-screenshot.png
-            adb logcat -d > api36-logcat.txt
-            ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api36-logcat.txt
+          done
+          adb shell uiautomator dump /sdcard/window.xml >/dev/null
+          adb pull /sdcard/window.xml api36-window.xml >/dev/null
+          grep -Eiq 'Survive|Recover|Grow|Dashboard|SRG' api36-window.xml
+          adb shell input keyevent KEYCODE_BACK || true
+          adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null
+          sleep 2
+          adb shell pidof "$PKG" >/dev/null
+          adb exec-out screencap -p > api36-screenshot.png
+          adb logcat -d > api36-logcat.txt
+          ! grep -E 'FATAL EXCEPTION|ANR in com\.base6a064c6681c3f6996519ab50\.app' api36-logcat.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -303,3 +323,4 @@ jobs:
             api36-window.xml
             api36-screenshot.png
             api36-logcat.txt
+            emulator36.log
