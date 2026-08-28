@@ -1,0 +1,19 @@
+name: SRG Runner Diagnostic
+
+on:
+  push:
+    branches:
+      - ci/srg-2-android-release
+
+permissions:
+  contents: read
+
+jobs:
+  runner-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Runner started
+        run: |
+          echo "RUNNER_OK"
+          uname -a
