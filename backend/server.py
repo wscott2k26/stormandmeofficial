@@ -10,6 +10,7 @@ import seed_data
 import books_data
 import extra_books
 from holdwise_ai import HoldWiseCoachError, configuration_status, generate_coaching
+from srg_ai import SRGCoachError, srg_configuration_status, generate_srg_coaching
 
 app = FastAPI(title="StormAndMeOfficial API")
 api_router = APIRouter(prefix="/api")
@@ -66,6 +67,11 @@ class HoldWiseCoachRequest(BaseModel):
     knownRule: Optional[str] = Field(default=None, max_length=160)
 
 
+class SRGCoachRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=2500)
+    state: Dict[str, Any] = Field(default_factory=dict)
+
+
 @api_router.get("/")
 async def root():
     return {"message": "StormAndMeOfficial API", "status": "ready"}
@@ -89,6 +95,21 @@ async def holdwise_coach(payload: HoldWiseCoachRequest):
         # Deliberately return a generic non-sensitive error. The client falls
         # back to deterministic HoldWise guidance whenever this route fails.
         raise HTTPException(status_code=503, detail="HoldWise AI Coach is temporarily unavailable") from exc
+
+
+@api_router.get("/srg/recovery-coach/health")
+async def srg_coach_health():
+    return srg_configuration_status()
+
+
+@api_router.post("/srg/recovery-coach")
+async def srg_recovery_coach(payload: SRGCoachRequest):
+    try:
+        return generate_srg_coaching(payload.model_dump())
+    except SRGCoachError as exc:
+        # SRG mobile has a deterministic local fallback, so cloud AI failure
+        # must never block the rest of the app.
+        raise HTTPException(status_code=503, detail="SRG Recovery Coach is temporarily unavailable") from exc
 
 
 @api_router.get("/books")
