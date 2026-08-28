@@ -1,6 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "echo 'SRG Android builder: install handled by build script'",
-  "buildCommand": "bash ci/vercel-srg-android-build.sh",
-  "outputDirectory": "android-artifacts"
+  "services": {
+    "builder": {
+      "root": "./",
+      "framework": "other",
+      "installCommand": "echo 'SRG Android builder: install handled by build script'",
+      "buildCommand": "bash ci/vercel-srg-android-build.sh",
+      "outputDirectory": "android-artifacts"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "builder"
+      }
+    }
+  ]
 }
