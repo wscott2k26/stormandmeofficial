@@ -72,6 +72,10 @@ const STATIC_PAGES = {
     title: "Official Videos | Storm & Me Official",
     description: "Watch official Willy Will music videos, lyric videos, creative releases, and visual stories from Storm & Me Official.",
   },
+  "/apps": {
+    title: "Apps by Storm And Me | AI, Productivity, Wellness & Games",
+    description: "Explore Storm And Me apps for productivity, card-game learning, marketing, relationships, fitness, wellness, and puzzle play—including First Check, HoldWise AI, RepPurpose, and Lumina.",
+  },
   "/about": {
     title: "About Will Scott & Willy Will | Storm & Me Official",
     description: "Meet Will Scott, the author, songwriter, storyteller, and recording artist behind Storm & Me Official and Willy Will.",
