@@ -1,0 +1,103 @@
+name: Storm And Me VPN VpnService review video
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/samvpn-vpnservice-review-video.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm || true
+          ls -l /dev/kvm || true
+
+      - name: Download and verify exact vc6 AAB
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://d2ol7oe51mr4n9.cloudfront.net/user_3ILH5QffN0Q5aF9y2BjufCj0d80/bb0a8773-ab28-4626-9b5b-95a632306af6.zip' \
+            -o vc6.zip
+          unzip -j vc6.zip 'Storm-And-Me-AI-VPN-v0.4.2-vc6-PLAY-UPLOAD-READY.aab' -d .
+          mv Storm-And-Me-AI-VPN-v0.4.2-vc6-PLAY-UPLOAD-READY.aab samvpn.aab
+          echo 'bce0cae7a643b8967284202e602b6241a6c610b8d10439dca181b53ee0ba80b7  samvpn.aab' | sha256sum -c -
+
+      - name: Build universal APK from the exact AAB
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar' \
+            -o bundletool.jar
+          keytool -genkeypair -v \
+            -keystore "$RUNNER_TEMP/debug.keystore" \
+            -storepass android -keypass android \
+            -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname 'CN=Android Debug,O=Android,C=US'
+          java -jar bundletool.jar validate --bundle=samvpn.aab
+          java -jar bundletool.jar build-apks \
+            --bundle=samvpn.aab \
+            --output=samvpn.apks \
+            --mode=universal \
+            --ks="$RUNNER_TEMP/debug.keystore" \
+            --ks-pass=pass:android \
+            --ks-key-alias=androiddebugkey \
+            --key-pass=pass:android
+          unzip -p samvpn.apks universal.apk > samvpn.apk
+          test -s samvpn.apk
+
+      - name: Capture Android VpnService flow
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7_pro
+          cores: 2
+          ram-size: 4096M
+          heap-size: 512M
+          disk-size: 6000M
+          disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash .github/scripts/samvpn_review_video.sh
+
+      - name: Publish reviewer video to public repository path
+        if: success()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'Storm And Me Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add frontend/public/review/samvpn-vpnservice-review.mp4
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add Storm And Me VPN VpnService reviewer video'
+          git push origin HEAD:main
+
+      - name: Upload diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: samvpn-vpnservice-review-video
+          path: review-output/
+          if-no-files-found: warn
+          retention-days: 7
