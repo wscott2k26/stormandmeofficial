@@ -6,6 +6,10 @@ on:
     branches: [main]
     paths:
       - .github/workflows/samvpn-vpnservice-review-video.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/samvpn-review-trigger.txt
 
 permissions:
   contents: write
@@ -17,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -81,7 +87,7 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash .github/scripts/samvpn_review_video.sh
 
-      - name: Publish reviewer video to public repository path
+      - name: Publish reviewer video to trigger branch
         if: success()
         shell: bash
         run: |
@@ -91,7 +97,8 @@ jobs:
           git add frontend/public/review/samvpn-vpnservice-review.mp4
           git diff --cached --quiet && exit 0
           git commit -m 'Add Storm And Me VPN VpnService reviewer video'
-          git push origin HEAD:main
+          BRANCH="${GITHUB_HEAD_REF:-main}"
+          git push origin "HEAD:${BRANCH}"
 
       - name: Upload diagnostic artifact
         if: always()
