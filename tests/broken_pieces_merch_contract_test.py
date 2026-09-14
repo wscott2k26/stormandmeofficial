@@ -1,9 +1,13 @@
 import importlib.util
+import json
 import pathlib
+import sys
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PUBLISHER = ROOT / "automation" / "printify" / "publish_broken_pieces_collection.py"
+REPLACER = ROOT / "automation" / "printify" / "replace_broken_pieces_premium.py"
 PORTAL = ROOT / "frontend" / "src" / "components" / "FeaturedMerchPortal.js"
 
 
@@ -14,6 +18,17 @@ class BrokenPiecesMerchContractTests(unittest.TestCase):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
+
+    def load_replacer(self):
+        self.assertTrue(REPLACER.exists(), "Broken Pieces premium replacer must exist")
+        sys.path.insert(0, str(REPLACER.parent))
+        try:
+            spec = importlib.util.spec_from_file_location("broken_pieces_replacer", REPLACER)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module
+        finally:
+            sys.path.pop(0)
 
     def test_five_products_and_exact_back_messages(self):
         module = self.load_publisher()
@@ -59,6 +74,45 @@ class BrokenPiecesMerchContractTests(unittest.TestCase):
         self.assertIn('BROKEN PIECES COLLECTION', text)
         self.assertIn('RULES DON’T EXIST ANYMORE', text)
         self.assertLess(text.index('BROKEN PIECES COLLECTION'), text.index('RULES DON’T EXIST ANYMORE'))
+
+    def test_migration_gate_rejects_repurposed_live_product_ids(self):
+        module = self.load_replacer()
+        repurposed_ids = [
+            "6a8768c94c5ccb17760a17a2",
+            "6a876921765de48d610d9a0c",
+            "6a87697334e6b74a81056e4b",
+            "6a876990aa9cea471b08e022",
+            "6a8769c22a86ae766007bbaa",
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            data_path = pathlib.Path(tmp) / "broken-pieces-products.generated.json"
+            data_path.write_text(
+                json.dumps({
+                    "art_revision": module.REVISION_TAG,
+                    "products": [{"printify_product_id": pid} for pid in repurposed_ids],
+                }),
+                encoding="utf-8",
+            )
+            original_data = module.DATA
+            original_full_product = module.full_product
+            module.DATA = data_path
+            module.full_product = lambda product_id: {
+                "id": product_id,
+                "title": "I Run on Coffee & Jesus",
+                "tags": [],
+                "visible": True,
+                "images": [{"src": "https://example.invalid/mockup.jpg"}],
+                "external": {"id": "storefront-record"},
+                "variants": [{"is_enabled": True, "price": 2599}],
+            }
+            try:
+                self.assertFalse(
+                    module.already_migrated(),
+                    "Broken Pieces migration must not trust a product ID that has been repurposed to another design",
+                )
+            finally:
+                module.DATA = original_data
+                module.full_product = original_full_product
 
 
 if __name__ == "__main__":
