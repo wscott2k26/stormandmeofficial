@@ -151,7 +151,17 @@ def already_migrated():
     ids = {p.get("printify_product_id") for p in products}
     if ids & legacy:
         return False
-    return all(product_ready(full_product(row.get("printify_product_id"))) for row in products)
+
+    for row in products:
+        product = full_product(row.get("printify_product_id"))
+        if not product_ready(product):
+            return False
+        if product.get("title", "").strip().lower() != row.get("title", "").strip().lower():
+            return False
+        tags = {str(tag).lower() for tag in product.get("tags", [])}
+        if REVISION_TAG not in tags:
+            return False
+    return True
 
 
 def main():
