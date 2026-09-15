@@ -20,6 +20,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+# Diagnostic touch: keep this probe read-only; used to verify PR-trigger execution.
 API_BASE = "https://api.printify.com/v1"
 REPORT_PATH = Path("automation-output/printify-inventory.json")
 
