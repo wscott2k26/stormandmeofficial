@@ -12,12 +12,15 @@ on:
     paths:
       - ".github/workflows/printify-connection-check.yml"
       - "scripts/printify_setup.py"
+  issues:
+    types: [opened]
 
 permissions:
   contents: read
 
 jobs:
   verify-printify:
+    if: github.event_name != 'issues' || github.event.issue.title == 'PRINTIFY_AUTH_PROBE_20260914'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
