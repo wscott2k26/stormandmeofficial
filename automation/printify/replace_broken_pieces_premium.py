@@ -23,6 +23,15 @@ LEGACY_BAD_IDS = {
     "streetwear": "6a8748d42ca30d29770c60cf",
     "puzzle-piece": "6a8748e6cc388d717f01e40d",
 }
+TARGET_PRICE_CENTS = {
+    "cracked-heart": 3599,
+    "streetwear": 3599,
+}
+DEFAULT_PRICE_CENTS = 3399
+
+
+def target_price_cents(spec):
+    return TARGET_PRICE_CENTS.get(spec["slug"], DEFAULT_PRICE_CENTS)
 
 
 def full_product(product_id):
@@ -40,6 +49,22 @@ def product_ready(product):
     return bool([v for v in product.get("variants", []) if v.get("is_enabled")])
 
 
+def product_matches_spec(product, spec):
+    if not product_ready(product):
+        return False
+    if product.get("title", "").strip().lower() != spec["title"].strip().lower():
+        return False
+    tags = {str(tag).strip().lower() for tag in product.get("tags", [])}
+    if REVISION_TAG.lower() not in tags:
+        return False
+    prices = [
+        int(v.get("price", 0) or 0)
+        for v in product.get("variants", [])
+        if v.get("is_enabled") and int(v.get("price", 0) or 0) > 0
+    ]
+    return bool(prices) and min(prices) == target_price_cents(spec)
+
+
 def find_existing_replacement(spec):
     legacy_id = LEGACY_BAD_IDS[spec["slug"]]
     matches = []
@@ -54,15 +79,11 @@ def find_existing_replacement(spec):
         tags = {str(t).lower() for t in full.get("tags", [])}
         if REVISION_TAG in tags:
             matches.append(full)
-    ready = [p for p in matches if product_ready(p)]
+    ready = [p for p in matches if product_matches_spec(p, spec)]
     if ready:
-        keeper = ready[0]
-        for extra in matches[1:]:
-            if extra.get("id") != keeper.get("id"):
-                core.request("DELETE", f"/shops/{core.SHOP_ID}/products/{extra['id']}.json")
-        return keeper
-    for stale in matches:
-        core.request("DELETE", f"/shops/{core.SHOP_ID}/products/{stale['id']}.json")
+        return ready[0]
+    # Preserve stale products for manual review. Recovery should create a verified
+    # replacement rather than destructively deleting a product that may be live.
     return None
 
 
@@ -85,6 +106,9 @@ def launch_replacement(source, spec):
     payload = core.product_payload(source, spec, front_id, back_id)
     payload["tags"] = list(dict.fromkeys(payload.get("tags", []) + [REVISION_TAG]))
     payload["description"] = payload.get("description", "") + " Premium textured artwork revision."
+    for variant in payload.get("variants", []):
+        if variant.get("is_enabled"):
+            variant["price"] = target_price_cents(spec)
 
     created = core.request("POST", f"/shops/{core.SHOP_ID}/products.json", payload)
     product_id = created["id"]
@@ -102,7 +126,7 @@ def wait_for_all(launched, attempts=42):
     for attempt in range(attempts):
         for slug, (spec, pid, action) in list(pending.items()):
             product = full_product(pid)
-            if product_ready(product):
+            if product_matches_spec(product, spec):
                 ready[slug] = (spec, product, action)
                 pending.pop(slug)
                 print(f"storefront ready: {slug} -> {pid}")
@@ -118,7 +142,7 @@ def wait_for_all(launched, attempts=42):
 def site_record(spec, product):
     enabled = [v for v in product.get("variants", []) if v.get("is_enabled")]
     prices = [int(v.get("price", 0)) for v in enabled if int(v.get("price", 0)) > 0]
-    price_cents = min(prices) if prices else 3399
+    price_cents = min(prices) if prices else target_price_cents(spec)
     image_url = core.front_mockup(product)
     url = core.storefront_url(product)
     if not image_url or not url:
@@ -148,18 +172,16 @@ def already_migrated():
     if len(products) != 5 or data.get("art_revision") != REVISION_TAG:
         return False
     legacy = set(LEGACY_BAD_IDS.values())
-    ids = {p.get("printify_product_id") for p in products}
-    if ids & legacy:
+    ids = [row.get("printify_product_id") for row in products]
+    if any(not product_id for product_id in ids) or len(set(ids)) != len(ids) or set(ids) & legacy:
         return False
 
-    for row in products:
+    for spec, row in zip(core.PRODUCTS, products):
+        expected_site_id = f"broken-pieces-{spec['slug']}"
+        if row.get("id") and row.get("id") != expected_site_id:
+            return False
         product = full_product(row.get("printify_product_id"))
-        if not product_ready(product):
-            return False
-        if product.get("title", "").strip().lower() != row.get("title", "").strip().lower():
-            return False
-        tags = {str(tag).lower() for tag in product.get("tags", [])}
-        if REVISION_TAG not in tags:
+        if not product_matches_spec(product, spec):
             return False
     return True
 
@@ -183,8 +205,8 @@ def main():
         print(f"launched replacement: {spec['slug']} -> {pid} ({action})")
 
     replacements = wait_for_all(launched)
-    if len(replacements) != 5 or not all(product_ready(product) for _, product, _ in replacements):
-        raise RuntimeError("Safety gate failed: all five replacements must be verified before legacy deletion")
+    if len(replacements) != 5 or not all(product_matches_spec(product, spec) for spec, product, _ in replacements):
+        raise RuntimeError("Safety gate failed: all five replacements must match their intended Broken Pieces spec")
 
     report = []
     for spec, product, action in replacements:
@@ -196,9 +218,11 @@ def main():
             "mockup": core.front_mockup(product),
             "url": core.storefront_url(product),
             "visible": product.get("visible"),
+            "price_cents": target_price_cents(spec),
         })
 
-    # Only now remove the five known flat-art products.
+    # Only now remove the five known flat-art products. Repurposed Coffee/Jesus
+    # products use different IDs and are intentionally left untouched.
     deleted = []
     for slug, old_id in LEGACY_BAD_IDS.items():
         old = full_product(old_id)
