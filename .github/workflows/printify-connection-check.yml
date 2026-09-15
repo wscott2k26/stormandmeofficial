@@ -54,3 +54,5 @@ jobs:
           path: automation-output/printify-inventory.json
           if-no-files-found: error
           retention-days: 14
+
+# Diagnostic trigger: 2026-09-15 read-only auth probe
