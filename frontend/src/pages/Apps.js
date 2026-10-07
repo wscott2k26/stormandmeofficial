@@ -15,6 +15,16 @@ import { Overline, Reveal } from "../components/shared";
 
 const LIVE_APPS = [
   {
+    name: "RepPurpose",
+    Icon: Dumbbell,
+    eyebrow: "Fitness · Wellness",
+    description:
+      "Personalized workouts built around your goals, time, equipment, and space—with guided sessions, AI-assisted meal and workout-space tools, and progress tracking.",
+    status: "Available on Google Play",
+    href: "https://play.google.com/store/apps/details?id=com.stormandme.reppurpose",
+    detailsHref: "/reppurpose/",
+  },
+  {
     name: "First Check",
     Icon: ListChecks,
     eyebrow: "Daily workflow",
@@ -49,14 +59,6 @@ const LIVE_APPS = [
 ];
 
 const COMING_APPS = [
-  {
-    name: "RepPurpose",
-    Icon: Dumbbell,
-    eyebrow: "Fitness · Wellness",
-    description:
-      "A purpose-driven fitness and wellness experience built around practical guidance, daily movement, progress, and healthier routines.",
-    status: "Coming soon",
-  },
   {
     name: "SRG",
     Icon: Smartphone,
@@ -107,6 +109,20 @@ function AppCard({ app, live = false }) {
         <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-storm-blue/80">{app.eyebrow}</p>
         <h3 className="mt-2 font-display text-2xl font-black text-white">{app.name}</h3>
         <p className="mt-4 text-sm leading-relaxed text-storm-silver/65">{app.description}</p>
+        {(app.detailsHref || app.href) && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {app.detailsHref && (
+              <a href={app.detailsHref} className="rounded-full border border-white/15 bg-white/[0.05] px-4 py-2 text-xs font-bold text-white transition hover:border-white/30 hover:bg-white/[0.09]">
+                Explore {app.name}
+              </a>
+            )}
+            {app.href && (
+              <a href={app.href} target="_blank" rel="noreferrer" className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-300/15">
+                Google Play ↗
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
