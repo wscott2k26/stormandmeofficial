@@ -177,6 +177,39 @@ export default function Home() {
         <div className="absolute z-10 bottom-8 left-1/2 -translate-x-1/2 scroll-indicator" aria-hidden="true"><span /></div>
       </section>
 
+      {/* REPPURPOSE LAUNCH */}
+      <section className="relative py-10 sm:py-14" data-testid="home-reppurpose-launch">
+        <div className="max-w-7xl mx-auto px-6">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl border border-cyan-300/20 bg-[radial-gradient(circle_at_12%_12%,rgba(66,211,209,0.14),transparent_30%),radial-gradient(circle_at_88%_16%,rgba(122,99,255,0.15),transparent_32%),rgba(4,12,22,0.82)] p-7 sm:p-10 shadow-2xl">
+              <div className="relative grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-emerald-100">
+                    <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_14px_rgba(110,231,183,.8)]" />
+                    Now live on Google Play
+                  </div>
+                  <h2 className="mt-5 font-display text-4xl font-black leading-[1.02] text-white sm:text-5xl">
+                    Meet RepPurpose. <span className="italic text-storm-blue">Fitness built around real life.</span>
+                  </h2>
+                  <p className="mt-5 max-w-2xl text-storm-silver/75 leading-relaxed font-light">
+                    Personalized workout guidance based on your goals, time, equipment, and space—plus guided workouts, AI-assisted meal and workout-space tools, and progress tracking.
+                  </p>
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <a href="/reppurpose/" className="inline-flex min-h-11 items-center rounded-full border border-white/15 bg-white/[0.06] px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:border-white/30">Explore RepPurpose</a>
+                    <a href="https://play.google.com/store/apps/details?id=com.stormandme.reppurpose" target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 px-5 py-3 text-sm font-black text-white shadow-lg shadow-sky-500/15 transition hover:-translate-y-0.5">Get it on Google Play ↗</a>
+                  </div>
+                  <p className="mt-5 text-xs leading-relaxed text-storm-silver/50">Android is live now. iPhone release is in progress. RepPurpose is for adults 18+ and is not a medical device.</p>
+                </div>
+                <div className="relative">
+                  <div className="absolute -inset-5 rounded-full bg-cyan-300/10 blur-3xl" />
+                  <img src="https://play-lh.googleusercontent.com/7xvAAalTPpyrv0W0G82th0xZ-aDYXft2GyYocYnABvSFYUUv8imZ7Z0ZKtlBMOnyj_kRD_LYTm3iyDJfKPXY%3Dw526-h296" alt="RepPurpose personalized daily plan" className="relative w-full rounded-2xl border border-white/10 shadow-2xl" />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* WELCOME */}
       <section className="relative py-24 sm:py-32" data-testid="welcome-section">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-center">
