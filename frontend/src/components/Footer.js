@@ -5,7 +5,7 @@ import { SocialIcons } from "./shared";
 
 const COLS = [
   { title: "Explore", links: [["Books", "/books"], ["Music", "/music"], ["Videos", "/videos"], ["Shop", "/shop"]] },
-  { title: "Discover", links: [["Projects", "/projects"], ["About", "/about"], ["The Story", "/story"], ["News", "/news"]] },
+  { title: "Discover", links: [["Apps", "/apps"], ["RepPurpose", "/reppurpose/"], ["Projects", "/projects"], ["About", "/about"], ["The Story", "/story"], ["News", "/news"]] },
   { title: "Support", links: [["FAQ", "/faq"], ["Shipping Policy", "/shipping"], ["Returns & Refunds", "/returns"], ["Accessibility", "/accessibility"]] },
   { title: "Legal", links: [["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"], ["Contact", "/contact"], ["Official Store", "/shop"]] },
 ];
