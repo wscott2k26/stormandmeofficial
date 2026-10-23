@@ -1,9 +1,17 @@
 import React from "react";
-import { ExternalLink, HeartHandshake, Newspaper, Sprout, Ticket, Clock3, BadgeCheck } from "lucide-react";
+import { ExternalLink, HeartHandshake, Newspaper, Sprout, Ticket, Clock3, BadgeCheck, ServerCog } from "lucide-react";
 import PageHero from "../components/PageHero";
 import { GlowButton, Overline, Reveal } from "../components/shared";
 
 const PROJECTS = [
+  {
+    name: "Legacy Server Rescue",
+    type: "Technical services · Windows Server 2016",
+    description: "Fixed-scope, read-only legacy application dependency and migration-readiness review for IT teams and MSPs. Introductory one-server pilot: $395 after written scoping.",
+    status: "Pilot inquiries open",
+    icon: ServerCog,
+    url: "/legacy-exit-review.html",
+  },
   {
     name: "StillAble Care",
     type: "Caregiving & accessibility",
