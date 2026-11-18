@@ -73,8 +73,20 @@ const STATIC_PAGES = {
     description: "Watch official Willy Will music videos, lyric videos, creative releases, and visual stories from Storm & Me Official.",
   },
   "/apps": {
-    title: "Apps by Storm And Me | AI, Productivity, Wellness & Games",
-    description: "Explore Storm And Me apps for productivity, card-game learning, marketing, relationships, fitness, wellness, and puzzle play—including First Check, HoldWise AI, RepPurpose, and Lumina.",
+    title: "Apps by Storm And Me | Productivity, Wellness & Games",
+    description: "Explore the Storm And Me app portfolio across productivity, learning, wellness, relationships, marketing, fitness, and games, with current availability shown on the page.",
+  },
+  "/projects": {
+    title: "Storm And Me Projects | Technology, Media & Practical Tools",
+    description: "Explore Storm And Me projects including technical services, practical software, travel tools, accessibility work, and original media destinations.",
+  },
+  "/still-breathing": {
+    title: "Broken Pieces — Still Breathing | Storm And Me",
+    description: "Explore the Broken Pieces — Still Breathing streetwear tee from Storm And Me, with official product imagery and secure Printify checkout.",
+  },
+  "/shop": {
+    title: "Official Storm And Me Collection",
+    description: "Open the official Storm And Me merchandise collection for current products, colors, sizes, prices, shipping, and secure Printify checkout.",
   },
   "/about": {
     title: "About Will Scott & Willy Will | Storm & Me Official",
@@ -127,6 +139,7 @@ const STATIC_PAGES = {
 };
 
 const NO_INDEX_PATHS = new Set([
+  "/shop",
   "/cart",
   "/checkout",
   "/account",
